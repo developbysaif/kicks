@@ -23,7 +23,7 @@ import QuickViewModal from '@/components/QuickViewModal';
 const HERO_SLIDES = [
   '/img6.jpg',
   '/img7.jpg',
-  '/washroom cleaning.png',
+  '/Washroom CLeaning.jpg.jpeg',
   '/img8.jpg',
   '/Phenyle.jpg.jpeg'
 ];
