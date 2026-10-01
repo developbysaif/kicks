@@ -61,13 +61,13 @@ const ProductCard = ({ product, onQuickView }) => {
         </div>
 
         {/* Product Image Link */}
-        <Link href={`/product/${product.slug}`} className="block w-full h-full p-2 flex items-center justify-center">
+        <Link href={`/product/${product.slug}`} className="block w-full h-full">
           <motion.img
             whileHover={{ scale: 1.08 }}
             transition={{ duration: 0.3 }}
             src={primaryImage}
             alt={product.name}
-            className="max-h-full max-w-full object-contain"
+            className="w-full h-full object-cover"
           />
         </Link>
       </div>

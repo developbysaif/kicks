@@ -14,42 +14,42 @@ const categoriesData = [
     name: 'Shoe Care',
     slug: 'shoe-care',
     description: 'Premium shoe shiners, white sneaker cleaners, polish sponges, shoe wax, deodorizers, and brushes.',
-    image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=800&q=80',
+    image: '/Shoe Care.png',
     isActive: true
   },
   {
     name: 'Laundry Care',
     slug: 'laundry-care',
     description: 'High performance bleach liquid, blue whitening agents, and fabric conditioners for brilliant clothes.',
-    image: 'https://images.unsplash.com/photo-1585421514738-01798e348b17?auto=format&fit=crop&w=800&q=80',
+    image: '/laundry Care.png',
     isActive: true
   },
   {
     name: 'Home Cleaning',
     slug: 'home-cleaning',
     description: 'All-purpose surface cleaners, descaling bathroom sprays, and heavy duty toilet cleaner power gels.',
-    image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=800&q=80',
+    image: '/Home Cleaning.png',
     isActive: true
   },
   {
     name: 'Dish Care',
     slug: 'dish-care',
     description: 'Tough grease-cutting dishwashing liquids infused with lemon oil and heavy duty dish sponges.',
-    image: 'https://images.unsplash.com/photo-1585421514738-01798e348b17?auto=format&fit=crop&w=800&q=80',
+    image: '/dish care.png',
     isActive: true
   },
   {
-    name: 'Drain Care',
-    slug: 'drain-care',
-    description: 'Fast acting liquid drain openers and pipe clog unblocker powders for sinks and bathroom drains.',
-    image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=800&q=80',
+    name: 'Washroom Cleaning',
+    slug: 'washroom-cleaning',
+    description: 'Fast acting liquid drain openers, bathroom cleaners, and toilet gels for sparkling clean washrooms.',
+    image: '/washroom cleaning.png',
     isActive: true
   },
   {
     name: 'Mosquito Protection',
     slug: 'mosquito-protection',
     description: 'Electric liquid mosquito repellents, anti-mosquito skin lotions, coils, and multi-insect sprays.',
-    image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80',
+    image: '/mosquito protection.png',
     isActive: true
   }
 ];

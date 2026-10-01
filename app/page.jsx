@@ -398,13 +398,13 @@ export default function HomePage() {
                   href={`/category/${cat.slug}`}
                   className={`group p-4 rounded-2xl border ${cat.borderColor} ${cat.bgColor} hover:shadow-lg transition-all duration-300 flex flex-col justify-between relative overflow-hidden block h-full`}
                 >
-                  <div className="aspect-square w-full rounded-xl overflow-hidden mb-3 bg-white p-2 border border-slate-100 flex items-center justify-center">
+                  <div className="aspect-square w-full rounded-xl overflow-hidden mb-3 bg-white border border-slate-100">
                     <motion.img
                       whileHover={{ scale: 1.1 }}
                       transition={{ duration: 0.3 }}
                       src={cat.image}
                       alt={cat.name}
-                      className="max-h-full max-w-full object-contain"
+                      className="w-full h-full object-cover"
                     />
                   </div>
 

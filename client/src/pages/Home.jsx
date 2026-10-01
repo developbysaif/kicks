@@ -77,7 +77,7 @@ const INITIAL_FEATURED_PRODUCTS = [
     rating: 5.0,
     numReviews: 499,
     volume: '1 Litre',
-    images: ['https://images.unsplash.com/photo-1585421514738-01798e348b17?auto=format&fit=crop&w=600&q=80'],
+    images: ['/whitner bleach.png'],
     isFeatured: true
   },
   {
@@ -90,7 +90,7 @@ const INITIAL_FEATURED_PRODUCTS = [
     rating: 5.0,
     numReviews: 156,
     volume: '500ml',
-    images: ['https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=600&q=80'],
+    images: ['/dish wash liquid.png'],
     isFeatured: true
   },
   {
@@ -103,7 +103,7 @@ const INITIAL_FEATURED_PRODUCTS = [
     rating: 5.0,
     numReviews: 82,
     volume: '500ml',
-    images: ['https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=600&q=80'],
+    images: ['/Shoe Care.png'],
     isFeatured: true
   },
   {
@@ -117,20 +117,20 @@ const INITIAL_FEATURED_PRODUCTS = [
     numReviews: 72,
     volume: 'Black / Brown / Neutral',
     hasVariants: true,
-    images: ['https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80'],
+    images: ['/liquid shoe polish.png'],
     isFeatured: true
   },
   {
     _id: 'p5',
     name: 'Kick Drain Opener',
     slug: 'kick-drain-opener',
-    category: { name: 'Drain Care', slug: 'drain-care' },
+    category: { name: 'Washroom Cleaning', slug: 'washroom-cleaning' },
     price: 520,
     salePrice: 0,
     rating: 5.0,
     numReviews: 170,
     volume: '1 Litre',
-    images: ['https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=600&q=80'],
+    images: ['/kick drain opener.png'],
     isFeatured: true
   },
   {
@@ -143,7 +143,7 @@ const INITIAL_FEATURED_PRODUCTS = [
     rating: 5.0,
     numReviews: 203,
     volume: '45ml',
-    images: ['https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80'],
+    images: ['/mosquito protection.png'],
     isFeatured: true
   }
 ];

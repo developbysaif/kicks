@@ -4,6 +4,9 @@ import Providers from '@/components/Providers';
 export const metadata = {
   title: 'Kick Home Care | Kara Asani Zindagi Main',
   description: "Pakistan's premier home care e-commerce platform for Shoe Care, Bleach, Liquid Cleaners, Drain Openers, and Pest Control Solutions.",
+  icons: {
+    icon: '/fav-icon-kick.png',
+  },
 };
 
 export default function RootLayout({ children }) {
