@@ -24,7 +24,7 @@ const HERO_SLIDES = [
   '/img6.jpg',
   '/img7.jpg',
   '/img8.jpg',
-  '/phenyle.png'
+  '/Phenyle.jpg.jpeg'
 ];
 
 const CATEGORIES_DATA = [

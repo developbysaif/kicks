@@ -15,12 +15,7 @@ const Footer = () => {
           {/* Column 1: Brand Info */}
           <div className="space-y-4">
             <Link href="/" className="flex flex-col inline-block">
-              <span className="text-3xl font-black italic tracking-tighter text-red-600">
-                KICK<sup className="text-xs font-bold text-red-500 not-italic ml-0.5">®</sup>
-              </span>
-              <span className="text-[10px] font-bold text-gray-400 tracking-wider uppercase -mt-1">
-                Home Care
-              </span>
+              <img src="/kick%20logo.png" alt="KICK Home Care" className="h-12 w-auto object-contain" />
             </Link>
             
             <p className="text-xs text-gray-400 leading-relaxed">

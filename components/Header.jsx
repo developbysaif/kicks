@@ -140,14 +140,7 @@ const Header = () => {
 
         {/* Logo */}
         <Link href="/" className="flex flex-col group">
-          <div className="flex items-center">
-            <span className="text-3xl sm:text-4xl font-black italic tracking-tighter text-red-600 group-hover:text-red-700 transition-colors">
-              KICK<sup className="text-xs font-bold text-red-500 not-italic ml-0.5">®</sup>
-            </span>
-          </div>
-          <span className="text-[11px] font-bold text-slate-800 tracking-wider uppercase -mt-1">
-            Home Care
-          </span>
+          <img src="/kick%20logo.png" alt="KICK Home Care" className="h-12 sm:h-14 w-auto object-contain" />
         </Link>
 
         {/* Search Bar */}
