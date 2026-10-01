@@ -61,10 +61,10 @@ const CATEGORIES_DATA = [
     borderColor: 'border-teal-100'
   },
   {
-    name: 'Drain Care',
-    slug: 'drain-care',
+    name: 'Washroom Cleaning',
+    slug: 'washroom-cleaning',
     count: '6 Products',
-    image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=600&q=80',
+    image: '/washroom%20cleaning.png',
     bgColor: 'bg-slate-50',
     borderColor: 'border-slate-200'
   },
