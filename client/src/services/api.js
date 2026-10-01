@@ -1,12 +1,12 @@
 import axios from 'axios';
 
 export const FALLBACK_CATEGORIES = [
-  { _id: 'cat1', name: 'Shoe Care', slug: 'shoe-care', description: 'White sneaker cleaners, shoe polishes, shiner sponges, deodorizers, and brushes.', image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=800&q=80', productCount: 7 },
-  { _id: 'cat2', name: 'Laundry Care', slug: 'laundry-care', description: 'High performance bleach liquid, blue whitening agents, and fabric conditioners.', image: 'https://images.unsplash.com/photo-1585421514738-01798e348b17?auto=format&fit=crop&w=800&q=80', productCount: 3 },
-  { _id: 'cat3', name: 'Home Cleaning', slug: 'home-cleaning', description: 'All-purpose surface cleaners, descaling bathroom sprays, and toilet cleaner power gels.', image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=800&q=80', productCount: 3 },
-  { _id: 'cat4', name: 'Dish Care', slug: 'dish-care', description: 'Tough grease-cutting dishwashing liquids infused with lemon oil.', image: 'https://images.unsplash.com/photo-1585421514738-01798e348b17?auto=format&fit=crop&w=800&q=80', productCount: 2 },
-  { _id: 'cat5', name: 'Drain Care', slug: 'drain-care', description: 'Fast acting liquid drain openers and pipe clog unblocker powders.', image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=800&q=80', productCount: 2 },
-  { _id: 'cat6', name: 'Mosquito Protection', slug: 'mosquito-protection', description: 'Electric liquid mosquito repellents, skin-safe lotions, and insect sprays.', image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80', productCount: 2 }
+  { _id: 'cat1', name: 'Shoe Care', slug: 'shoe-care', description: 'White sneaker cleaners, shoe polishes, shiner sponges, deodorizers, and brushes.', image: '/Shoe Care.png', productCount: 7 },
+  { _id: 'cat2', name: 'Laundry Care', slug: 'laundry-care', description: 'High performance bleach liquid, blue whitening agents, and fabric conditioners.', image: '/laundry Care.png', productCount: 3 },
+  { _id: 'cat3', name: 'Home Cleaning', slug: 'home-cleaning', description: 'All-purpose surface cleaners, descaling bathroom sprays, and toilet cleaner power gels.', image: '/Home Cleaning.png', productCount: 3 },
+  { _id: 'cat4', name: 'Dish Care', slug: 'dish-care', description: 'Tough grease-cutting dishwashing liquids infused with lemon oil.', image: '/dish care.png', productCount: 2 },
+  { _id: 'cat5', name: 'Washroom Cleaning', slug: 'washroom-cleaning', description: 'Fast acting liquid drain openers, bathroom cleaners, and toilet cleaner power gels.', image: '/washroom cleaning.png', productCount: 2 },
+  { _id: 'cat6', name: 'Mosquito Protection', slug: 'mosquito-protection', description: 'Electric liquid mosquito repellents, skin-safe lotions, and insect sprays.', image: '/mosquito protection.png', productCount: 2 }
 ];
 
 export const FALLBACK_PRODUCTS = [

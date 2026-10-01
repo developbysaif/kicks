@@ -18,7 +18,12 @@ export async function GET(req) {
     let query = { isActive: true };
 
     if (categorySlug) {
-      const categoryObj = await Category.findOne({ slug: categorySlug });
+      const slugsToMatch = categorySlug === 'washroom-cleaning' 
+        ? ['washroom-cleaning', 'drain-care']
+        : categorySlug === 'drain-care'
+        ? ['washroom-cleaning', 'drain-care']
+        : [categorySlug];
+      const categoryObj = await Category.findOne({ slug: { $in: slugsToMatch } });
       if (categoryObj) {
         query.category = categoryObj._id;
       }

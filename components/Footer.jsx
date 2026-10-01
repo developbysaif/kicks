@@ -129,8 +129,8 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/category/drain-care" className="text-gray-400 hover:text-red-500 transition-colors">
-                  Drain Care
+                <Link href="/category/washroom-cleaning" className="text-gray-400 hover:text-red-500 transition-colors">
+                  Washroom Cleaning
                 </Link>
               </li>
               <li>

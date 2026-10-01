@@ -25,7 +25,7 @@ const FALLBACK_CATEGORIES = [
   { name: 'Laundry Care', slug: 'laundry-care' },
   { name: 'Home Cleaning', slug: 'home-cleaning' },
   { name: 'Dish Care', slug: 'dish-care' },
-  { name: 'Drain Care', slug: 'drain-care' },
+  { name: 'Washroom Cleaning', slug: 'washroom-cleaning' },
   { name: 'Mosquito Protection', slug: 'mosquito-protection' }
 ];
 

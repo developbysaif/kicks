@@ -24,7 +24,7 @@ const HERO_SLIDES = [
   '/img6.jpg',
   '/img7.jpg',
   '/img8.jpg',
-  '/img9.jpg'
+  '/phenyle.png'
 ];
 
 const CATEGORIES_DATA = [
@@ -32,7 +32,7 @@ const CATEGORIES_DATA = [
     name: 'Shoe Care',
     slug: 'shoe-care',
     count: '12 Products',
-    image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=600&q=80',
+    image: '/Shoe Care.png',
     bgColor: 'bg-amber-50/50',
     borderColor: 'border-amber-100'
   },
@@ -40,7 +40,7 @@ const CATEGORIES_DATA = [
     name: 'Laundry Care',
     slug: 'laundry-care',
     count: '10 Products',
-    image: 'https://images.unsplash.com/photo-1585421514738-01798e348b17?auto=format&fit=crop&w=600&q=80',
+    image: '/laundry Care.png',
     bgColor: 'bg-blue-50/50',
     borderColor: 'border-blue-100'
   },
@@ -48,7 +48,7 @@ const CATEGORIES_DATA = [
     name: 'Home Cleaning',
     slug: 'home-cleaning',
     count: '15 Products',
-    image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=600&q=80',
+    image: '/Home Cleaning.png',
     bgColor: 'bg-emerald-50/50',
     borderColor: 'border-emerald-100'
   },
@@ -56,7 +56,7 @@ const CATEGORIES_DATA = [
     name: 'Dish Care',
     slug: 'dish-care',
     count: '8 Products',
-    image: 'https://images.unsplash.com/photo-1585421514738-01798e348b17?auto=format&fit=crop&w=600&q=80',
+    image: '/dish care.png',
     bgColor: 'bg-teal-50/50',
     borderColor: 'border-teal-100'
   },
@@ -64,7 +64,7 @@ const CATEGORIES_DATA = [
     name: 'Washroom Cleaning',
     slug: 'washroom-cleaning',
     count: '6 Products',
-    image: '/washroom%20cleaning.png',
+    image: '/washroom cleaning.png',
     bgColor: 'bg-slate-50',
     borderColor: 'border-slate-200'
   },
@@ -72,7 +72,7 @@ const CATEGORIES_DATA = [
     name: 'Mosquito Protection',
     slug: 'mosquito-protection',
     count: '5 Products',
-    image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80',
+    image: '/mosquito protection.png',
     bgColor: 'bg-purple-50/50',
     borderColor: 'border-purple-100'
   }
@@ -89,7 +89,7 @@ const INITIAL_FEATURED_PRODUCTS = [
     rating: 5.0,
     numReviews: 499,
     volume: '1 Litre',
-    images: ['https://images.unsplash.com/photo-1585421514738-01798e348b17?auto=format&fit=crop&w=600&q=80'],
+    images: ['/whitner bleach.png'],
     isFeatured: true
   },
   {
@@ -102,7 +102,7 @@ const INITIAL_FEATURED_PRODUCTS = [
     rating: 5.0,
     numReviews: 156,
     volume: '500ml',
-    images: ['https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=600&q=80'],
+    images: ['/dish wash liquid.png'],
     isFeatured: true
   },
   {
@@ -115,7 +115,7 @@ const INITIAL_FEATURED_PRODUCTS = [
     rating: 5.0,
     numReviews: 82,
     volume: '500ml',
-    images: ['https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=600&q=80'],
+    images: ['/Shoe Care.png'],
     isFeatured: true
   },
   {
@@ -129,20 +129,20 @@ const INITIAL_FEATURED_PRODUCTS = [
     numReviews: 72,
     volume: 'Black / Brown / Neutral',
     hasVariants: true,
-    images: ['https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80'],
+    images: ['/liquid shoe polish.png'],
     isFeatured: true
   },
   {
     _id: 'p5',
     name: 'Kick Drain Opener',
     slug: 'kick-drain-opener',
-    category: { name: 'Drain Care', slug: 'drain-care' },
+    category: { name: 'Washroom Cleaning', slug: 'washroom-cleaning' },
     price: 520,
     salePrice: 0,
     rating: 5.0,
     numReviews: 170,
     volume: '1 Litre',
-    images: ['https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=600&q=80'],
+    images: ['/kick drain opener.png'],
     isFeatured: true
   },
   {
@@ -155,7 +155,7 @@ const INITIAL_FEATURED_PRODUCTS = [
     rating: 5.0,
     numReviews: 203,
     volume: '45ml',
-    images: ['https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80'],
+    images: ['/mosquito protection.png'],
     isFeatured: true
   }
 ];

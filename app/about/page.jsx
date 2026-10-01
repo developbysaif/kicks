@@ -22,7 +22,7 @@ const CATEGORIES_DATA = [
     name: 'Shoe Care',
     slug: 'shoe-care',
     count: '12 Products',
-    image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=600&q=80',
+    image: '/Shoe Care.png',
     bgColor: 'bg-amber-50/50',
     borderColor: 'border-amber-100'
   },
@@ -30,7 +30,7 @@ const CATEGORIES_DATA = [
     name: 'Laundry Care',
     slug: 'laundry-care',
     count: '10 Products',
-    image: 'https://images.unsplash.com/photo-1585421514738-01798e348b17?auto=format&fit=crop&w=600&q=80',
+    image: '/laundry Care.png',
     bgColor: 'bg-blue-50/50',
     borderColor: 'border-blue-100'
   },
@@ -38,7 +38,7 @@ const CATEGORIES_DATA = [
     name: 'Home Cleaning',
     slug: 'home-cleaning',
     count: '15 Products',
-    image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=600&q=80',
+    image: '/Home Cleaning.png',
     bgColor: 'bg-emerald-50/50',
     borderColor: 'border-emerald-100'
   },
@@ -46,15 +46,15 @@ const CATEGORIES_DATA = [
     name: 'Dish Care',
     slug: 'dish-care',
     count: '8 Products',
-    image: 'https://images.unsplash.com/photo-1585421514738-01798e348b17?auto=format&fit=crop&w=600&q=80',
+    image: '/dish care.png',
     bgColor: 'bg-teal-50/50',
     borderColor: 'border-teal-100'
   },
   {
-    name: 'Drain Care',
-    slug: 'drain-care',
+    name: 'Washroom Cleaning',
+    slug: 'washroom-cleaning',
     count: '6 Products',
-    image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=600&q=80',
+    image: '/washroom cleaning.png',
     bgColor: 'bg-slate-50',
     borderColor: 'border-slate-200'
   },
@@ -62,7 +62,7 @@ const CATEGORIES_DATA = [
     name: 'Mosquito Protection',
     slug: 'mosquito-protection',
     count: '5 Products',
-    image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80',
+    image: '/mosquito protection.png',
     bgColor: 'bg-purple-50/50',
     borderColor: 'border-purple-100'
   }
