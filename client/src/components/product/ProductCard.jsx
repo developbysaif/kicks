@@ -52,11 +52,11 @@ const ProductCard = ({ product, onQuickView }) => {
         </div>
 
         {/* Product Image Link */}
-        <Link to={`/product/${product.slug}`} className="block w-full h-full p-2 flex items-center justify-center">
+        <Link to={`/product/${product.slug}`} className="block w-full h-full">
           <img
             src={primaryImage}
             alt={product.name}
-            className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         </Link>
       </div>

@@ -27,8 +27,8 @@ const ProductCard = ({ product, onQuickView }) => {
       className="group bg-white rounded-3xl border border-gray-100 p-4 shadow-sm hover:shadow-2xl transition-all duration-300 flex flex-col justify-between relative"
     >
 
-      {/* Top Image Container — bigger aspect ratio */}
-      <div className="relative aspect-[4/3] w-full rounded-2xl bg-gray-50 overflow-hidden mb-4 border border-gray-100 flex items-center justify-center">
+      {/* Top Image Container — full image, no side spaces */}
+      <div className="relative aspect-square w-full rounded-2xl bg-gray-50 overflow-hidden mb-4 border border-gray-100 flex items-center justify-center">
 
         {/* Discount Badge */}
         {discountPercent > 0 && (
@@ -81,11 +81,11 @@ const ProductCard = ({ product, onQuickView }) => {
         {/* Product Image Link */}
         <Link href={`/product/${product.slug}`} className="block w-full h-full">
           <motion.img
-            whileHover={{ scale: 1.08 }}
+            whileHover={{ scale: 1.06 }}
             transition={{ duration: 0.3 }}
             src={primaryImage}
             alt={product.name}
-            className="w-full h-full object-contain p-3"
+            className="w-full h-full object-cover"
           />
         </Link>
       </div>
