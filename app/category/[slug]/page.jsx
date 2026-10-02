@@ -281,7 +281,7 @@ export default function CategoryPage({ params }) {
   }, [products, sortBy]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F7F8F6] text-[#1E293B] font-sans">
+    <div className="min-h-screen flex flex-col bg-white text-[#1A1A1A] font-sans">
       <Header />
 
       {quickViewProduct && (
@@ -300,45 +300,71 @@ export default function CategoryPage({ params }) {
               Categories
             </Link>
             <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-            <span className="text-[#1F3A5F] font-bold capitalize">{currentMeta.name}</span>
+            <span className="text-red-600 font-bold capitalize">{currentMeta.name}</span>
           </nav>
         </div>
       </div>
 
       <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full space-y-8">
         
-        {/* CATEGORY HERO BANNER WITH BRAND IMAGE */}
-        <div className={`relative rounded-3xl overflow-hidden bg-gradient-to-r ${currentMeta.color} text-white shadow-xl p-8 sm:p-12 flex flex-col md:flex-row items-center justify-between gap-8`}>
-          <div className="space-y-3 max-w-xl">
-            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-xs font-bold text-[#F4B942]">
+        {/* CATEGORY HERO BANNER — Full-width Background Image */}
+        <div
+          className="relative rounded-3xl overflow-hidden shadow-2xl min-h-[300px] sm:min-h-[360px] flex items-end"
+          style={{
+            backgroundImage: `url(${currentMeta.bannerImage})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center'
+          }}
+        >
+          {/* Dark overlay with brand red tint */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 to-black/20" />
+          <div className="absolute inset-0 bg-[#E2231A]/20" />
+
+          {/* Logo badge top-right */}
+          <div className="absolute top-5 right-5 bg-white/15 backdrop-blur-md rounded-2xl px-3 py-2 border border-white/25 flex items-center space-x-2">
+            <img
+              src="/kick logo redesign-01.png"
+              alt="Kick"
+              className="h-6 object-contain"
+            />
+          </div>
+
+          {/* Text content pinned to bottom */}
+          <div className="relative z-10 p-8 sm:p-12 space-y-3 max-w-3xl">
+            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#E2231A] text-white text-xs font-bold uppercase tracking-wider">
               <Sparkles className="w-3.5 h-3.5" />
               <span>Kick® Official Category</span>
             </div>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black capitalize tracking-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
               {currentMeta.name}
             </h1>
-            <p className="text-xs sm:text-sm font-semibold text-[#F4B942]">
+            <p className="text-sm font-semibold text-red-400">
               {currentMeta.tagline}
             </p>
-            <p className="text-xs sm:text-sm text-slate-200 leading-relaxed font-normal">
+            <p className="text-xs sm:text-sm text-slate-200 leading-relaxed max-w-xl">
               {currentMeta.description}
             </p>
-          </div>
-
-          {/* Category Image Box */}
-          <div className="w-48 h-48 sm:w-56 sm:h-56 bg-white/10 backdrop-blur-md rounded-2xl p-3 border border-white/20 shrink-0 flex items-center justify-center shadow-2xl">
-            <img
-              src={currentMeta.bannerImage}
-              alt={currentMeta.name}
-              className="max-h-full max-w-full object-contain"
-            />
+            <div className="flex items-center space-x-3 pt-2">
+              <div className="flex items-center space-x-1.5 text-white/80 text-xs">
+                <CheckCircle2 className="w-3.5 h-3.5 text-red-400 shrink-0" />
+                <span>Kick Certified</span>
+              </div>
+              <div className="flex items-center space-x-1.5 text-white/80 text-xs">
+                <CheckCircle2 className="w-3.5 h-3.5 text-red-400 shrink-0" />
+                <span>Home-Safe Formula</span>
+              </div>
+              <div className="flex items-center space-x-1.5 text-white/80 text-xs">
+                <CheckCircle2 className="w-3.5 h-3.5 text-red-400 shrink-0" />
+                <span>Pakistan-Made</span>
+              </div>
+            </div>
           </div>
         </div>
 
         {/* CONTROLS BAR */}
         <div className="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-xs flex items-center justify-between gap-4">
-          <span className="text-xs font-bold text-[#1F3A5F]">
-            Showing <span className="text-[#2E7D6B]">{sortedProducts.length}</span> Products
+          <span className="text-xs font-bold text-[#1A1A1A]">
+            Showing <span className="text-[#E2231A]">{sortedProducts.length}</span> Products
           </span>
 
           <div className="flex items-center space-x-2">
@@ -346,7 +372,7 @@ export default function CategoryPage({ params }) {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="bg-slate-50 border border-slate-200 text-xs font-semibold text-[#1F3A5F] rounded-xl px-3 py-2 focus:outline-none"
+              className="bg-slate-50 border border-slate-200 text-xs font-semibold text-[#1A1A1A] rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
             >
               <option value="featured">Featured</option>
               <option value="price-low">Price: Low to High</option>
@@ -362,7 +388,7 @@ export default function CategoryPage({ params }) {
             <p className="text-base font-bold text-slate-700">No products found in this category.</p>
             <Link
               href="/shop"
-              className="inline-block mt-4 px-6 py-2.5 bg-[#1F3A5F] text-white text-xs font-bold rounded-full hover:bg-slate-800 transition-colors"
+              className="inline-block mt-4 px-6 py-2.5 bg-[#E2231A] text-white text-xs font-bold rounded-full hover:bg-red-700 transition-colors"
             >
               Explore All Categories
             </Link>
