@@ -21,11 +21,46 @@ import ProductCard from '@/components/ProductCard';
 import QuickViewModal from '@/components/QuickViewModal';
 
 const HERO_SLIDES = [
-  '/img6.jpg',
-  '/img7.jpg',
-  '/Washroom CLeaning.jpg.jpeg',
-  '/img8.jpg',
-  '/Phenyle.jpg.jpeg'
+  {
+    image: '/img6.jpg',
+    badge: 'PREMIUM HOME CARE PRODUCTS',
+    heading: <>Karo Apna Ghar<br />Chamakta Saaf</>,
+    subtitle: 'Pakistan\'s most trusted home care brand — from shoes to kitchen, bathroom to floors, KICK has every corner covered.',
+    cta: 'Shop Now',
+    ctaLink: '/shop'
+  },
+  {
+    image: '/img7.jpg',
+    badge: 'SHOE CARE SPECIALISTS',
+    heading: <>Joote Ho Jain<br /><span className="text-[#D0161D]">Bilkul Naye</span></>,
+    subtitle: 'Kick shoe cleaners, polishes and protectors restore shine and extend the life of every pair you own.',
+    cta: 'Shop Shoe Care',
+    ctaLink: '/shop/shoe-care'
+  },
+  {
+    image: '/Washroom CLeaning.jpg.jpeg',
+    badge: 'WASHROOM CLEANING',
+    heading: <>Washroom Ho<br /><span className="text-[#D0161D]">100% Germ Free</span></>,
+    subtitle: 'Powerful drain openers, toilet gels and bathroom cleaners that tackle the toughest blockages and limescale fast.',
+    cta: 'Shop Washroom',
+    ctaLink: '/category/washroom-cleaning'
+  },
+  {
+    image: '/img8.jpg',
+    badge: 'LAUNDRY CARE',
+    heading: <>Kapray Ho Jain<br /><span className="text-[#D0161D]">Dazzling White</span></>,
+    subtitle: 'Kick Bleach Liquid and Whitener keep your fabrics brilliantly bright, fresh and hygienic wash after wash.',
+    cta: 'Shop Laundry',
+    ctaLink: '/category/laundry-care'
+  },
+  {
+    image: '/Phenyle.jpg.jpeg',
+    badge: 'HOME CLEANING RANGE',
+    heading: <>Ghar Ki Safai<br /><span className="text-[#D0161D]">Poori Tarah Perfect</span></>,
+    subtitle: 'Kick Perfumed White Phenyle and floor cleaners leave every surface spotless with a long-lasting fresh fragrance.',
+    cta: 'Shop Home Cleaning',
+    ctaLink: '/category/home-cleaning'
+  }
 ];
 
 const CATEGORIES_DATA = [
@@ -213,59 +248,80 @@ export default function HomePage() {
       )}
 
       {/* 1. HERO BANNER SECTION */}
-      <section className="relative w-full overflow-hidden min-h-[340px] sm:min-h-[420px] lg:min-h-[460px] flex items-center bg-slate-100 border-b border-slate-100">
-        
-        {/* Background Image Slider (Manual Change Only - 0.5s Smooth Fade) */}
+      <section className="relative w-full overflow-hidden min-h-[340px] sm:min-h-[460px] lg:min-h-[520px] flex items-center bg-slate-100 border-b border-slate-100">
+
+        {/* Background Image Slider */}
         {HERO_SLIDES.map((slide, index) => (
           <motion.img
-            key={slide}
-            src={slide}
+            key={slide.image}
+            src={slide.image}
             alt={`Hero banner ${index + 1}`}
             initial={{ opacity: 0 }}
             animate={{
               opacity: index === currentSlide ? 1 : 0,
               scale: index === currentSlide ? 1 : 1.015
             }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
-            className={`absolute inset-0 w-full h-full object-cover object-right ${
-              index === currentSlide ? 'z-0 pointer-events-auto' : 'z-0 opacity-0 pointer-events-none'
-            }`}
+            transition={{ duration: 0.5, ease: 'easeInOut' }}
+            className="absolute inset-0 w-full h-full object-cover object-right pointer-events-none"
           />
         ))}
 
+        {/* Dark left overlay for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-r from-white/90 via-white/60 to-transparent pointer-events-none" />
+
         {/* Overlaid Content Container */}
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 p-6 sm:p-10 lg:p-12 flex flex-col justify-between min-h-[340px] sm:min-h-[420px] lg:min-h-[460px]">
-          
-          {/* Top Left Text Block */}
-          <div className="max-w-lg space-y-4 pt-2">
-            
-            {/* Red Pill Badge */}
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 lg:py-16 flex flex-col justify-between min-h-[340px] sm:min-h-[460px] lg:min-h-[520px]">
+
+          {/* Dynamic Per-Slide Text Block */}
+          <div className="max-w-xl space-y-4 pt-2 flex-1 flex flex-col justify-center">
+
+            {/* Animated Badge */}
             <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="inline-block px-3.5 py-1 bg-red-600 text-white rounded-full text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider shadow-md"
+              key={`badge-${currentSlide}`}
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+              className="inline-block px-3.5 py-1 bg-[#D0161D] text-white rounded-full text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider shadow-md w-fit"
             >
-              PREMIUM HOME CARE PRODUCTS
+              {HERO_SLIDES[currentSlide].badge}
             </motion.div>
 
-            {/* Main Title */}
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-[1.08]">
-              Kara Asani <br />
-              Zindagi Main
-            </h1>
+            {/* Animated Heading */}
+            <motion.h1
+              key={`heading-${currentSlide}`}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.45, delay: 0.05 }}
+              className="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-[1.08]"
+            >
+              {HERO_SLIDES[currentSlide].heading}
+            </motion.h1>
 
-            {/* Subtitle */}
-            <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-md">
-              Clean Homes. Healthy Lives. Discover our wide range of high-quality home care products designed to make your life easier and cleaner.
-            </p>
+            {/* Animated Subtitle */}
+            <motion.p
+              key={`sub-${currentSlide}`}
+              initial={{ opacity: 0, x: -16 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.45, delay: 0.1 }}
+              className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-md"
+            >
+              {HERO_SLIDES[currentSlide].subtitle}
+            </motion.p>
 
-            {/* Action Buttons */}
-            <div className="flex flex-wrap items-center gap-3 pt-2">
+            {/* Animated CTA Buttons */}
+            <motion.div
+              key={`cta-${currentSlide}`}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.15 }}
+              className="flex flex-wrap items-center gap-3 pt-1"
+            >
               <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
                 <Link
-                  href="/shop"
-                  className="px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-full font-bold text-xs tracking-wide transition-colors flex items-center space-x-2 shadow-md shadow-red-600/30"
+                  href={HERO_SLIDES[currentSlide].ctaLink}
+                  className="px-6 py-2.5 bg-[#D0161D] hover:bg-red-800 text-white rounded-full font-bold text-xs tracking-wide transition-colors flex items-center space-x-2 shadow-md shadow-red-600/30"
                 >
-                  <span>Shop Now</span>
+                  <span>{HERO_SLIDES[currentSlide].cta}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </motion.div>
@@ -273,54 +329,46 @@ export default function HomePage() {
               <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
                 <Link
                   href="/shop"
-                  className="px-6 py-2.5 bg-white border border-red-600 text-red-600 hover:bg-red-50 rounded-full font-bold text-xs tracking-wide transition-colors shadow-xs"
+                  className="px-6 py-2.5 bg-white border border-[#D0161D] text-[#D0161D] hover:bg-red-50 rounded-full font-bold text-xs tracking-wide transition-colors shadow-xs"
                 >
                   Explore Categories
                 </Link>
               </motion.div>
-            </div>
+            </motion.div>
 
           </div>
 
           {/* Bottom Row: 4 Feature Items (Left) + Carousel Controls (Right) */}
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pt-6">
-            
-            {/* 4 Feature Items */}
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pt-4 sm:pt-6">
+
+            {/* 4 Feature Badges */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5 max-w-lg lg:max-w-xl">
               <div className="flex items-center space-x-1.5 bg-white/95 backdrop-blur-xs px-2.5 py-1 rounded-full border border-slate-200/80 shadow-xs">
-                <div className="w-5 h-5 rounded-full bg-red-50 text-red-600 flex items-center justify-center shrink-0">
+                <div className="w-5 h-5 rounded-full bg-red-50 text-[#D0161D] flex items-center justify-center shrink-0">
                   <ShieldCheck className="w-3.5 h-3.5" />
                 </div>
-                <span className="text-[10px] sm:text-[11px] font-bold text-slate-800 whitespace-nowrap">
-                  Premium Quality
-                </span>
+                <span className="text-[10px] sm:text-[11px] font-bold text-slate-800 whitespace-nowrap">Premium Quality</span>
               </div>
 
               <div className="flex items-center space-x-1.5 bg-white/95 backdrop-blur-xs px-2.5 py-1 rounded-full border border-slate-200/80 shadow-xs">
-                <div className="w-5 h-5 rounded-full bg-red-50 text-red-600 flex items-center justify-center shrink-0">
+                <div className="w-5 h-5 rounded-full bg-red-50 text-[#D0161D] flex items-center justify-center shrink-0">
                   <Truck className="w-3.5 h-3.5" />
                 </div>
-                <span className="text-[10px] sm:text-[11px] font-bold text-slate-800 whitespace-nowrap">
-                  Fast Delivery
-                </span>
+                <span className="text-[10px] sm:text-[11px] font-bold text-slate-800 whitespace-nowrap">Fast Delivery</span>
               </div>
 
               <div className="flex items-center space-x-1.5 bg-white/95 backdrop-blur-xs px-2.5 py-1 rounded-full border border-slate-200/80 shadow-xs">
-                <div className="w-5 h-5 rounded-full bg-red-50 text-red-600 flex items-center justify-center shrink-0">
+                <div className="w-5 h-5 rounded-full bg-red-50 text-[#D0161D] flex items-center justify-center shrink-0">
                   <ShieldCheck className="w-3.5 h-3.5" />
                 </div>
-                <span className="text-[10px] sm:text-[11px] font-bold text-slate-800 whitespace-nowrap">
-                  100% Secure
-                </span>
+                <span className="text-[10px] sm:text-[11px] font-bold text-slate-800 whitespace-nowrap">100% Secure</span>
               </div>
 
               <div className="flex items-center space-x-1.5 bg-white/95 backdrop-blur-xs px-2.5 py-1 rounded-full border border-slate-200/80 shadow-xs">
-                <div className="w-5 h-5 rounded-full bg-red-50 text-red-600 flex items-center justify-center shrink-0">
+                <div className="w-5 h-5 rounded-full bg-red-50 text-[#D0161D] flex items-center justify-center shrink-0">
                   <Headphones className="w-3.5 h-3.5" />
                 </div>
-                <span className="text-[10px] sm:text-[11px] font-bold text-slate-800 whitespace-nowrap">
-                  24/7 Support
-                </span>
+                <span className="text-[10px] sm:text-[11px] font-bold text-slate-800 whitespace-nowrap">24/7 Support</span>
               </div>
             </div>
 
@@ -332,7 +380,7 @@ export default function HomePage() {
                     key={idx}
                     onClick={() => setCurrentSlide(idx)}
                     className={`h-2 rounded-full transition-all duration-300 ${
-                      idx === currentSlide ? 'w-5 bg-red-600' : 'w-2 bg-slate-300 hover:bg-slate-400'
+                      idx === currentSlide ? 'w-5 bg-[#D0161D]' : 'w-2 bg-slate-300 hover:bg-slate-400'
                     }`}
                     aria-label={`Go to slide ${idx + 1}`}
                   />
@@ -340,14 +388,14 @@ export default function HomePage() {
               </div>
               <button
                 onClick={handlePrevSlide}
-                className="w-7 h-7 bg-white text-slate-700 hover:text-red-600 hover:border-red-300 rounded-full flex items-center justify-center border border-slate-200 shadow-sm transition-colors"
+                className="w-7 h-7 bg-white text-slate-700 hover:text-[#D0161D] hover:border-red-300 rounded-full flex items-center justify-center border border-slate-200 shadow-sm transition-colors"
                 aria-label="Previous Slide"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
               <button
                 onClick={handleNextSlide}
-                className="w-7 h-7 bg-white text-slate-700 hover:text-red-600 hover:border-red-300 rounded-full flex items-center justify-center border border-slate-200 shadow-sm transition-colors"
+                className="w-7 h-7 bg-white text-slate-700 hover:text-[#D0161D] hover:border-red-300 rounded-full flex items-center justify-center border border-slate-200 shadow-sm transition-colors"
                 aria-label="Next Slide"
               >
                 <ChevronRight className="w-4 h-4" />
@@ -448,9 +496,9 @@ export default function HomePage() {
             </Link>
           </div>
 
-          {/* 6 Product Cards Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-            {products.slice(0, 6).map((prod) => (
+          {/* 4 Product Cards Grid — Bigger, 4 per row */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {products.slice(0, 4).map((prod) => (
               <ProductCard
                 key={prod._id}
                 product={prod}

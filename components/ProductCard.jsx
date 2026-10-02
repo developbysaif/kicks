@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Heart, Scale, Star } from 'lucide-react';
+import { Heart, Scale, Star, ShoppingBag, Eye } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
 import { useCompare } from '@/context/CompareContext';
@@ -22,42 +22,60 @@ const ProductCard = ({ product, onQuickView }) => {
 
   return (
     <motion.div
-      whileHover={{ y: -6 }}
+      whileHover={{ y: -8 }}
       transition={{ duration: 0.3, ease: 'easeOut' }}
-      className="group bg-white rounded-2xl border border-gray-100 p-3 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between relative"
+      className="group bg-white rounded-3xl border border-gray-100 p-4 shadow-sm hover:shadow-2xl transition-all duration-300 flex flex-col justify-between relative"
     >
-      
-      {/* Top Image Container */}
-      <div className="relative aspect-square w-full rounded-xl bg-gray-50 overflow-hidden mb-3 border border-gray-50 flex items-center justify-center">
-        
+
+      {/* Top Image Container — bigger aspect ratio */}
+      <div className="relative aspect-[4/3] w-full rounded-2xl bg-gray-50 overflow-hidden mb-4 border border-gray-100 flex items-center justify-center">
+
         {/* Discount Badge */}
         {discountPercent > 0 && (
-          <span className="absolute top-2 left-2 z-10 px-2 py-0.5 bg-red-600 text-white text-[10px] font-bold rounded-md shadow-sm">
+          <span className="absolute top-3 left-3 z-10 px-2.5 py-1 bg-[#D0161D] text-white text-[11px] font-black rounded-xl shadow-sm">
             -{discountPercent}%
           </span>
         )}
 
+        {/* Bestseller / Featured badge */}
+        {product.isBestSeller && (
+          <span className="absolute top-3 left-3 z-10 px-2.5 py-1 bg-amber-400 text-white text-[11px] font-black rounded-xl shadow-sm">
+            ⭐ Best Seller
+          </span>
+        )}
+
         {/* Action Buttons Top Right */}
-        <div className="absolute top-2 right-2 z-10 flex flex-col space-y-1.5 opacity-90 group-hover:opacity-100 transition-opacity">
+        <div className="absolute top-3 right-3 z-10 flex flex-col space-y-1.5 opacity-0 group-hover:opacity-100 transition-all duration-200">
           <motion.button
             whileTap={{ scale: 0.85 }}
             onClick={() => toggleWishlist(product)}
-            className={`p-1.5 rounded-full shadow-sm transition-colors ${
-              isWishlisted ? 'bg-red-600 text-white' : 'bg-white text-gray-400 hover:text-red-600 border border-gray-100'
+            className={`p-2 rounded-full shadow-md transition-colors ${
+              isWishlisted ? 'bg-[#D0161D] text-white' : 'bg-white text-gray-400 hover:text-[#D0161D] border border-gray-100'
             }`}
             title="Wishlist"
           >
-            <Heart className={`w-3.5 h-3.5 ${isWishlisted ? 'fill-current' : ''}`} />
+            <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-current' : ''}`} />
           </motion.button>
 
           <motion.button
             whileTap={{ scale: 0.85 }}
             onClick={() => addToCompare(product)}
-            className="p-1.5 bg-white text-gray-400 hover:text-gray-700 rounded-full shadow-sm border border-gray-100 transition-colors"
+            className="p-2 bg-white text-gray-400 hover:text-gray-700 rounded-full shadow-md border border-gray-100 transition-colors"
             title="Compare"
           >
-            <Scale className="w-3.5 h-3.5" />
+            <Scale className="w-4 h-4" />
           </motion.button>
+
+          {onQuickView && (
+            <motion.button
+              whileTap={{ scale: 0.85 }}
+              onClick={() => onQuickView(product)}
+              className="p-2 bg-white text-gray-400 hover:text-[#D0161D] rounded-full shadow-md border border-gray-100 transition-colors"
+              title="Quick View"
+            >
+              <Eye className="w-4 h-4" />
+            </motion.button>
+          )}
         </div>
 
         {/* Product Image Link */}
@@ -67,54 +85,54 @@ const ProductCard = ({ product, onQuickView }) => {
             transition={{ duration: 0.3 }}
             src={primaryImage}
             alt={product.name}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-contain p-3"
           />
         </Link>
       </div>
 
       {/* Product Information */}
-      <div className="px-1 flex-1 flex flex-col justify-between space-y-2">
-        <div>
+      <div className="flex-1 flex flex-col justify-between space-y-3">
+        <div className="space-y-1.5">
           {/* Category */}
-          <span className="block text-[11px] font-normal text-gray-400 mb-0.5">
+          <span className="block text-[11px] font-medium text-gray-400">
             {product.category?.name || 'Home Care'}
           </span>
 
           {/* Title */}
           <Link href={`/product/${product.slug}`}>
-            <h3 className="text-xs font-bold text-gray-900 line-clamp-1 hover:text-red-600 transition-colors">
+            <h3 className="text-sm font-bold text-gray-900 line-clamp-2 hover:text-[#D0161D] transition-colors leading-snug">
               {product.name}
             </h3>
           </Link>
 
+          {/* Volume */}
+          {product.volume && (
+            <span className="block text-[11px] text-gray-400 font-medium">{product.volume}</span>
+          )}
+
           {/* Rating */}
-          <div className="flex items-center space-x-1 mt-1 text-[11px] text-amber-500 font-semibold">
+          <div className="flex items-center space-x-1 text-[12px] text-amber-500 font-semibold">
             <div className="flex items-center">
               {[...Array(5)].map((_, i) => (
                 <Star
                   key={i}
-                  className={`w-3 h-3 ${i < Math.floor(product.rating || 5) ? 'fill-amber-400 text-amber-400' : 'text-gray-200 fill-gray-200'}`}
+                  className={`w-3.5 h-3.5 ${i < Math.floor(product.rating || 5) ? 'fill-amber-400 text-amber-400' : 'text-gray-200 fill-gray-200'}`}
                 />
               ))}
             </div>
-            <span className="text-gray-400 font-normal">({product.numReviews || 150})</span>
+            <span className="text-gray-400 font-normal text-[11px]">({product.numReviews || 150})</span>
           </div>
+        </div>
 
-          {/* Price & Volume */}
-          <div className="mt-2 flex items-baseline justify-between">
-            <div className="flex items-baseline space-x-1.5">
-              <span className="text-sm font-extrabold text-gray-900">
-                Rs. {currentPrice}
-              </span>
-              {originalPrice && (
-                <span className="text-xs text-gray-400 line-through font-normal">
-                  Rs. {originalPrice}
-                </span>
-              )}
-            </div>
-            {product.volume && (
-              <span className="text-[10px] text-gray-400 font-medium">
-                {product.volume}
+        {/* Price row */}
+        <div className="flex items-center justify-between pt-1 border-t border-gray-100">
+          <div className="flex items-baseline space-x-1.5">
+            <span className="text-base font-extrabold text-gray-900">
+              Rs. {currentPrice}
+            </span>
+            {originalPrice && (
+              <span className="text-xs text-gray-400 line-through font-normal">
+                Rs. {originalPrice}
               </span>
             )}
           </div>
@@ -123,9 +141,10 @@ const ProductCard = ({ product, onQuickView }) => {
         {/* Add to Cart Button */}
         <motion.button
           whileTap={{ scale: 0.95 }}
-          onClick={() => addToCart(product, 1)}
-          className="w-full mt-2 py-2 px-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold text-xs transition-colors flex items-center justify-center space-x-1 shadow-sm"
+          onClick={() => addToCart(product, '', 1)}
+          className="w-full py-2.5 px-4 bg-[#D0161D] hover:bg-red-800 text-white rounded-xl font-bold text-xs tracking-wide transition-colors flex items-center justify-center space-x-2 shadow-sm"
         >
+          <ShoppingBag className="w-4 h-4" />
           <span>{product.hasVariants ? 'Select Options' : 'Add to Cart'}</span>
         </motion.button>
       </div>
@@ -134,4 +153,3 @@ const ProductCard = ({ product, onQuickView }) => {
 };
 
 export default ProductCard;
-
