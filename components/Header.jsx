@@ -107,7 +107,7 @@ const Header = () => {
           {/* Left Announcement */}
           <div className="flex items-center space-x-2">
             <Truck className="w-4 h-4 text-red-600" />
-            <span className="font-semibold text-gray-700">Free Shipping on Orders Above Rs. 3,000</span>
+            <span className="font-semibold text-gray-700">Free Delivery on Orders Above Rs. 2,500</span>
           </div>
 
           {/* Right Utility Links */}
@@ -289,22 +289,42 @@ const Header = () => {
             onMouseEnter={() => setCategoriesDropdown(true)}
             onMouseLeave={() => setCategoriesDropdown(false)}
           >
-            <div className="flex items-center space-x-1 text-gray-700 group-hover:text-red-600 transition-colors">
+            <div className={`flex items-center space-x-1 transition-colors ${
+              pathname === '/shop/shoe-care' || pathname.startsWith('/category')
+                ? 'text-red-600 font-extrabold'
+                : 'text-gray-700 group-hover:text-red-600'
+            }`}>
               <span>Categories</span>
               <ChevronDown className="w-3.5 h-3.5" />
             </div>
 
             {categoriesDropdown && (
-              <div className="absolute top-full left-0 w-56 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50">
-                {categories.map((c) => (
-                  <Link
-                    key={c.slug}
-                    href={`/category/${c.slug}`}
-                    className="block px-4 py-2 text-xs font-semibold text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors"
-                  >
-                    {c.name}
-                  </Link>
-                ))}
+              <div className="absolute top-full left-0 w-64 bg-white rounded-2xl shadow-2xl border border-gray-100 py-2.5 z-50 overflow-hidden">
+                <div className="px-4 py-1.5 text-[10px] font-black uppercase text-gray-400 tracking-wider">
+                  Select Category
+                </div>
+                {categories.map((c) => {
+                  const href = c.slug === 'shoe-care' ? '/shop/shoe-care' : `/category/${c.slug}`;
+                  const isCurrent = pathname === href || (c.slug === 'shoe-care' && pathname === '/shop/shoe-care');
+                  return (
+                    <Link
+                      key={c.slug}
+                      href={href}
+                      className={`block px-4 py-2.5 text-xs font-semibold transition-colors flex items-center justify-between ${
+                        isCurrent
+                          ? 'bg-[#1F3A5F] text-white font-bold'
+                          : 'text-gray-700 hover:bg-red-50 hover:text-red-600'
+                      }`}
+                    >
+                      <span>{c.name}</span>
+                      {isCurrent && (
+                        <span className="text-[9px] px-2 py-0.5 rounded-full bg-[#F4B942] text-[#1F3A5F] font-black uppercase tracking-wider">
+                          Active
+                        </span>
+                      )}
+                    </Link>
+                  );
+                })}
               </div>
             )}
           </div>
@@ -319,6 +339,18 @@ const Header = () => {
             }`}
           >
             About Us
+          </Link>
+
+          {/* Blog Link */}
+          <Link
+            href="/blog"
+            className={`py-3.5 border-b-2 transition-colors ${
+              pathname === '/blog'
+                ? 'border-red-600 text-red-600 font-extrabold'
+                : 'border-transparent text-gray-700 hover:text-red-600'
+            }`}
+          >
+            Blog
           </Link>
 
           {/* Contact Link */}
@@ -360,13 +392,31 @@ const Header = () => {
               Shop
             </Link>
             <div className="py-2 font-bold text-gray-400">Categories:</div>
-            {categories.map((c) => (
-              <Link key={c.slug} href={`/category/${c.slug}`} className="pl-4 py-1 text-gray-600 hover:text-red-600">
-                • {c.name}
-              </Link>
-            ))}
+            {categories.map((c) => {
+              const href = c.slug === 'shoe-care' ? '/shop/shoe-care' : `/category/${c.slug}`;
+              const isCurrent = pathname === href || (c.slug === 'shoe-care' && pathname === '/shop/shoe-care');
+              return (
+                <Link
+                  key={c.slug}
+                  href={href}
+                  className={`pl-4 py-1.5 flex items-center justify-between text-xs ${
+                    isCurrent ? 'text-red-600 font-black' : 'text-gray-600 hover:text-red-600'
+                  }`}
+                >
+                  <span>• {c.name}</span>
+                  {isCurrent && (
+                    <span className="text-[9px] px-2 py-0.5 rounded-full bg-red-100 text-red-600 font-bold uppercase">
+                      Current
+                    </span>
+                  )}
+                </Link>
+              );
+            })}
             <Link href="/about" className="py-2 hover:text-red-600 border-b border-gray-100">
               About Us
+            </Link>
+            <Link href="/blog" className="py-2 hover:text-red-600 border-b border-gray-100">
+              Blog
             </Link>
             <Link href="/contact" className="py-2 hover:text-red-600">
               Contact
