@@ -10,9 +10,10 @@ import {
   Headphones,
   Target,
   Eye,
-  Beaker,
-  Heart,
-  CheckCircle2
+  Leaf,
+  Users,
+  CheckCircle2,
+  ChevronRight
 } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -23,49 +24,73 @@ const CATEGORIES_DATA = [
     slug: 'shoe-care',
     count: '12 Products',
     image: '/Shoe Care.png',
-    bgColor: 'bg-amber-50/50',
-    borderColor: 'border-amber-100'
+    href: '/shop/shoe-care'
   },
   {
     name: 'Laundry Care',
     slug: 'laundry-care',
     count: '10 Products',
     image: '/laundry Care.png',
-    bgColor: 'bg-blue-50/50',
-    borderColor: 'border-blue-100'
+    href: '/category/laundry-care'
   },
   {
     name: 'Home Cleaning',
     slug: 'home-cleaning',
     count: '15 Products',
     image: '/Home Cleaning.png',
-    bgColor: 'bg-emerald-50/50',
-    borderColor: 'border-emerald-100'
+    href: '/category/home-cleaning'
   },
   {
     name: 'Dish Care',
     slug: 'dish-care',
     count: '8 Products',
     image: '/dish care.png',
-    bgColor: 'bg-teal-50/50',
-    borderColor: 'border-teal-100'
+    href: '/category/dish-care'
   },
   {
-    name: 'Washroom Cleaning',
+    name: 'Drain Care',
     slug: 'washroom-cleaning',
     count: '6 Products',
     image: '/washroom cleaning.png',
-    bgColor: 'bg-slate-50',
-    borderColor: 'border-slate-200'
+    href: '/category/washroom-cleaning'
   },
   {
     name: 'Mosquito Protection',
     slug: 'mosquito-protection',
     count: '5 Products',
     image: '/mosquito protection.png',
-    bgColor: 'bg-purple-50/50',
-    borderColor: 'border-purple-100'
+    href: '/category/mosquito-protection'
   }
+];
+
+const WHY_CHOOSE = [
+  {
+    icon: ShieldCheck,
+    title: 'Trusted Quality',
+    desc: 'Premium products you can rely on.'
+  },
+  {
+    icon: Sparkles,
+    title: 'Effective Results',
+    desc: 'Real care, real results.'
+  },
+  {
+    icon: Truck,
+    title: 'Fast Delivery',
+    desc: 'Across Pakistan.'
+  },
+  {
+    icon: Headphones,
+    title: 'Customer Support',
+    desc: "We're here to help."
+  }
+];
+
+const QUALITY_ICONS = [
+  { icon: Leaf, label: 'Safe Ingredients' },
+  { icon: CheckCircle2, label: 'Quality Testing' },
+  { icon: ShieldCheck, label: 'Long-Lasting Performance' },
+  { icon: Users, label: 'Family Safe' }
 ];
 
 export default function AboutPage() {
@@ -73,237 +98,242 @@ export default function AboutPage() {
     <div className="min-h-screen flex flex-col bg-white text-slate-800 font-sans">
       <Header />
 
-      {/* 1. HERO BANNER SECTION (FULL WIDTH - ATTACHED DIRECTLY TO HEADER) */}
-      <section className="relative w-full overflow-hidden min-h-[380px] sm:min-h-[440px] lg:min-h-[480px] flex items-center bg-white border-b border-slate-100">
-        
-        {/* Background Image: kick.jpeg (Edge-to-Edge) */}
-        <img
-          src="/kick.jpeg"
-          alt="About KICK Home Care"
-          className="absolute inset-0 w-full h-full object-cover object-center"
-        />
+      {/* ─────────────────────────────────────────────
+          1. HERO BANNER
+      ───────────────────────────────────────────── */}
+      <section className="relative w-full overflow-hidden bg-white border-b border-slate-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
 
-        {/* Overlaid Content Container */}
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 p-6 sm:p-10 lg:p-12 flex flex-col justify-between min-h-[380px] sm:min-h-[440px] lg:min-h-[480px]">
-          
-          <div className="max-w-xl space-y-4 pt-4">
-            
-            {/* Red Pill Badge */}
-            <div className="inline-block px-3.5 py-1 bg-red-600 text-white rounded-full text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider shadow-sm">
-              ABOUT KICK HOME CARE
+          {/* Left: Text */}
+          <div className="space-y-5">
+            {/* Label */}
+            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#D0161D]/10 border border-[#D0161D]/20">
+              <span className="w-2 h-2 bg-[#D0161D] rounded-full" />
+              <span className="text-[11px] font-bold text-[#D0161D] uppercase tracking-widest">About Kick Home Care</span>
             </div>
 
-            {/* Main Title */}
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-[1.08]">
-              About KICK <br />
-              Home Care
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#1A1A1A] leading-tight tracking-tight">
+              About <span className="text-[#D0161D]">KICK</span><br />Home Care
             </h1>
 
-            {/* Subtitle */}
-            <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-lg">
+            {/* Red underline accent */}
+            <div className="flex items-center space-x-1">
+              <span className="block h-1 w-10 bg-[#D0161D] rounded-full" />
+              <span className="block h-1 w-4 bg-[#D0161D]/40 rounded-full" />
+            </div>
+
+            <p className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-md">
               Trusted home care products for a cleaner, healthier and happier home — because your home deserves the best.
             </p>
           </div>
 
-          {/* Right Cursive Accent Tag */}
-          <div className="self-end hidden sm:block font-serif italic text-2xl lg:text-3xl font-bold text-red-600 rotate-[-6deg]">
-            Clean · Fresh · Safe
+          {/* Right: Hero Product Image */}
+          <div className="relative rounded-3xl overflow-hidden shadow-xl border border-slate-100">
+            <img
+              src="/about-hero-products.jpg"
+              alt="KICK Home Care Product Range — Clean Fresh Safe"
+              className="w-full h-[280px] sm:h-[340px] object-cover object-center"
+            />
+            {/* "Clean Fresh Safe" badge */}
+            <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-2xl px-4 py-2 shadow-md border border-slate-100 text-center">
+              <p className="text-[11px] font-black text-[#D0161D] uppercase tracking-wide leading-tight">
+                Clean<br />Fresh<br />Safe
+              </p>
+            </div>
           </div>
 
         </div>
-
       </section>
 
-      {/* MAIN CONTENT CONTAINER */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-20 space-y-16 w-full">
-        
-        {/* 2. WHO WE ARE */}
-        <section className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-          
-          <div className="lg:col-span-6 space-y-4">
+      {/* ─────────────────────────────────────────────
+          2. WHO WE ARE
+      ───────────────────────────────────────────── */}
+      <section className="py-14 sm:py-20 border-b border-slate-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+
+          {/* Left: Text */}
+          <div className="space-y-5">
+            {/* Section label */}
             <div className="flex items-center space-x-2">
-              <span className="w-1.5 h-6 bg-red-600 rounded-full"></span>
-              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-                Who We Are
-              </h2>
+              <span className="block h-0.5 w-8 bg-[#D0161D]" />
+              <span className="text-xs font-bold text-[#D0161D] uppercase tracking-widest">Who We Are</span>
             </div>
 
-            <p className="text-xs sm:text-sm text-slate-700 font-semibold leading-relaxed">
+            <h2 className="text-2xl sm:text-3xl font-black text-[#1A1A1A] tracking-tight">
+              Who We Are
+            </h2>
+
+            <p className="text-sm text-slate-600 leading-relaxed">
               KICK Home Care is a proud Pakistani brand that brings you high-quality home care products designed for everyday life.
             </p>
-
-            <p className="text-xs sm:text-sm text-slate-600 font-normal leading-relaxed">
+            <p className="text-sm text-slate-600 leading-relaxed">
               We specialize in practical, reliable and effective cleaning and care solutions that help you maintain a cleaner home, healthier living and a brighter tomorrow. From your shoes to your kitchen, bathroom to your surroundings — KICK has you covered.
             </p>
 
-            <div className="pt-2">
-              <Link
-                href="/shop"
-                className="inline-flex items-center space-x-2 px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white font-bold text-xs rounded-full transition-colors shadow-sm"
-              >
-                <span>Our Products</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+            <Link
+              href="/shop"
+              className="inline-flex items-center space-x-2 px-5 py-2.5 bg-[#D0161D] text-white text-xs font-bold rounded-full hover:bg-red-800 transition-colors"
+            >
+              <span>Our Products</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+
+          {/* Right: Mother & Child Image */}
+          <div className="relative rounded-3xl overflow-hidden shadow-xl">
+            <img
+              src="/about-who-we-are.jpg"
+              alt="Pakistani family enjoying a clean home with KICK Home Care products"
+              className="w-full h-[320px] sm:h-[380px] object-cover object-center"
+            />
+            {/* "Cleaner Homes Happier Lives" overlay */}
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
+              <p className="text-white font-black text-lg sm:text-xl italic" style={{ fontFamily: 'Georgia, serif' }}>
+                Cleaner Homes<br />Happier Lives
+              </p>
             </div>
           </div>
 
-          <div className="lg:col-span-6">
-            <div className="relative rounded-3xl overflow-hidden shadow-md border border-slate-100 aspect-[16/10]">
-              <img
-                src="https://images.unsplash.com/photo-1542037104857-ffbb0b9155fb?auto=format&fit=crop&w=800&q=80"
-                alt="Cleaner Homes Happier Lives"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-2xl border border-red-100 shadow-sm">
-                <span className="font-serif italic text-sm sm:text-base font-bold text-red-600">
-                  Cleaner Homes, Happier Lives
-                </span>
-              </div>
+        </div>
+      </section>
+
+      {/* ─────────────────────────────────────────────
+          3. BRAND STORY
+      ───────────────────────────────────────────── */}
+      <section className="py-14 sm:py-20 bg-slate-50 border-b border-slate-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+
+          {/* Left: Brand Story Image with "A Brand Born from Care" */}
+          <div className="relative rounded-3xl overflow-hidden shadow-xl order-2 lg:order-1">
+            <img
+              src="/about-brand-story.jpg"
+              alt="KICK Home Care — A Brand Born from Care, Made in Pakistan"
+              className="w-full h-[320px] sm:h-[380px] object-cover object-center"
+            />
+            {/* Overlay badge */}
+            <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-2xl px-4 py-3 shadow-md border border-slate-100 max-w-[160px]">
+              <p className="text-[#D0161D] font-black text-sm italic leading-tight" style={{ fontFamily: 'Georgia, serif' }}>
+                A Brand<br />Born from<br />
+                <span className="text-[#1A1A1A] not-italic">Care</span>
+              </p>
             </div>
           </div>
 
-        </section>
-
-        {/* 3. OUR BRAND STORY */}
-        <section className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-          
-          <div className="lg:col-span-6 order-2 lg:order-1">
-            <div className="relative rounded-3xl overflow-hidden shadow-md border border-slate-100 aspect-[16/10] bg-slate-50 flex items-center justify-center p-4">
-              <img
-                src="/kick.jpeg"
-                alt="A Brand Born from Care"
-                className="w-full h-full object-cover rounded-2xl"
-              />
-              <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-2xl border border-red-100 shadow-sm">
-                <span className="font-serif italic text-sm sm:text-base font-bold text-red-600">
-                  A Brand Born from Care
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div className="lg:col-span-6 order-1 lg:order-2 space-y-4">
+          {/* Right: Text */}
+          <div className="space-y-5 order-1 lg:order-2">
             <div className="flex items-center space-x-2">
-              <span className="w-1.5 h-6 bg-red-600 rounded-full"></span>
-              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-                Our Brand Story
-              </h2>
+              <span className="block h-0.5 w-8 bg-[#D0161D]" />
+              <span className="text-xs font-bold text-[#D0161D] uppercase tracking-widest">Our Story</span>
             </div>
 
-            <p className="text-xs sm:text-sm text-slate-700 font-semibold leading-relaxed">
+            <h2 className="text-2xl sm:text-3xl font-black text-[#1A1A1A] tracking-tight">
+              Our Brand Story
+            </h2>
+
+            <p className="text-sm text-slate-600 leading-relaxed">
               KICK Home Care started with a simple belief — that every home deserves products that work, are safe and make life easier.
             </p>
-
-            <p className="text-xs sm:text-sm text-slate-600 font-normal leading-relaxed">
+            <p className="text-sm text-slate-600 leading-relaxed">
               What began as a commitment to quality and care has grown into a trusted name across Pakistan, helping millions of households keep their homes clean, fresh and well cared for.
             </p>
           </div>
 
-        </section>
+        </div>
+      </section>
 
-        {/* 4. MISSION & VISION GRID */}
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          
-          {/* Card 1: Mission */}
-          <div className="bg-red-50/40 rounded-3xl p-6 sm:p-8 border border-red-100 flex items-start space-x-4 shadow-sm">
-            <div className="w-12 h-12 rounded-full bg-red-600 text-white flex items-center justify-center shrink-0 shadow-sm">
-              <Target className="w-6 h-6" />
-            </div>
-            <div className="space-y-2">
-              <h3 className="text-lg font-black text-slate-900">Our Mission</h3>
-              <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                To provide high-quality, safe and affordable home care products that make everyday life cleaner, healthier and more convenient for every household in Pakistan.
-              </p>
-            </div>
-          </div>
+      {/* ─────────────────────────────────────────────
+          4. MISSION & VISION
+      ───────────────────────────────────────────── */}
+      <section className="py-14 sm:py-20 border-b border-slate-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-8">
 
-          {/* Card 2: Vision */}
-          <div className="bg-sky-50/40 rounded-3xl p-6 sm:p-8 border border-sky-100 flex items-start space-x-4 shadow-sm">
-            <div className="w-12 h-12 rounded-full bg-red-600 text-white flex items-center justify-center shrink-0 shadow-sm">
-              <Eye className="w-6 h-6" />
+          {/* Our Mission */}
+          <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm space-y-4 hover:shadow-md transition-shadow">
+            <div className="w-12 h-12 rounded-full bg-[#D0161D]/10 flex items-center justify-center">
+              <Target className="w-6 h-6 text-[#D0161D]" />
             </div>
-            <div className="space-y-2">
-              <h3 className="text-lg font-black text-slate-900">Our Vision</h3>
-              <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                To be the most trusted and loved home care brand in Pakistan, known for quality, innovation and care — today and for generations to come.
-              </p>
-            </div>
-          </div>
-
-        </section>
-
-        {/* 5. WHY CHOOSE KICK */}
-        <section className="space-y-8">
-          <div>
-            <div className="flex items-center space-x-2">
-              <span className="w-1.5 h-6 bg-red-600 rounded-full"></span>
-              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-                Why Choose KICK
-              </h2>
-            </div>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1 font-medium">
-              We care about your home, your family and your peace of mind. That's why millions of households trust KICK.
+            <h3 className="text-xl font-black text-[#1A1A1A]">Our Mission</h3>
+            <p className="text-sm text-slate-600 leading-relaxed">
+              To provide high-quality, safe and affordable home care products that make everyday life cleaner, healthier and more convenient for every household in Pakistan.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            
-            <div className="p-6 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col items-center text-center space-y-3">
-              <div className="w-12 h-12 rounded-full bg-red-50 border border-red-100 text-red-600 flex items-center justify-center">
-                <ShieldCheck className="w-6 h-6" />
-              </div>
-              <h4 className="text-xs sm:text-sm font-bold text-slate-900">Trusted Quality</h4>
-              <p className="text-[11px] text-slate-500 font-medium">Premium products you can rely on.</p>
+          {/* Our Vision */}
+          <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm space-y-4 hover:shadow-md transition-shadow">
+            <div className="w-12 h-12 rounded-full bg-[#D0161D]/10 flex items-center justify-center">
+              <Eye className="w-6 h-6 text-[#D0161D]" />
             </div>
-
-            <div className="p-6 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col items-center text-center space-y-3">
-              <div className="w-12 h-12 rounded-full bg-red-50 border border-red-100 text-red-600 flex items-center justify-center">
-                <Sparkles className="w-6 h-6" />
-              </div>
-              <h4 className="text-xs sm:text-sm font-bold text-slate-900">Effective Results</h4>
-              <p className="text-[11px] text-slate-500 font-medium">Real care, real results.</p>
-            </div>
-
-            <div className="p-6 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col items-center text-center space-y-3">
-              <div className="w-12 h-12 rounded-full bg-red-50 border border-red-100 text-red-600 flex items-center justify-center">
-                <Truck className="w-6 h-6" />
-              </div>
-              <h4 className="text-xs sm:text-sm font-bold text-slate-900">Fast Delivery</h4>
-              <p className="text-[11px] text-slate-500 font-medium">Across Pakistan.</p>
-            </div>
-
-            <div className="p-6 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col items-center text-center space-y-3">
-              <div className="w-12 h-12 rounded-full bg-red-50 border border-red-100 text-red-600 flex items-center justify-center">
-                <Headphones className="w-6 h-6" />
-              </div>
-              <h4 className="text-xs sm:text-sm font-bold text-slate-900">Customer Support</h4>
-              <p className="text-[11px] text-slate-500 font-medium">We're here to help.</p>
-            </div>
-
+            <h3 className="text-xl font-black text-[#1A1A1A]">Our Vision</h3>
+            <p className="text-sm text-slate-600 leading-relaxed">
+              To be the most trusted and loved home care brand in Pakistan, known for quality, innovation and care — today and for generations to come.
+            </p>
           </div>
-        </section>
 
-        {/* 6. OUR PRODUCT CATEGORIES */}
-        <section className="space-y-6">
-          <div className="flex items-center justify-between">
-            <div>
+        </div>
+      </section>
+
+      {/* ─────────────────────────────────────────────
+          5. WHY CHOOSE KICK
+      ───────────────────────────────────────────── */}
+      <section className="py-14 sm:py-20 bg-slate-50 border-b border-slate-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-10 gap-4">
+            <div className="space-y-1">
               <div className="flex items-center space-x-2">
-                <span className="w-1.5 h-6 bg-red-600 rounded-full"></span>
-                <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-                  Our Product Categories
-                </h2>
+                <span className="block h-0.5 w-8 bg-[#D0161D]" />
+                <span className="text-xs font-bold text-[#D0161D] uppercase tracking-widest">Our Promise</span>
               </div>
-              <p className="text-xs sm:text-sm text-slate-500 mt-1 font-medium">
-                Different needs. One trusted brand.
+              <h2 className="text-2xl sm:text-3xl font-black text-[#1A1A1A] tracking-tight">
+                Why Choose KICK
+              </h2>
+              <p className="text-sm text-slate-500">
+                We care about your home, your family and your peace of mind.<br className="hidden sm:inline" />
+                That's why millions of households trust KICK.
               </p>
             </div>
+          </div>
 
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+            {WHY_CHOOSE.map((item, i) => {
+              const Icon = item.icon;
+              return (
+                <div key={i} className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm flex flex-col items-center text-center space-y-3 hover:shadow-md hover:border-[#D0161D]/30 transition-all">
+                  <div className="w-14 h-14 rounded-2xl bg-[#D0161D]/10 flex items-center justify-center">
+                    <Icon className="w-7 h-7 text-[#D0161D]" />
+                  </div>
+                  <h4 className="text-sm font-bold text-[#1A1A1A]">{item.title}</h4>
+                  <p className="text-[11px] text-slate-500 leading-relaxed">{item.desc}</p>
+                </div>
+              );
+            })}
+          </div>
+
+        </div>
+      </section>
+
+      {/* ─────────────────────────────────────────────
+          6. OUR PRODUCT CATEGORIES
+      ───────────────────────────────────────────── */}
+      <section className="py-14 sm:py-20 border-b border-slate-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+          <div className="flex items-center justify-between mb-10">
+            <div className="space-y-1">
+              <div className="flex items-center space-x-2">
+                <span className="block h-0.5 w-8 bg-[#D0161D]" />
+                <span className="text-xs font-bold text-[#D0161D] uppercase tracking-widest">Different Needs, One Trusted Brand</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-black text-[#1A1A1A] tracking-tight">
+                Our Product Categories
+              </h2>
+            </div>
             <Link
               href="/shop"
-              className="text-xs font-bold text-red-600 hover:text-red-700 flex items-center space-x-1 group"
+              className="hidden sm:flex items-center space-x-1 text-xs font-bold text-[#D0161D] hover:underline"
             >
               <span>Explore All Categories</span>
-              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
 
@@ -311,179 +341,181 @@ export default function AboutPage() {
             {CATEGORIES_DATA.map((cat) => (
               <Link
                 key={cat.slug}
-                href={`/category/${cat.slug}`}
-                className={`group p-4 rounded-2xl border ${cat.borderColor} ${cat.bgColor} hover:shadow-md transition-all duration-300 flex flex-col justify-between relative overflow-hidden`}
+                href={cat.href}
+                className="group bg-white rounded-2xl border border-slate-200 p-4 flex flex-col items-center text-center space-y-3 hover:border-[#D0161D]/40 hover:shadow-md transition-all"
               >
-                <div className="aspect-square w-full rounded-xl overflow-hidden mb-3 bg-white p-2 border border-slate-100 flex items-center justify-center">
+                <div className="w-full aspect-square rounded-xl bg-slate-50 overflow-hidden flex items-center justify-center p-2">
                   <img
                     src={cat.image}
                     alt={cat.name}
-                    className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform"
+                    className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
-
                 <div>
-                  <h3 className="text-xs font-bold text-slate-900 group-hover:text-red-600 transition-colors">
-                    {cat.name}
-                  </h3>
-                  <div className="flex items-center justify-between mt-1 text-[11px] text-slate-400 font-medium">
-                    <span>{cat.count}</span>
-                    <span className="text-red-600 font-bold group-hover:translate-x-1 transition-transform">→</span>
-                  </div>
+                  <h4 className="text-xs font-bold text-[#1A1A1A] group-hover:text-[#D0161D] transition-colors">{cat.name}</h4>
+                  <p className="text-[10px] text-slate-400 mt-0.5">{cat.count}</p>
+                </div>
+                <div className="flex items-center text-[10px] font-bold text-[#D0161D] space-x-0.5">
+                  <span>Shop</span>
+                  <ChevronRight className="w-3 h-3" />
                 </div>
               </Link>
             ))}
           </div>
-        </section>
 
-        {/* 7. QUALITY YOU CAN TRUST */}
-        <section className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-          
-          <div className="lg:col-span-5">
-            <div className="relative rounded-3xl overflow-hidden shadow-md border border-slate-100 aspect-square">
-              <img
-                src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&w=800&q=80"
-                alt="Quality You Can Trust"
-                className="w-full h-full object-cover"
-              />
-            </div>
+          {/* Mobile "Explore All" */}
+          <div className="mt-6 flex justify-center sm:hidden">
+            <Link
+              href="/shop"
+              className="flex items-center space-x-1 text-xs font-bold text-[#D0161D] hover:underline"
+            >
+              <span>Explore All Categories</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
           </div>
 
-          <div className="lg:col-span-7 space-y-6">
-            <div>
+        </div>
+      </section>
+
+      {/* ─────────────────────────────────────────────
+          7. QUALITY YOU CAN TRUST
+      ───────────────────────────────────────────── */}
+      <section className="py-14 sm:py-20 bg-slate-50 border-b border-slate-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+
+          {/* Left: Image */}
+          <div className="relative rounded-3xl overflow-hidden shadow-xl">
+            <img
+              src="/about-quality-trust.jpg"
+              alt="KICK Home Care Quality Testing — Safe Ingredients, Family Trusted"
+              className="w-full h-[300px] sm:h-[360px] object-cover object-center"
+            />
+          </div>
+
+          {/* Right: Text + icons */}
+          <div className="space-y-6">
+            <div className="space-y-1">
               <div className="flex items-center space-x-2">
-                <span className="w-1.5 h-6 bg-red-600 rounded-full"></span>
-                <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-                  Quality You Can Trust
-                </h2>
+                <span className="block h-0.5 w-8 bg-[#D0161D]" />
+                <span className="text-xs font-bold text-[#D0161D] uppercase tracking-widest">Our Standards</span>
               </div>
-              <p className="text-xs sm:text-sm text-slate-600 mt-2 font-medium leading-relaxed">
-                Every KICK product is made with carefully selected ingredients and goes through strict quality checks to ensure it delivers the best results, every time.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              
-              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-full bg-red-50 text-red-600 flex items-center justify-center shrink-0 border border-red-100">
-                  <CheckCircle2 className="w-5 h-5" />
-                </div>
-                <div>
-                  <h4 className="text-xs font-bold text-slate-900">Safe Ingredients</h4>
-                  <p className="text-[10px] text-slate-500">Formulated for family safety.</p>
-                </div>
-              </div>
-
-              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-full bg-red-50 text-red-600 flex items-center justify-center shrink-0 border border-red-100">
-                  <Beaker className="w-5 h-5" />
-                </div>
-                <div>
-                  <h4 className="text-xs font-bold text-slate-900">Quality Testing</h4>
-                  <p className="text-[10px] text-slate-500">Rigorously lab tested.</p>
-                </div>
-              </div>
-
-              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-full bg-red-50 text-red-600 flex items-center justify-center shrink-0 border border-red-100">
-                  <ShieldCheck className="w-5 h-5" />
-                </div>
-                <div>
-                  <h4 className="text-xs font-bold text-slate-900">Long-Lasting Performance</h4>
-                  <p className="text-[10px] text-slate-500">Maximum value and care.</p>
-                </div>
-              </div>
-
-              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-full bg-red-50 text-red-600 flex items-center justify-center shrink-0 border border-red-100">
-                  <Heart className="w-5 h-5" />
-                </div>
-                <div>
-                  <h4 className="text-xs font-bold text-slate-900">Family Safe</h4>
-                  <p className="text-[10px] text-slate-500">Gentle yet effective.</p>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-        </section>
-
-        {/* 8. OUR JOURNEY IN NUMBERS */}
-        <section className="bg-slate-50 rounded-3xl p-8 sm:p-10 border border-slate-100 space-y-6">
-          <div>
-            <div className="flex items-center space-x-2">
-              <span className="w-1.5 h-6 bg-red-600 rounded-full"></span>
-              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-                Our Journey in Numbers
+              <h2 className="text-2xl sm:text-3xl font-black text-[#1A1A1A] tracking-tight">
+                Quality You Can Trust
               </h2>
             </div>
-            <p className="text-xs text-slate-500 mt-1 font-medium">
-              A growing family, trusted across Pakistan.
+
+            <p className="text-sm text-slate-600 leading-relaxed">
+              Every KICK product is made with carefully selected ingredients and goes through strict quality checks to ensure it delivers the best results, every time.
             </p>
+
+            <div className="grid grid-cols-2 gap-4">
+              {QUALITY_ICONS.map((item, i) => {
+                const Icon = item.icon;
+                return (
+                  <div key={i} className="flex items-center space-x-3 bg-white rounded-2xl px-4 py-3 border border-slate-200 shadow-xs">
+                    <div className="w-8 h-8 rounded-full bg-[#D0161D]/10 flex items-center justify-center shrink-0">
+                      <Icon className="w-4 h-4 text-[#D0161D]" />
+                    </div>
+                    <span className="text-xs font-bold text-[#1A1A1A]">{item.label}</span>
+                  </div>
+                );
+              })}
+            </div>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 items-center">
-            
-            <div className="text-center p-4">
-              <span className="text-3xl sm:text-4xl font-black text-red-600 block">5+</span>
-              <span className="text-xs font-bold text-slate-700 uppercase tracking-wider mt-1 block">
-                Product Categories
-              </span>
+        </div>
+      </section>
+
+      {/* ─────────────────────────────────────────────
+          8. OUR JOURNEY IN NUMBERS
+      ───────────────────────────────────────────── */}
+      <section className="py-14 sm:py-20 border-b border-slate-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+          <div className="mb-10 space-y-1">
+            <div className="flex items-center space-x-2">
+              <span className="block h-0.5 w-8 bg-[#D0161D]" />
+              <span className="text-xs font-bold text-[#D0161D] uppercase tracking-widest">A growing family trusted across Pakistan</span>
             </div>
-
-            <div className="text-center p-4 border-l border-slate-200/60">
-              <span className="text-3xl sm:text-4xl font-black text-red-600 block">1M+</span>
-              <span className="text-xs font-bold text-slate-700 uppercase tracking-wider mt-1 block">
-                Happy Households
-              </span>
-            </div>
-
-            <div className="text-center p-4 border-l border-slate-200/60">
-              <span className="text-3xl sm:text-4xl font-black text-red-600 block">10+</span>
-              <span className="text-xs font-bold text-slate-700 uppercase tracking-wider mt-1 block">
-                Years of Trust
-              </span>
-            </div>
-
-            <div className="text-center p-4 hidden md:block border-l border-slate-200/60">
-              <span className="font-serif italic text-2xl font-bold text-red-600 rotate-[-6deg] block">
-                Growing Together
-              </span>
-            </div>
-
-          </div>
-        </section>
-
-        {/* 9. CARE FOR YOUR HOME. CARE FOR YOUR LIFE. */}
-        <section className="relative rounded-3xl overflow-hidden min-h-[220px] sm:min-h-[260px] flex items-center bg-white border border-slate-100 shadow-sm">
-          
-          <img
-            src="/kick.jpeg"
-            alt="Care for Your Home. Care for Your Life."
-            className="absolute inset-0 w-full h-full object-cover object-center"
-          />
-
-          <div className="relative z-10 w-full p-8 sm:p-12 space-y-4 max-w-lg">
-            <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight leading-tight">
-              Care for Your Home. <br />
-              Care for Your Life.
+            <h2 className="text-2xl sm:text-3xl font-black text-[#1A1A1A] tracking-tight">
+              Our Journey in Numbers
             </h2>
-            <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">
+          </div>
+
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 items-center">
+            {/* Stat 1 */}
+            <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm text-center hover:shadow-md transition-shadow">
+              <p className="text-4xl sm:text-5xl font-black text-[#D0161D]">5+</p>
+              <p className="text-sm font-bold text-[#1A1A1A] mt-2">Product Categories</p>
+            </div>
+
+            {/* Stat 2 */}
+            <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm text-center hover:shadow-md transition-shadow">
+              <p className="text-4xl sm:text-5xl font-black text-[#D0161D]">1M+</p>
+              <p className="text-sm font-bold text-[#1A1A1A] mt-2">Happy Households</p>
+            </div>
+
+            {/* Stat 3 */}
+            <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm text-center hover:shadow-md transition-shadow">
+              <p className="text-4xl sm:text-5xl font-black text-[#D0161D]">10+</p>
+              <p className="text-sm font-bold text-[#1A1A1A] mt-2">Years of Trust</p>
+            </div>
+
+            {/* Growing Together */}
+            <div className="bg-[#D0161D] rounded-3xl p-8 text-white text-center flex flex-col items-center justify-center space-y-3 shadow-lg">
+              <Sparkles className="w-10 h-10 text-white/80" />
+              <p className="text-xl sm:text-2xl font-black italic leading-tight" style={{ fontFamily: 'Georgia, serif' }}>
+                Growing<br />Together
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ─────────────────────────────────────────────
+          9. CTA BANNER
+      ───────────────────────────────────────────── */}
+      <section className="relative overflow-hidden">
+        {/* Background image */}
+        <img
+          src="/about-cta-home.jpg"
+          alt="Care for your home — KICK Home Care"
+          className="absolute inset-0 w-full h-full object-cover object-center"
+        />
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#1A1A1A]/90 via-[#1A1A1A]/70 to-[#1A1A1A]/30" />
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+
+          {/* Left: CTA text */}
+          <div className="text-white space-y-5">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight tracking-tight">
+              Care for Your Home.<br />
+              <span className="text-[#D0161D]">Care for Your Life.</span>
+            </h2>
+            <p className="text-sm sm:text-base text-white/80 leading-relaxed max-w-md">
               Choose KICK Home Care for a cleaner, healthier and happier home — because you deserve the best.
             </p>
             <Link
               href="/shop"
-              className="inline-flex items-center space-x-2 px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-full font-bold text-xs uppercase tracking-wider transition-colors shadow-sm"
+              className="inline-flex items-center space-x-2 px-7 py-3.5 bg-[#D0161D] hover:bg-red-800 text-white font-black text-sm rounded-full shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5"
             >
               <span>Shop Now</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
 
-        </section>
+          {/* Right: Kick product images collage */}
+          <div className="flex items-center justify-center gap-4">
+            <img src="/Shoe Care.png" alt="Kick Shoe Care" className="h-24 sm:h-32 object-contain drop-shadow-2xl" />
+            <img src="/laundry Care.png" alt="Kick Laundry Care" className="h-28 sm:h-36 object-contain drop-shadow-2xl" />
+            <img src="/dish care.png" alt="Kick Dish Care" className="h-24 sm:h-32 object-contain drop-shadow-2xl" />
+            <img src="/mosquito protection.png" alt="Kick Mosquito" className="h-20 sm:h-28 object-contain drop-shadow-2xl" />
+          </div>
 
-      </main>
+        </div>
+      </section>
 
       <Footer />
     </div>
