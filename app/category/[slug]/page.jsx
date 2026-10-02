@@ -316,9 +316,8 @@ export default function CategoryPage({ params }) {
             backgroundPosition: 'center'
           }}
         >
-          {/* Dark overlay with brand red tint */}
+          {/* Dark overlay for text readability */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 to-black/20" />
-          <div className="absolute inset-0 bg-[#E2231A]/20" />
 
           {/* Logo badge top-right */}
           <div className="absolute top-5 right-5 bg-white/15 backdrop-blur-md rounded-2xl px-3 py-2 border border-white/25 flex items-center space-x-2">
@@ -331,7 +330,7 @@ export default function CategoryPage({ params }) {
 
           {/* Text content pinned to bottom */}
           <div className="relative z-10 p-8 sm:p-12 space-y-3 max-w-3xl">
-            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#E2231A] text-white text-xs font-bold uppercase tracking-wider">
+            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#D0161D] text-white text-xs font-bold uppercase tracking-wider">
               <Sparkles className="w-3.5 h-3.5" />
               <span>Kick® Official Category</span>
             </div>
@@ -364,7 +363,7 @@ export default function CategoryPage({ params }) {
         {/* CONTROLS BAR */}
         <div className="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-xs flex items-center justify-between gap-4">
           <span className="text-xs font-bold text-[#1A1A1A]">
-            Showing <span className="text-[#E2231A]">{sortedProducts.length}</span> Products
+            Showing <span className="text-[#D0161D]">{sortedProducts.length}</span> Products
           </span>
 
           <div className="flex items-center space-x-2">
@@ -388,7 +387,7 @@ export default function CategoryPage({ params }) {
             <p className="text-base font-bold text-slate-700">No products found in this category.</p>
             <Link
               href="/shop"
-              className="inline-block mt-4 px-6 py-2.5 bg-[#E2231A] text-white text-xs font-bold rounded-full hover:bg-red-700 transition-colors"
+              className="inline-block mt-4 px-6 py-2.5 bg-[#D0161D] text-white text-xs font-bold rounded-full hover:bg-red-700 transition-colors"
             >
               Explore All Categories
             </Link>

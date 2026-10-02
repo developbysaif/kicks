@@ -424,7 +424,7 @@ export default function ShoeCareClient() {
     (inStockOnly ? 1 : 0);
 
   return (
-    <div className="min-h-screen flex flex-col bg-white text-[#1A1A1A] font-sans antialiased selection:bg-[#E2231A] selection:text-white">
+    <div className="min-h-screen flex flex-col bg-white text-[#1A1A1A] font-sans antialiased selection:bg-[#D0161D] selection:text-white">
       {/* 1. GLOBAL HEADER WITH ANNOUNCEMENT BAR & CURRENT CATEGORY HIGHLIGHT */}
       <Header />
 
@@ -462,9 +462,8 @@ export default function ShoeCareClient() {
             backgroundPosition: 'center'
           }}
         >
-          {/* Layered overlays: dark gradient + brand red tint */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/55 to-black/25" />
-          <div className="absolute inset-0 bg-[#E2231A]/15" />
+          {/* Layered overlays: dark gradient for text readability */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/20" />
 
           {/* Kick Logo badge top-right */}
           <div className="absolute top-5 right-5 bg-white/15 backdrop-blur-md rounded-2xl px-4 py-2.5 border border-white/20 flex items-center space-x-2">
@@ -475,7 +474,7 @@ export default function ShoeCareClient() {
             <div className="max-w-2xl space-y-5">
 
               {/* Brand chip */}
-              <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#E2231A] text-white text-xs font-bold uppercase tracking-wider">
+              <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#D0161D] text-white text-xs font-bold uppercase tracking-wider">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Kick® Professional Footwear Maintenance</span>
               </div>
@@ -483,7 +482,7 @@ export default function ShoeCareClient() {
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.15] text-white">
                 Keep Your Shoes{' '}
                 <br className="hidden sm:inline" />
-                <span className="text-[#E2231A]">Looking Like New</span>
+                <span className="text-[#D0161D]">Looking Like New</span>
               </h1>
 
               <p className="text-sm sm:text-base text-slate-200/90 max-w-xl font-normal leading-relaxed">
@@ -494,7 +493,7 @@ export default function ShoeCareClient() {
               <div className="pt-2 flex flex-wrap items-center gap-4">
                 <a
                   href="#products-section"
-                  className="inline-flex items-center justify-center space-x-2 px-6 py-3.5 bg-[#E2231A] hover:bg-red-700 text-white font-black text-xs uppercase tracking-wider rounded-full shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5"
+                  className="inline-flex items-center justify-center space-x-2 px-6 py-3.5 bg-[#D0161D] hover:bg-red-700 text-white font-black text-xs uppercase tracking-wider rounded-full shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5"
                 >
                   <span>Shop Shoe Care</span>
                   <ArrowRight className="w-4 h-4" />
@@ -532,7 +531,7 @@ export default function ShoeCareClient() {
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
           <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-xs">
             <div className="max-w-3xl space-y-3">
-              <span className="text-xs font-bold text-[#E2231A] uppercase tracking-wider">
+              <span className="text-xs font-bold text-[#D0161D] uppercase tracking-wider">
                 Footwear Hygiene &amp; Longevity
               </span>
               <h2 className="text-2xl sm:text-3xl font-black text-[#1A1A1A] tracking-tight">
@@ -554,7 +553,7 @@ export default function ShoeCareClient() {
             {selectedCategory !== 'all' && (
               <button
                 onClick={() => setSelectedCategory('all')}
-                className="text-xs font-bold text-[#E2231A] hover:underline"
+                className="text-xs font-bold text-[#D0161D] hover:underline"
               >
                 Show All
               </button>
@@ -574,8 +573,8 @@ export default function ShoeCareClient() {
                   }}
                   className={`p-3.5 rounded-2xl text-left transition-all duration-200 border flex flex-col justify-between ${
                     isActive
-                      ? 'bg-[#E2231A] text-white border-[#E2231A] shadow-md scale-102'
-                      : 'bg-white text-slate-700 border-slate-200/80 hover:border-[#E2231A]/40 hover:shadow-sm'
+                      ? 'bg-[#D0161D] text-white border-[#D0161D] shadow-md scale-102'
+                      : 'bg-white text-slate-700 border-slate-200/80 hover:border-[#D0161D]/40 hover:shadow-sm'
                   }`}
                 >
                   <span className="text-2xl mb-2">{cat.icon}</span>
@@ -600,10 +599,10 @@ export default function ShoeCareClient() {
             {/* Left: Results Count & Active Category Badge */}
             <div className="flex items-center space-x-3">
               <span className="text-xs font-bold text-[#1A1A1A]">
-                Showing <span className="text-[#E2231A]">{filteredProducts.length}</span> Products
+                Showing <span className="text-[#D0161D]">{filteredProducts.length}</span> Products
               </span>
               {selectedCategory !== 'all' && (
-                <span className="px-2.5 py-1 bg-red-50 text-[#E2231A] text-[11px] font-bold rounded-full flex items-center space-x-1 border border-red-100">
+                <span className="px-2.5 py-1 bg-red-50 text-[#D0161D] text-[11px] font-bold rounded-full flex items-center space-x-1 border border-red-100">
                   <span>{SUB_CATEGORIES.find((c) => c.id === selectedCategory)?.name}</span>
                   <button onClick={() => setSelectedCategory('all')} className="hover:text-red-800">
                     <X className="w-3 h-3" />
@@ -620,7 +619,7 @@ export default function ShoeCareClient() {
                 onClick={() => setMobileFilterOpen(true)}
                 className="lg:hidden px-4 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-[#1A1A1A] flex items-center space-x-2 shadow-xs"
               >
-                <Filter className="w-3.5 h-3.5 text-[#E2231A]" />
+                <Filter className="w-3.5 h-3.5 text-[#D0161D]" />
                 <span>Filters {activeFilterCount > 0 && `(${activeFilterCount})`}</span>
               </button>
 
@@ -649,8 +648,8 @@ export default function ShoeCareClient() {
             <aside className="hidden lg:block lg:col-span-3 space-y-6 bg-white p-6 rounded-3xl border border-slate-200/80 shadow-xs sticky top-24">
               
               <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-                <div className="flex items-center space-x-2 text-[#E2231A] font-black text-sm uppercase tracking-wide">
-                  <SlidersHorizontal className="w-4 h-4 text-[#E2231A]" />
+                <div className="flex items-center space-x-2 text-[#D0161D] font-black text-sm uppercase tracking-wide">
+                  <SlidersHorizontal className="w-4 h-4 text-[#D0161D]" />
                   <span>Filter Products</span>
                 </div>
                 {activeFilterCount > 0 && (
@@ -666,12 +665,12 @@ export default function ShoeCareClient() {
 
               {/* Filter 1: Product Type */}
               <div className="space-y-2">
-                <h4 className="text-xs font-bold text-[#E2231A] uppercase tracking-wider">Product Type</h4>
+                <h4 className="text-xs font-bold text-[#D0161D] uppercase tracking-wider">Product Type</h4>
                 <div className="space-y-1.5 text-xs text-slate-600">
                   {SUB_CATEGORIES.map((cat) => (
                     <label
                       key={cat.id}
-                      className="flex items-center justify-between cursor-pointer hover:text-[#E2231A] py-1"
+                      className="flex items-center justify-between cursor-pointer hover:text-[#D0161D] py-1"
                     >
                       <div className="flex items-center space-x-2">
                         <input
@@ -679,7 +678,7 @@ export default function ShoeCareClient() {
                           name="desktop-category"
                           checked={selectedCategory === cat.id}
                           onChange={() => setSelectedCategory(cat.id)}
-                          className="text-[#E2231A] focus:ring-[#E2231A]"
+                          className="text-[#D0161D] focus:ring-[#D0161D]"
                         />
                         <span>{cat.name}</span>
                       </div>
@@ -691,7 +690,7 @@ export default function ShoeCareClient() {
 
               {/* Filter 2: Price Range */}
               <div className="space-y-2 pt-4 border-t border-slate-100">
-                <h4 className="text-xs font-bold text-[#E2231A] uppercase tracking-wider">Price Range</h4>
+                <h4 className="text-xs font-bold text-[#D0161D] uppercase tracking-wider">Price Range</h4>
                 <div className="space-y-1.5 text-xs text-slate-600">
                   {[
                     { id: 'all', label: 'All Prices' },
@@ -699,13 +698,13 @@ export default function ShoeCareClient() {
                     { id: '300-500', label: 'Rs. 300 to Rs. 500' },
                     { id: 'above-500', label: 'Above Rs. 500' }
                   ].map((p) => (
-                    <label key={p.id} className="flex items-center space-x-2 cursor-pointer hover:text-[#E2231A] py-1">
+                    <label key={p.id} className="flex items-center space-x-2 cursor-pointer hover:text-[#D0161D] py-1">
                       <input
                         type="radio"
                         name="desktop-price"
                         checked={priceFilter === p.id}
                         onChange={() => setPriceFilter(p.id)}
-                        className="text-[#E2231A] focus:ring-[#E2231A]"
+                        className="text-[#D0161D] focus:ring-[#D0161D]"
                       />
                       <span>{p.label}</span>
                     </label>
@@ -715,16 +714,16 @@ export default function ShoeCareClient() {
 
               {/* Filter 3: Shoe Material */}
               <div className="space-y-2 pt-4 border-t border-slate-100">
-                <h4 className="text-xs font-bold text-[#E2231A] uppercase tracking-wider">Shoe Material</h4>
+                <h4 className="text-xs font-bold text-[#D0161D] uppercase tracking-wider">Shoe Material</h4>
                 <div className="space-y-1.5 text-xs text-slate-600">
                   {['all', 'Leather', 'Sneaker / Canvas', 'All Materials'].map((mat) => (
-                    <label key={mat} className="flex items-center space-x-2 cursor-pointer hover:text-[#E2231A] py-1">
+                    <label key={mat} className="flex items-center space-x-2 cursor-pointer hover:text-[#D0161D] py-1">
                       <input
                         type="radio"
                         name="desktop-material"
                         checked={selectedMaterial === mat}
                         onChange={() => setSelectedMaterial(mat)}
-                        className="text-[#E2231A] focus:ring-[#E2231A]"
+                        className="text-[#D0161D] focus:ring-[#D0161D]"
                       />
                       <span className="capitalize">{mat === 'all' ? 'All Materials' : mat}</span>
                     </label>
@@ -734,16 +733,16 @@ export default function ShoeCareClient() {
 
               {/* Filter 4: Brand */}
               <div className="space-y-2 pt-4 border-t border-slate-100">
-                <h4 className="text-xs font-bold text-[#E2231A] uppercase tracking-wider">Brand</h4>
+                <h4 className="text-xs font-bold text-[#D0161D] uppercase tracking-wider">Brand</h4>
                 <div className="space-y-1.5 text-xs text-slate-600">
                   {['all', 'Kick Home Care', 'Kick Professional', 'Kick Sport'].map((brand) => (
-                    <label key={brand} className="flex items-center space-x-2 cursor-pointer hover:text-[#E2231A] py-1">
+                    <label key={brand} className="flex items-center space-x-2 cursor-pointer hover:text-[#D0161D] py-1">
                       <input
                         type="radio"
                         name="desktop-brand"
                         checked={selectedBrand === brand}
                         onChange={() => setSelectedBrand(brand)}
-                        className="text-[#E2231A] focus:ring-[#E2231A]"
+                        className="text-[#D0161D] focus:ring-[#D0161D]"
                       />
                       <span>{brand === 'all' ? 'All Brands' : brand}</span>
                     </label>
@@ -753,13 +752,13 @@ export default function ShoeCareClient() {
 
               {/* Filter 5: Availability */}
               <div className="pt-4 border-t border-slate-100">
-                <label className="flex items-center justify-between cursor-pointer py-1 text-xs font-bold text-[#E2231A]">
+                <label className="flex items-center justify-between cursor-pointer py-1 text-xs font-bold text-[#D0161D]">
                   <span>In Stock Only</span>
                   <input
                     type="checkbox"
                     checked={inStockOnly}
                     onChange={(e) => setInStockOnly(e.target.checked)}
-                    className="rounded text-[#E2231A] focus:ring-[#E2231A] w-4 h-4"
+                    className="rounded text-[#D0161D] focus:ring-[#D0161D] w-4 h-4"
                   />
                 </label>
               </div>
@@ -773,13 +772,13 @@ export default function ShoeCareClient() {
                   <div className="w-16 h-16 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-4">
                     <Info className="w-8 h-8" />
                   </div>
-                  <h4 className="text-base font-bold text-[#E2231A]">No shoe care products match your filters</h4>
+                  <h4 className="text-base font-bold text-[#D0161D]">No shoe care products match your filters</h4>
                   <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
                     Try broadening your selection or resetting filters to explore our full shoe care lineup.
                   </p>
                   <button
                     onClick={resetFilters}
-                    className="mt-5 px-5 py-2.5 bg-[#E2231A] text-white text-xs font-bold rounded-full hover:bg-red-800 transition-colors"
+                    className="mt-5 px-5 py-2.5 bg-[#D0161D] text-white text-xs font-bold rounded-full hover:bg-red-800 transition-colors"
                   >
                     Reset All Filters
                   </button>
@@ -804,12 +803,12 @@ export default function ShoeCareClient() {
                           {/* Badges Top Left */}
                           <div className="absolute top-2.5 left-2.5 z-10 flex flex-col gap-1">
                             {product.badge && (
-                              <span className="px-2.5 py-1 bg-[#E2231A] text-white text-[10px] font-black rounded-lg shadow-xs tracking-wider uppercase">
+                              <span className="px-2.5 py-1 bg-[#D0161D] text-white text-[10px] font-black rounded-lg shadow-xs tracking-wider uppercase">
                                 {product.badge}
                               </span>
                             )}
                             {product.isBestSeller && (
-                              <span className="px-2 py-0.5 bg-[#FFD700] text-[#E2231A] text-[9px] font-black rounded-md shadow-xs uppercase tracking-wider">
+                              <span className="px-2 py-0.5 bg-[#FFD700] text-[#D0161D] text-[9px] font-black rounded-md shadow-xs uppercase tracking-wider">
                                 Top Seller
                               </span>
                             )}
@@ -829,7 +828,7 @@ export default function ShoeCareClient() {
 
                             <button
                               onClick={() => addToCompare(product)}
-                              className="p-2 bg-white text-slate-400 hover:text-[#E2231A] rounded-full shadow-sm border border-slate-100 transition-colors"
+                              className="p-2 bg-white text-slate-400 hover:text-[#D0161D] rounded-full shadow-sm border border-slate-100 transition-colors"
                               title="Compare"
                             >
                               <Scale className="w-3.5 h-3.5" />
@@ -837,7 +836,7 @@ export default function ShoeCareClient() {
 
                             <button
                               onClick={() => setQuickViewProduct(product)}
-                              className="p-2 bg-white text-slate-400 hover:text-[#E2231A] rounded-full shadow-sm border border-slate-100 transition-colors"
+                              className="p-2 bg-white text-slate-400 hover:text-[#D0161D] rounded-full shadow-sm border border-slate-100 transition-colors"
                               title="Quick View"
                             >
                               <Eye className="w-3.5 h-3.5" />
@@ -865,7 +864,7 @@ export default function ShoeCareClient() {
                             </div>
 
                             {/* Title */}
-                            <h4 className="text-xs sm:text-sm font-bold text-[#1A1A1A] group-hover:text-[#E2231A] transition-colors line-clamp-2 mt-1">
+                            <h4 className="text-xs sm:text-sm font-bold text-[#1A1A1A] group-hover:text-[#D0161D] transition-colors line-clamp-2 mt-1">
                               {product.name}
                             </h4>
 
@@ -888,7 +887,7 @@ export default function ShoeCareClient() {
                             {/* Price Row & Add to Cart */}
                             <div className="flex items-center justify-between">
                               <div>
-                                <span className="text-sm sm:text-base font-black text-[#E2231A]">
+                                <span className="text-sm sm:text-base font-black text-[#D0161D]">
                                   Rs. {currentPrice}
                                 </span>
                                 {originalPrice && (
@@ -900,7 +899,7 @@ export default function ShoeCareClient() {
 
                               <button
                                 onClick={() => addToCart(product, '', 1)}
-                                className="px-3.5 py-2 bg-[#E2231A] hover:bg-red-800 text-white text-xs font-bold rounded-xl flex items-center space-x-1.5 shadow-sm transition-colors"
+                                className="px-3.5 py-2 bg-[#D0161D] hover:bg-red-800 text-white text-xs font-bold rounded-xl flex items-center space-x-1.5 shadow-sm transition-colors"
                               >
                                 <ShoppingBag className="w-3.5 h-3.5" />
                                 <span>Add</span>
@@ -922,7 +921,7 @@ export default function ShoeCareClient() {
         {/* 7. SHOP BY NEED SECTION */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="text-center max-w-2xl mx-auto mb-8 space-y-2">
-            <span className="text-xs font-bold text-[#E2231A] uppercase tracking-wider">Targeted Care</span>
+            <span className="text-xs font-bold text-[#D0161D] uppercase tracking-wider">Targeted Care</span>
             <h3 className="text-2xl sm:text-3xl font-black text-[#1A1A1A] tracking-tight">
               Shop Footwear By Need
             </h3>
@@ -946,7 +945,7 @@ export default function ShoeCareClient() {
                   <div className="w-12 h-12 rounded-2xl bg-[#f9f9f9] border border-slate-100 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">
                     {item.icon}
                   </div>
-                  <h4 className="text-sm font-bold text-[#1A1A1A] group-hover:text-[#E2231A] transition-colors">
+                  <h4 className="text-sm font-bold text-[#1A1A1A] group-hover:text-[#D0161D] transition-colors">
                     {item.title}
                   </h4>
                   <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">
@@ -954,7 +953,7 @@ export default function ShoeCareClient() {
                   </p>
                 </div>
 
-                <div className="pt-4 mt-4 border-t border-slate-100 flex items-center text-xs font-bold text-[#E2231A] group-hover:translate-x-1 transition-transform">
+                <div className="pt-4 mt-4 border-t border-slate-100 flex items-center text-xs font-bold text-[#D0161D] group-hover:translate-x-1 transition-transform">
                   <span>Explore Products</span>
                   <ChevronRight className="w-3.5 h-3.5 ml-1" />
                 </div>
@@ -967,7 +966,7 @@ export default function ShoeCareClient() {
         <section className="bg-white border-y border-slate-200/80 py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
-              <span className="text-xs font-bold text-[#E2231A] uppercase tracking-wider">Quality Assurance</span>
+              <span className="text-xs font-bold text-[#D0161D] uppercase tracking-wider">Quality Assurance</span>
               <h3 className="text-2xl sm:text-3xl font-black text-[#1A1A1A] tracking-tight">
                 Why Choose Kick® Shoe Care?
               </h3>
@@ -984,8 +983,8 @@ export default function ShoeCareClient() {
                     key={i}
                     className="p-6 rounded-3xl bg-[#f9f9f9] border border-slate-100 flex flex-col items-start space-y-3"
                   >
-                    <div className="w-12 h-12 rounded-2xl bg-white text-[#E2231A] flex items-center justify-center shadow-xs border border-slate-200/60">
-                      <IconComponent className="w-6 h-6 text-[#E2231A]" />
+                    <div className="w-12 h-12 rounded-2xl bg-white text-[#D0161D] flex items-center justify-center shadow-xs border border-slate-200/60">
+                      <IconComponent className="w-6 h-6 text-[#D0161D]" />
                     </div>
                     <h4 className="text-sm font-bold text-[#1A1A1A]">{b.title}</h4>
                     <p className="text-xs text-slate-600 leading-relaxed font-normal">{b.description}</p>
@@ -999,7 +998,7 @@ export default function ShoeCareClient() {
         {/* 9. HOW IT WORKS (3 STEPS) */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
-            <span className="text-xs font-bold text-[#E2231A] uppercase tracking-wider">Expert Methodology</span>
+            <span className="text-xs font-bold text-[#D0161D] uppercase tracking-wider">Expert Methodology</span>
             <h3 className="text-2xl sm:text-3xl font-black text-[#1A1A1A] tracking-tight">
               How It Works
             </h3>
@@ -1015,14 +1014,14 @@ export default function ShoeCareClient() {
                 className="bg-white rounded-3xl p-8 border border-slate-200/80 shadow-xs relative flex flex-col justify-between"
               >
                 <div>
-                  <span className="text-3xl font-black text-[#E2231A]/15 font-mono block mb-3">
+                  <span className="text-3xl font-black text-[#D0161D]/15 font-mono block mb-3">
                     {step.step}
                   </span>
                   <h4 className="text-base font-bold text-[#1A1A1A] mb-2">{step.title}</h4>
                   <p className="text-xs text-slate-600 leading-relaxed">{step.desc}</p>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-slate-100 flex items-center text-xs font-bold text-[#E2231A]">
+                <div className="mt-6 pt-4 border-t border-slate-100 flex items-center text-xs font-bold text-[#D0161D]">
                   <CheckCircle2 className="w-4 h-4 mr-2" />
                   <span>Kick Certified Step</span>
                 </div>
@@ -1035,7 +1034,7 @@ export default function ShoeCareClient() {
         <section className="bg-white border-y border-slate-200/80 py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
-              <span className="text-xs font-bold text-[#E2231A] uppercase tracking-wider">Verified Feedback</span>
+              <span className="text-xs font-bold text-[#D0161D] uppercase tracking-wider">Verified Feedback</span>
               <h3 className="text-2xl sm:text-3xl font-black text-[#1A1A1A] tracking-tight">
                 What Customers Say About Our Shoe Care
               </h3>
@@ -1070,7 +1069,7 @@ export default function ShoeCareClient() {
         {/* 11. FAQ ACCORDION */}
         <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="text-center mb-10 space-y-2">
-            <span className="text-xs font-bold text-[#E2231A] uppercase tracking-wider">Common Questions</span>
+            <span className="text-xs font-bold text-[#D0161D] uppercase tracking-wider">Common Questions</span>
             <h3 className="text-2xl sm:text-3xl font-black text-[#1A1A1A] tracking-tight">
               Frequently Asked Questions
             </h3>
@@ -1089,12 +1088,12 @@ export default function ShoeCareClient() {
                 >
                   <button
                     onClick={() => setActiveFaq(isOpen ? null : fIdx)}
-                    className="w-full p-5 text-left flex items-center justify-between font-bold text-xs sm:text-sm text-[#1A1A1A] hover:text-[#E2231A] transition-colors"
+                    className="w-full p-5 text-left flex items-center justify-between font-bold text-xs sm:text-sm text-[#1A1A1A] hover:text-[#D0161D] transition-colors"
                   >
                     <span>{faq.q}</span>
                     <ChevronDown
                       className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
-                        isOpen ? 'rotate-180 text-[#E2231A]' : ''
+                        isOpen ? 'rotate-180 text-[#D0161D]' : ''
                       }`}
                     />
                   </button>
@@ -1123,7 +1122,7 @@ export default function ShoeCareClient() {
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 text-slate-700 text-xs sm:text-sm leading-relaxed">
             
             <div className="space-y-2 border-b border-slate-100 pb-4">
-              <span className="text-xs font-bold text-[#E2231A] uppercase tracking-wider">Shoe Care Guide</span>
+              <span className="text-xs font-bold text-[#D0161D] uppercase tracking-wider">Shoe Care Guide</span>
               <h2 className="text-2xl sm:text-3xl font-black text-[#1A1A1A] tracking-tight">
                 Shoe Care Products for Everyday Footwear
               </h2>
@@ -1178,8 +1177,8 @@ export default function ShoeCareClient() {
               className="bg-white rounded-t-3xl p-6 max-h-[85vh] overflow-y-auto space-y-6 shadow-2xl"
             >
               <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-                <div className="flex items-center space-x-2 text-[#E2231A] font-black text-sm uppercase">
-                  <Filter className="w-4 h-4 text-[#E2231A]" />
+                <div className="flex items-center space-x-2 text-[#D0161D] font-black text-sm uppercase">
+                  <Filter className="w-4 h-4 text-[#D0161D]" />
                   <span>Filter Products</span>
                 </div>
                 <button
@@ -1192,7 +1191,7 @@ export default function ShoeCareClient() {
 
               {/* Sub-Category Filter */}
               <div className="space-y-2">
-                <h4 className="text-xs font-bold text-[#E2231A] uppercase">Product Type</h4>
+                <h4 className="text-xs font-bold text-[#D0161D] uppercase">Product Type</h4>
                 <div className="grid grid-cols-2 gap-2 text-xs">
                   {SUB_CATEGORIES.map((cat) => (
                     <button
@@ -1200,7 +1199,7 @@ export default function ShoeCareClient() {
                       onClick={() => setSelectedCategory(cat.id)}
                       className={`p-2 rounded-xl text-left border ${
                         selectedCategory === cat.id
-                          ? 'bg-[#E2231A] text-white border-[#E2231A]'
+                          ? 'bg-[#D0161D] text-white border-[#D0161D]'
                           : 'bg-slate-50 text-slate-700 border-slate-200'
                       }`}
                     >
@@ -1212,7 +1211,7 @@ export default function ShoeCareClient() {
 
               {/* Price Filter */}
               <div className="space-y-2 pt-3 border-t border-slate-100">
-                <h4 className="text-xs font-bold text-[#E2231A] uppercase">Price</h4>
+                <h4 className="text-xs font-bold text-[#D0161D] uppercase">Price</h4>
                 <div className="grid grid-cols-2 gap-2 text-xs">
                   {[
                     { id: 'all', label: 'All' },
@@ -1225,7 +1224,7 @@ export default function ShoeCareClient() {
                       onClick={() => setPriceFilter(p.id)}
                       className={`p-2 rounded-xl text-left border ${
                         priceFilter === p.id
-                          ? 'bg-[#E2231A] text-white border-[#E2231A]'
+                          ? 'bg-[#D0161D] text-white border-[#D0161D]'
                           : 'bg-slate-50 text-slate-700 border-slate-200'
                       }`}
                     >
@@ -1237,12 +1236,12 @@ export default function ShoeCareClient() {
 
               {/* Stock Filter */}
               <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
-                <span className="text-xs font-bold text-[#E2231A]">In Stock Only</span>
+                <span className="text-xs font-bold text-[#D0161D]">In Stock Only</span>
                 <input
                   type="checkbox"
                   checked={inStockOnly}
                   onChange={(e) => setInStockOnly(e.target.checked)}
-                  className="rounded text-[#E2231A] focus:ring-[#E2231A] w-4 h-4"
+                  className="rounded text-[#D0161D] focus:ring-[#D0161D] w-4 h-4"
                 />
               </div>
 
@@ -1256,7 +1255,7 @@ export default function ShoeCareClient() {
                 </button>
                 <button
                   onClick={() => setMobileFilterOpen(false)}
-                  className="flex-1 py-3 bg-[#E2231A] text-white text-xs font-bold rounded-xl"
+                  className="flex-1 py-3 bg-[#D0161D] text-white text-xs font-bold rounded-xl"
                 >
                   Apply Filters ({filteredProducts.length})
                 </button>
