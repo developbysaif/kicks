@@ -266,9 +266,6 @@ export default function HomePage() {
           />
         ))}
 
-        {/* Dark left overlay for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-r from-white/90 via-white/60 to-transparent pointer-events-none" />
-
         {/* Overlaid Content Container */}
         <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 lg:py-16 flex flex-col justify-between min-h-[340px] sm:min-h-[460px] lg:min-h-[520px]">
 
@@ -343,28 +340,28 @@ export default function HomePage() {
 
             {/* 4 Feature Badges */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5 max-w-lg lg:max-w-xl">
-              <div className="flex items-center space-x-1.5 bg-white/95 backdrop-blur-xs px-2.5 py-1 rounded-full border border-slate-200/80 shadow-xs">
+              <div className="flex items-center space-x-1.5 bg-white px-2.5 py-1 rounded-full border border-slate-200/80 shadow-xs">
                 <div className="w-5 h-5 rounded-full bg-red-50 text-[#D0161D] flex items-center justify-center shrink-0">
                   <ShieldCheck className="w-3.5 h-3.5" />
                 </div>
                 <span className="text-[10px] sm:text-[11px] font-bold text-slate-800 whitespace-nowrap">Premium Quality</span>
               </div>
 
-              <div className="flex items-center space-x-1.5 bg-white/95 backdrop-blur-xs px-2.5 py-1 rounded-full border border-slate-200/80 shadow-xs">
+              <div className="flex items-center space-x-1.5 bg-white px-2.5 py-1 rounded-full border border-slate-200/80 shadow-xs">
                 <div className="w-5 h-5 rounded-full bg-red-50 text-[#D0161D] flex items-center justify-center shrink-0">
                   <Truck className="w-3.5 h-3.5" />
                 </div>
                 <span className="text-[10px] sm:text-[11px] font-bold text-slate-800 whitespace-nowrap">Fast Delivery</span>
               </div>
 
-              <div className="flex items-center space-x-1.5 bg-white/95 backdrop-blur-xs px-2.5 py-1 rounded-full border border-slate-200/80 shadow-xs">
+              <div className="flex items-center space-x-1.5 bg-white px-2.5 py-1 rounded-full border border-slate-200/80 shadow-xs">
                 <div className="w-5 h-5 rounded-full bg-red-50 text-[#D0161D] flex items-center justify-center shrink-0">
                   <ShieldCheck className="w-3.5 h-3.5" />
                 </div>
                 <span className="text-[10px] sm:text-[11px] font-bold text-slate-800 whitespace-nowrap">100% Secure</span>
               </div>
 
-              <div className="flex items-center space-x-1.5 bg-white/95 backdrop-blur-xs px-2.5 py-1 rounded-full border border-slate-200/80 shadow-xs">
+              <div className="flex items-center space-x-1.5 bg-white px-2.5 py-1 rounded-full border border-slate-200/80 shadow-xs">
                 <div className="w-5 h-5 rounded-full bg-red-50 text-[#D0161D] flex items-center justify-center shrink-0">
                   <Headphones className="w-3.5 h-3.5" />
                 </div>
@@ -373,7 +370,7 @@ export default function HomePage() {
             </div>
 
             {/* Carousel Arrows & Dot Indicators */}
-            <div className="flex items-center space-x-3 self-end bg-white/80 backdrop-blur-xs px-3 py-1.5 rounded-full border border-slate-200 shadow-sm">
+            <div className="flex items-center space-x-3 self-end bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-sm">
               <div className="flex items-center space-x-1.5 mr-1">
                 {HERO_SLIDES.map((_, idx) => (
                   <button
