@@ -49,6 +49,8 @@ export const AuthProvider = ({ children }) => {
           success: false,
           requireVerification: true,
           email: err.response.data.email,
+          devCode: err.response.data.devCode,
+          sandboxWarning: err.response.data.sandboxWarning,
           message: err.response.data.message
         };
       }

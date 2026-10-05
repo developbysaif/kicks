@@ -53,6 +53,7 @@ function LoginBContent() {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
+  const [devHintCode, setDevHintCode] = useState('');
 
   // Check URL parameters on mount
   useEffect(() => {
@@ -130,6 +131,7 @@ function LoginBContent() {
     } else if (res.requireVerification) {
       // Unverified account: Transition to OTP verification screen with fresh 60s timer
       setErrorMsg(res.message || "Your email is not verified. We've sent a 6-digit verification code to your email.");
+      if (res.devCode) setDevHintCode(res.devCode);
       setOtpPurpose('EMAIL_VERIFICATION');
       setOtpCode('');
       setTimerSeconds(60);
@@ -163,6 +165,7 @@ function LoginBContent() {
 
     if (res.success) {
       setSuccessMsg(res.message || "We've sent a 6-digit verification code to your email.");
+      if (res.devCode) setDevHintCode(res.devCode);
       setOtpPurpose('EMAIL_VERIFICATION');
       setOtpCode('');
       setTimerSeconds(60);
@@ -218,6 +221,7 @@ function LoginBContent() {
 
     if (res.success) {
       setSuccessMsg(res.message || 'A fresh 6-digit verification code has been sent!');
+      if (res.devCode) setDevHintCode(res.devCode);
       setTimerSeconds(60);
       setOtpCode('');
     } else {
@@ -242,6 +246,7 @@ function LoginBContent() {
 
     if (res.success) {
       setSuccessMsg(res.message || 'If an account exists, a 6-digit reset code has been sent.');
+      if (res.devCode) setDevHintCode(res.devCode);
       setOtpPurpose('PASSWORD_RESET');
       setOtpCode('');
       setTimerSeconds(60);
@@ -646,6 +651,12 @@ function LoginBContent() {
                       We&apos;ve sent a verification code to:{' '}
                       <strong className="text-slate-800">{getMaskedEmail(email)}</strong>
                     </p>
+                    {devHintCode && (
+                      <div className="mt-2.5 inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 border border-amber-200 rounded-full text-[11px] font-medium text-amber-800">
+                        <span>🧪 Sandbox Test Code:</span>
+                        <span className="font-mono font-black text-amber-950 tracking-wider">{devHintCode}</span>
+                      </div>
+                    )}
                   </div>
 
                   {/* 6-Digit OTP Input */}
@@ -811,6 +822,12 @@ function LoginBContent() {
                       A 6-digit code has been dispatched to:{' '}
                       <strong className="text-slate-800">{getMaskedEmail(email)}</strong>
                     </p>
+                    {devHintCode && (
+                      <div className="mt-2.5 inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 border border-amber-200 rounded-full text-[11px] font-medium text-amber-800">
+                        <span>🧪 Sandbox Test Code:</span>
+                        <span className="font-mono font-black text-amber-950 tracking-wider">{devHintCode}</span>
+                      </div>
+                    )}
                   </div>
 
                   <OtpInput

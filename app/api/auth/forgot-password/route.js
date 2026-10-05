@@ -61,12 +61,23 @@ export async function POST(req) {
       });
 
       // Send real email via Resend
-      await sendOtpEmail({
+      const emailResult = await sendOtpEmail({
         toEmail: cleanEmail,
         userName,
         otpCode,
         purpose: 'PASSWORD_RESET'
       });
+
+      if (emailResult.sandboxRestricted) {
+        return NextResponse.json({
+          success: true,
+          email: cleanEmail,
+          devCode: emailResult.devCode,
+          sandboxWarning: true,
+          allowedEmail: emailResult.allowedEmail,
+          message: `Resend Sandbox Mode: Real emails only deliver to ${emailResult.allowedEmail}. For this email, your reset code is: ${emailResult.devCode}`
+        });
+      }
     }
 
     return NextResponse.json({

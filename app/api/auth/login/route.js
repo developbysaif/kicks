@@ -98,7 +98,7 @@ export async function POST(req) {
       });
 
       // Send real email via Resend
-      await sendOtpEmail({
+      const emailResult = await sendOtpEmail({
         toEmail: cleanEmail,
         userName,
         otpCode,
@@ -111,7 +111,12 @@ export async function POST(req) {
           requireVerification: true,
           email: cleanEmail,
           expiresIn: 60,
-          message: "Your email address is not verified. We've sent a new 6-digit verification code to your email."
+          devCode: emailResult.sandboxRestricted || emailResult.simulated ? emailResult.devCode : undefined,
+          sandboxWarning: emailResult.sandboxRestricted || false,
+          allowedEmail: emailResult.allowedEmail,
+          message: emailResult.sandboxRestricted
+            ? `Resend Sandbox Mode: Real emails only deliver to ${emailResult.allowedEmail}. For this email, your code is: ${emailResult.devCode}`
+            : "Your email address is not verified. We've sent a new 6-digit verification code to your email."
         },
         { status: 403 }
       );
