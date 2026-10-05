@@ -14,20 +14,11 @@ export const AuthProvider = ({ children }) => {
     const savedUser = localStorage.getItem('userInfo');
     if (savedUser) {
       try {
-        setUser(JSON.parse(savedUser));
+        const parsed = JSON.parse(savedUser);
+        setUser(parsed);
       } catch (e) {
         localStorage.removeItem('userInfo');
       }
-    } else if (process.env.NODE_ENV !== 'production') {
-      const devAdmin = {
-        _id: 'admin_dev',
-        name: 'Kick Admin',
-        email: 'admin@kickhomecare.com',
-        role: 'admin',
-        token: 'dev_admin_token',
-        emailVerified: true
-      };
-      setUser(devAdmin);
     }
     setLoading(false);
   }, []);
@@ -37,6 +28,7 @@ export const AuthProvider = ({ children }) => {
       setLoading(true);
       setError(null);
       const { data } = await axios.post('/api/auth/login', { email, password });
+
       if (data.success) {
         const userData = { ...data.user, token: data.token };
         setUser(userData);
@@ -68,11 +60,17 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const register = async (name, email, password, phone) => {
+  const register = async (name, email, password, confirmPassword, phone) => {
     try {
       setLoading(true);
       setError(null);
-      const { data } = await axios.post('/api/auth/register', { name, email, password, phone });
+      const { data } = await axios.post('/api/auth/register', {
+        name,
+        email,
+        password,
+        confirmPassword,
+        phone
+      });
       return data;
     } catch (err) {
       const msg = err.response?.data?.message || err.message || 'Registration failed';
@@ -83,17 +81,24 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const verifyEmail = async (token) => {
+  const verifyOtp = async (email, otp, purpose = 'EMAIL_VERIFICATION') => {
     try {
       setLoading(true);
       setError(null);
-      const { data } = await axios.post('/api/auth/verify-email', { token });
+      const { data } = await axios.post('/api/auth/verify-otp', { email, otp, purpose });
+
+      if (data.success && data.token && data.user) {
+        const userData = { ...data.user, token: data.token };
+        setUser(userData);
+        localStorage.setItem('userInfo', JSON.stringify(userData));
+      }
+
       return data;
     } catch (err) {
       return {
         success: false,
         expired: err.response?.data?.expired || false,
-        alreadyVerified: err.response?.data?.alreadyVerified || false,
+        maxAttemptsReached: err.response?.data?.maxAttemptsReached || false,
         message: err.response?.data?.message || err.message || 'Verification failed.'
       };
     } finally {
@@ -101,17 +106,63 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const resendVerification = async (email) => {
+  const resendOtp = async (email, purpose = 'EMAIL_VERIFICATION') => {
     try {
-      const { data } = await axios.post('/api/auth/resend-verification', { email });
+      const { data } = await axios.post('/api/auth/resend-otp', { email, purpose });
+      return data;
+    } catch (err) {
+      return {
+        success: false,
+        cooldown: err.response?.data?.cooldown || false,
+        rateLimited: err.response?.status === 429,
+        retryAfter: err.response?.data?.retryAfter || 0,
+        message: err.response?.data?.message || err.message || 'Failed to resend code.'
+      };
+    }
+  };
+
+  const forgotPassword = async (email) => {
+    try {
+      const { data } = await axios.post('/api/auth/forgot-password', { email });
       return data;
     } catch (err) {
       return {
         success: false,
         rateLimited: err.response?.status === 429,
-        message: err.response?.data?.message || err.message || 'Failed to resend verification email.'
+        message: err.response?.data?.message || err.message || 'Failed to send reset code.'
       };
     }
+  };
+
+  const resetPassword = async ({ email, otp, resetToken, newPassword, confirmPassword }) => {
+    try {
+      setLoading(true);
+      const { data } = await axios.post('/api/auth/reset-password', {
+        email,
+        otp,
+        resetToken,
+        newPassword,
+        confirmPassword
+      });
+      return data;
+    } catch (err) {
+      return {
+        success: false,
+        expired: err.response?.data?.expired || false,
+        message: err.response?.data?.message || err.message || 'Failed to reset password.'
+      };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Backwards compatibility wrappers
+  const verifyEmail = async (token, email) => {
+    return await verifyOtp(email, token, 'EMAIL_VERIFICATION');
+  };
+
+  const resendVerification = async (email) => {
+    return await resendOtp(email, 'EMAIL_VERIFICATION');
   };
 
   const logout = () => {
@@ -126,6 +177,10 @@ export const AuthProvider = ({ children }) => {
       error,
       login,
       register,
+      verifyOtp,
+      resendOtp,
+      forgotPassword,
+      resetPassword,
       verifyEmail,
       resendVerification,
       logout,
@@ -137,3 +192,4 @@ export const AuthProvider = ({ children }) => {
 };
 
 export const useAuth = () => useContext(AuthContext);
+export default AuthContext;

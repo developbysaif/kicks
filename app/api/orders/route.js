@@ -14,6 +14,13 @@ export async function POST(req) {
       );
     }
 
+    if (auth.emailVerified === false && auth.role !== 'admin') {
+      return NextResponse.json(
+        { success: false, requireVerification: true, message: 'Please verify your email address to place orders.' },
+        { status: 403 }
+      );
+    }
+
     await connectDB();
     const { orderItems, shippingAddress, paymentMethod, subtotal, discount, shippingFee, grandTotal, couponCode, notes } = await req.json();
 
@@ -78,6 +85,13 @@ export async function GET(req) {
       return NextResponse.json(
         { success: false, message: 'Not authorized' },
         { status: 401 }
+      );
+    }
+
+    if (auth.emailVerified === false && auth.role !== 'admin') {
+      return NextResponse.json(
+        { success: false, requireVerification: true, message: 'Please verify your email address to view orders.' },
+        { status: 403 }
       );
     }
 

@@ -4,189 +4,147 @@ import mongoose from 'mongoose';
 import connectDB from '@/lib/db';
 import User from '@/models/User';
 import EmailVerificationToken from '@/models/EmailVerificationToken';
+import { verifyOtp } from '@/lib/otp';
+import { generateToken } from '@/lib/jwt';
 import { getAppUrl } from '@/lib/email';
 
 export const dynamic = 'force-dynamic';
 
-async function processVerification(rawToken) {
-  if (!rawToken || typeof rawToken !== 'string' || rawToken.trim().length < 16) {
-    return {
-      status: 400,
-      body: { success: false, message: 'Invalid verification link.' }
-    };
-  }
+export async function POST(req) {
+  try {
+    const body = await req.json().catch(() => ({}));
+    const { token, otp, email } = body;
 
-  const cleanToken = rawToken.trim();
-  const tokenHash = crypto.createHash('sha256').update(cleanToken).digest('hex');
+    // 1. If 6-digit OTP is provided (or token is 6 digits)
+    const code = otp || (token && /^\d{6}$/.test(String(token).trim()) ? token : null);
 
-  const db = await connectDB();
+    if (code && email) {
+      const otpResult = await verifyOtp({
+        email: email.trim().toLowerCase(),
+        code: String(code).trim(),
+        purpose: 'EMAIL_VERIFICATION'
+      });
 
-  if (db && mongoose.connection.readyState === 1) {
-    const tokenDoc = await EmailVerificationToken.findOne({ tokenHash });
+      if (!otpResult.valid) {
+        return NextResponse.json(
+          {
+            success: false,
+            expired: otpResult.expired || false,
+            maxAttemptsReached: otpResult.maxAttemptsReached || false,
+            message: otpResult.message
+          },
+          { status: 400 }
+        );
+      }
 
-    if (!tokenDoc) {
-      return {
-        status: 400,
-        body: { success: false, message: 'Invalid verification link.' }
-      };
+      await connectDB();
+      const user = await User.findOne({ email: email.trim().toLowerCase() });
+      if (user) {
+        user.emailVerified = true;
+        user.emailVerifiedAt = new Date();
+        await user.save();
+
+        const authToken = generateToken({
+          id: user._id,
+          role: user.role || 'customer',
+          emailVerified: true
+        });
+
+        return NextResponse.json({
+          success: true,
+          token: authToken,
+          user: {
+            _id: user._id,
+            name: user.fullName || user.name,
+            email: user.email,
+            role: user.role || 'customer',
+            emailVerified: true
+          },
+          message: 'Email verified successfully!'
+        });
+      }
     }
 
-    // Check expiration (30 minutes)
+    // 2. Token-hash based fallback (for link clicks)
+    const rawToken = token || code;
+    if (!rawToken || typeof rawToken !== 'string') {
+      return NextResponse.json(
+        { success: false, message: 'Invalid verification token.' },
+        { status: 400 }
+      );
+    }
+
+    const tokenHash = crypto.createHash('sha256').update(rawToken.trim()).digest('hex');
+    await connectDB();
+
+    const tokenDoc = await EmailVerificationToken.findOne({ tokenHash });
+    if (!tokenDoc) {
+      return NextResponse.json(
+        { success: false, message: 'Invalid or expired verification link.' },
+        { status: 400 }
+      );
+    }
+
     if (new Date() > new Date(tokenDoc.expiresAt)) {
       await EmailVerificationToken.deleteOne({ _id: tokenDoc._id });
-      return {
-        status: 400,
-        body: {
-          success: false,
-          expired: true,
-          email: tokenDoc.email,
-          message: 'This verification link has expired.'
-        }
-      };
+      return NextResponse.json(
+        { success: false, expired: true, message: 'This verification link has expired.' },
+        { status: 400 }
+      );
     }
 
     const user = await User.findById(tokenDoc.userId);
-
     if (!user) {
-      await EmailVerificationToken.deleteOne({ _id: tokenDoc._id });
-      return {
-        status: 404,
-        body: { success: false, message: 'Invalid verification link.' }
-      };
+      return NextResponse.json(
+        { success: false, message: 'User not found.' },
+        { status: 404 }
+      );
     }
 
-    if (user.emailVerified) {
-      // Clean up token
-      await EmailVerificationToken.deleteMany({ userId: user._id });
-      return {
-        status: 200,
-        body: {
-          success: true,
-          alreadyVerified: true,
-          email: user.email,
-          message: 'Your email is already verified.'
-        }
-      };
-    }
-
-    // Mark as verified
     user.emailVerified = true;
     user.emailVerifiedAt = new Date();
     await user.save();
-
-    // Invalidate/delete all verification tokens for this user (single-use)
     await EmailVerificationToken.deleteMany({ userId: user._id });
 
-    return {
-      status: 200,
-      body: {
-        success: true,
+    const authToken = generateToken({
+      id: user._id,
+      role: user.role || 'customer',
+      emailVerified: true
+    });
+
+    return NextResponse.json({
+      success: true,
+      token: authToken,
+      user: {
+        _id: user._id,
+        name: user.fullName || user.name,
         email: user.email,
-        message: 'Email verified successfully. Your account is now active.'
-      }
-    };
+        role: user.role || 'customer',
+        emailVerified: true
+      },
+      message: 'Email verified successfully!'
+    });
 
-  } else {
-    // Memory Store Fallback
-    const memoryTokens = global.memoryTokens || [];
-    const memoryUsers = global.memoryUsers || [];
-
-    const tokenDoc = memoryTokens.find(t => t.tokenHash === tokenHash);
-
-    if (!tokenDoc) {
-      return {
-        status: 400,
-        body: { success: false, message: 'Invalid verification link.' }
-      };
-    }
-
-    if (new Date() > new Date(tokenDoc.expiresAt)) {
-      global.memoryTokens = memoryTokens.filter(t => t.tokenHash !== tokenHash);
-      return {
-        status: 400,
-        body: {
-          success: false,
-          expired: true,
-          email: tokenDoc.email,
-          message: 'This verification link has expired.'
-        }
-      };
-    }
-
-    const user = memoryUsers.find(u => u._id === tokenDoc.userId || u.email === tokenDoc.email);
-
-    if (!user) {
-      return {
-        status: 404,
-        body: { success: false, message: 'Invalid verification link.' }
-      };
-    }
-
-    if (user.emailVerified) {
-      global.memoryTokens = memoryTokens.filter(t => t.userId !== user._id);
-      return {
-        status: 200,
-        body: {
-          success: true,
-          alreadyVerified: true,
-          email: user.email,
-          message: 'Your email is already verified.'
-        }
-      };
-    }
-
-    user.emailVerified = true;
-    user.emailVerifiedAt = new Date();
-    global.memoryTokens = memoryTokens.filter(t => t.userId !== user._id);
-
-    return {
-      status: 200,
-      body: {
-        success: true,
-        email: user.email,
-        message: 'Email verified successfully. Your account is now active.'
-      }
-    };
-  }
-}
-
-// POST /api/auth/verify-email - Programmatic verification
-export async function POST(req) {
-  try {
-    const { token } = await req.json();
-    const result = await processVerification(token);
-    return NextResponse.json(result.body, { status: result.status });
   } catch (error) {
-    console.error('Verify Email POST error:', error);
+    console.error('Verify Email API Exception:', error);
     return NextResponse.json(
-      { success: false, message: 'Invalid verification link.' },
+      { success: false, message: 'Verification failed. Please try again.' },
       { status: 500 }
     );
   }
 }
 
-// GET /api/auth/verify-email?token=... - Direct browser link clicks
 export async function GET(req) {
   try {
     const { searchParams } = new URL(req.url);
     const token = searchParams.get('token');
-    const acceptHeader = req.headers.get('accept') || '';
-
-    // If request comes directly from browser URL click (HTML accept header), redirect to frontend page
-    if (acceptHeader.includes('text/html')) {
-      const appUrl = getAppUrl();
-      const redirectUrl = new URL('/verify-email', appUrl);
-      if (token) redirectUrl.searchParams.set('token', token);
-      return NextResponse.redirect(redirectUrl);
-    }
-
-    const result = await processVerification(token);
-    return NextResponse.json(result.body, { status: result.status });
+    const email = searchParams.get('email');
+    const appUrl = getAppUrl();
+    const redirectUrl = new URL('/verify-email', appUrl);
+    if (token) redirectUrl.searchParams.set('token', token);
+    if (email) redirectUrl.searchParams.set('email', email);
+    return NextResponse.redirect(redirectUrl);
   } catch (error) {
-    console.error('Verify Email GET error:', error);
-    return NextResponse.json(
-      { success: false, message: 'Invalid verification link.' },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, message: 'Invalid request' }, { status: 500 });
   }
 }

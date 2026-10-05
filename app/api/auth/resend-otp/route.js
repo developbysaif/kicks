@@ -22,44 +22,41 @@ export async function POST(req) {
 
     const cleanEmail = email.trim().toLowerCase();
 
-    // Rate Limiting
+    // 1. Rate Limiting: 60-second cooldown & max 5 requests per 15 minutes
     const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
       req.headers.get('x-real-ip') ||
       'unknown-ip';
 
-    const cooldownCheck = await checkRateLimit(`cooldown:${purpose}:${cleanEmail}:${clientIp}`, {
-      limit: 1,
-      windowSeconds: 60
-    });
-
+    // 60-second cooldown check
+    const cooldownKey = `cooldown:${purpose}:${cleanEmail}:${clientIp}`;
+    const cooldownCheck = await checkRateLimit(cooldownKey, { limit: 1, windowSeconds: 60 });
     if (!cooldownCheck.allowed) {
       return NextResponse.json(
         {
           success: false,
           cooldown: true,
           retryAfter: cooldownCheck.retryAfterSeconds,
-          message: `Please wait ${cooldownCheck.retryAfterSeconds}s before requesting a new code.`
+          message: `Please wait ${cooldownCheck.retryAfterSeconds} seconds before requesting a new code.`
         },
         { status: 429 }
       );
     }
 
-    const windowCheck = await checkRateLimit(`resend:${purpose}:${cleanEmail}:${clientIp}`, {
-      limit: 5,
-      windowSeconds: 15 * 60
-    });
-
+    // 15-minute window limit check (max 5)
+    const windowKey = `resend:${purpose}:${cleanEmail}:${clientIp}`;
+    const windowCheck = await checkRateLimit(windowKey, { limit: 5, windowSeconds: 15 * 60 });
     if (!windowCheck.allowed) {
       return NextResponse.json(
         {
           success: false,
           rateLimited: true,
-          message: 'Too many requests. Please try again after 15 minutes.'
+          message: 'Too many verification code requests. Please try again after 15 minutes.'
         },
         { status: 429 }
       );
     }
 
+    // 2. Database Lookup
     const db = await connectDB();
     let user;
 
@@ -71,8 +68,15 @@ export async function POST(req) {
     }
 
     if (!user) {
+      if (purpose === 'PASSWORD_RESET') {
+        // Prevent email enumeration
+        return NextResponse.json({
+          success: true,
+          message: 'If an account exists for this email address, a verification code has been sent.'
+        });
+      }
       return NextResponse.json(
-        { success: false, message: 'No account found with this email.' },
+        { success: false, message: 'No account found with this email address.' },
         { status: 404 }
       );
     }
@@ -81,12 +85,13 @@ export async function POST(req) {
       return NextResponse.json({
         success: true,
         alreadyVerified: true,
-        message: 'Email is already verified. You can sign in directly.'
+        message: 'Your email address is already verified. You can sign in directly.'
       });
     }
 
     const userName = user.fullName || user.name || 'Customer';
 
+    // 3. Generate New 60-second OTP (invalidates old ones)
     const { code: otpCode } = await createOtp({
       userId: user._id,
       email: cleanEmail,
@@ -94,23 +99,34 @@ export async function POST(req) {
       expirationSeconds: 60
     });
 
-    await sendOtpEmail({
+    // 4. Send Real Email via Resend
+    const emailResult = await sendOtpEmail({
       toEmail: cleanEmail,
       userName,
       otpCode,
       purpose
     });
 
+    if (!emailResult.success && emailResult.provider === 'resend') {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "We couldn't send the verification email right now. Please try again."
+        },
+        { status: 500 }
+      );
+    }
+
     return NextResponse.json({
       success: true,
       expiresIn: 60,
-      message: `A fresh 6-digit code has been sent to ${cleanEmail}.`
+      message: `A new 6-digit verification code has been sent to ${cleanEmail}.`
     });
 
   } catch (error) {
-    console.error('Resend Code API Error:', error);
+    console.error('Resend OTP API Exception:', error);
     return NextResponse.json(
-      { success: false, message: 'Failed to resend code.' },
+      { success: false, message: 'Failed to resend code. Please try again.' },
       { status: 500 }
     );
   }

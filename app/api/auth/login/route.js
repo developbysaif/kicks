@@ -3,137 +3,145 @@ import mongoose from 'mongoose';
 import connectDB from '@/lib/db';
 import User from '@/models/User';
 import { generateToken } from '@/lib/jwt';
+import { createOtp } from '@/lib/otp';
+import { sendOtpEmail } from '@/lib/email';
+import { checkRateLimit } from '@/lib/rateLimit';
 import bcrypt from 'bcryptjs';
 
 export const dynamic = 'force-dynamic';
 
-const memoryUsers = global.memoryUsers || [
-  { _id: 'u1', name: 'Rayyan Ansari', email: 'user@kickhomecare.com', password: 'user123', role: 'customer', phone: '03001234567', emailVerified: true },
-  { _id: 'u2', name: 'Kick Admin', email: 'admin@kickhomecare.com', password: 'admin123', role: 'admin', phone: '03210009008', emailVerified: true }
-];
-global.memoryUsers = memoryUsers;
-
 export async function POST(req) {
   try {
-    const { email, password } = await req.json();
+    const body = await req.json().catch(() => ({}));
+    const { email, password } = body;
 
     if (!email || !password) {
       return NextResponse.json(
-        { success: false, message: 'Please provide email and password' },
+        { success: false, message: 'Please provide email and password.' },
         { status: 400 }
       );
     }
 
-    const cleanEmail = email ? email.trim().toLowerCase() : '';
+    const cleanEmail = email.trim().toLowerCase();
 
+    // 1. Rate limiting on login attempts (protect against brute force)
+    const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+      req.headers.get('x-real-ip') ||
+      'unknown-ip';
+    const rateLimit = await checkRateLimit(`login:${cleanEmail}:${clientIp}`, {
+      limit: 10,
+      windowSeconds: 15 * 60
+    });
+
+    if (!rateLimit.allowed) {
+      return NextResponse.json(
+        { success: false, message: 'Too many login attempts. Please try again later.' },
+        { status: 429 }
+      );
+    }
+
+    // 2. Connect to database
     const db = await connectDB();
+    let user;
 
     if (db && mongoose.connection.readyState === 1) {
-      const user = await User.findOne({ email: cleanEmail });
-      if (!user) {
-        return NextResponse.json(
-          { success: false, message: 'No account found with this email. Please click "Create Account" to register.' },
-          { status: 404 }
-        );
-      }
-
-      const isMatch = await user.matchPassword(password);
-      if (!isMatch) {
-        return NextResponse.json(
-          { success: false, message: 'Incorrect password. Please try again.' },
-          { status: 401 }
-        );
-      }
-
-      if (user.isBlocked) {
-        return NextResponse.json(
-          { success: false, message: 'Your account has been suspended. Please contact support.' },
-          { status: 403 }
-        );
-      }
-
-      // Check email verification (admin accounts bypass)
-      if (user.emailVerified === false && user.role !== 'admin') {
-        return NextResponse.json(
-          {
-            success: false,
-            requireVerification: true,
-            email: cleanEmail,
-            message: 'Please verify your email before logging in.'
-          },
-          { status: 403 }
-        );
-      }
-
-      const token = generateToken({ id: user._id, role: user.role });
-
-      return NextResponse.json({
-        success: true,
-        token,
-        user: {
-          _id: user._id,
-          name: user.fullName || user.name,
-          email: user.email,
-          role: user.role,
-          phone: user.phone,
-          emailVerified: user.emailVerified !== false,
-          addresses: user.addresses
-        }
-      });
+      user = await User.findOne({ email: cleanEmail });
     } else {
-      // Memory Store Fallback
-      const user = memoryUsers.find(u => u.email === cleanEmail);
-      if (!user) {
-        return NextResponse.json(
-          { success: false, message: 'No account found with this email. Please click "Create Account" to register.' },
-          { status: 404 }
-        );
-      }
-
-      let isMatch = user.password === password;
-      if (!isMatch && user.password?.startsWith('$2')) {
-        isMatch = await bcrypt.compare(password, user.password);
-      }
-
-      if (!isMatch) {
-        return NextResponse.json(
-          { success: false, message: 'Incorrect password. Please try again.' },
-          { status: 401 }
-        );
-      }
-
-      if (user.emailVerified === false && user.role !== 'admin') {
-        return NextResponse.json(
-          {
-            success: false,
-            requireVerification: true,
-            email: cleanEmail,
-            message: 'Please verify your email before logging in.'
-          },
-          { status: 403 }
-        );
-      }
-
-      const token = generateToken({ id: user._id, role: user.role });
-
-      return NextResponse.json({
-        success: true,
-        token,
-        user: {
-          _id: user._id,
-          name: user.name,
-          email: user.email,
-          role: user.role,
-          phone: user.phone || '',
-          emailVerified: user.emailVerified !== false,
-          addresses: user.addresses || []
-        }
-      });
+      const memoryUsers = global.memoryUsers || [];
+      user = memoryUsers.find(u => u.email === cleanEmail);
     }
+
+    if (!user) {
+      return NextResponse.json(
+        { success: false, message: 'No account found with this email. Please register.' },
+        { status: 404 }
+      );
+    }
+
+    // 3. Verify password
+    let isMatch = false;
+    if (user.matchPassword) {
+      isMatch = await user.matchPassword(password);
+    } else if (user.passwordHash) {
+      isMatch = await bcrypt.compare(password, user.passwordHash);
+    } else if (user.password) {
+      isMatch = user.password === password;
+    }
+
+    if (!isMatch) {
+      return NextResponse.json(
+        { success: false, message: 'Incorrect password. Please try again.' },
+        { status: 401 }
+      );
+    }
+
+    // Check account status
+    if (user.isBlocked) {
+      return NextResponse.json(
+        { success: false, message: 'Your account has been suspended. Please contact support.' },
+        { status: 403 }
+      );
+    }
+
+    // 4. Check email verification (admin accounts bypass)
+    const isVerified = user.emailVerified === true || user.role === 'admin';
+
+    if (!isVerified) {
+      // User is unverified: Generate a fresh 6-digit OTP (60s expiry) and send real email
+      const userName = user.fullName || user.name || 'Customer';
+
+      const { code: otpCode } = await createOtp({
+        userId: user._id,
+        email: cleanEmail,
+        purpose: 'EMAIL_VERIFICATION',
+        expirationSeconds: 60
+      });
+
+      // Send real email via Resend
+      await sendOtpEmail({
+        toEmail: cleanEmail,
+        userName,
+        otpCode,
+        purpose: 'EMAIL_VERIFICATION'
+      });
+
+      return NextResponse.json(
+        {
+          success: false,
+          requireVerification: true,
+          email: cleanEmail,
+          expiresIn: 60,
+          message: "Your email address is not verified. We've sent a new 6-digit verification code to your email."
+        },
+        { status: 403 }
+      );
+    }
+
+    // 5. Successful login: Generate JWT token with emailVerified: true
+    const token = generateToken({
+      id: user._id,
+      role: user.role || 'customer',
+      emailVerified: true
+    });
+
+    return NextResponse.json({
+      success: true,
+      token,
+      user: {
+        _id: user._id,
+        name: user.fullName || user.name,
+        email: user.email,
+        role: user.role || 'customer',
+        phone: user.phone || '',
+        emailVerified: true,
+        addresses: user.addresses || []
+      }
+    });
+
   } catch (error) {
-    console.error('Login Error:', error);
+    console.error('Login API Error:', error);
     return NextResponse.json(
-      { success: false, message: error.message || 'Login failed' },
+      { success: false, message: error.message || 'Login failed.' },
       { status: 500 }
     );
   }

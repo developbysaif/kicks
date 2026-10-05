@@ -44,9 +44,38 @@ export default function AccountPage() {
         <main className="flex-1 max-w-7xl mx-auto px-4 py-20 text-center space-y-4">
           <User className="w-16 h-16 text-slate-300 mx-auto" />
           <h2 className="text-xl font-bold text-slate-800">Please Sign In to Access Your Dashboard</h2>
-          <Link href="/login" className="inline-block px-6 py-3 bg-emerald-600 text-white font-bold rounded-xl text-xs">
+          <Link href="/loginb" className="inline-block px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl text-xs uppercase tracking-wider transition">
             Sign In / Register
           </Link>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  // Reject dashboard access if account is unverified
+  if (user.emailVerified === false && user.role !== 'admin') {
+    return (
+      <div className="min-h-screen flex flex-col bg-slate-50">
+        <Header />
+        <main className="flex-1 max-w-xl mx-auto px-4 py-20 text-center space-y-4">
+          <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+            <div className="w-14 h-14 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center mx-auto">
+              <User className="w-7 h-7" />
+            </div>
+            <h2 className="text-xl font-black text-slate-900">Email Verification Required</h2>
+            <p className="text-xs text-slate-500 leading-relaxed">
+              Your account (<strong>{user.email}</strong>) is currently unverified. You must verify your email address to access your dashboard, order history, and account settings.
+            </p>
+            <div className="pt-2">
+              <Link
+                href={`/verify-email?email=${encodeURIComponent(user.email || '')}`}
+                className="inline-block px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-md transition"
+              >
+                Verify Email Now
+              </Link>
+            </div>
+          </div>
         </main>
         <Footer />
       </div>

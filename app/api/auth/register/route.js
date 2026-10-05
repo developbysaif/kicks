@@ -1,54 +1,78 @@
 import { NextResponse } from 'next/server';
-import crypto from 'crypto';
 import mongoose from 'mongoose';
 import connectDB from '@/lib/db';
 import User from '@/models/User';
-import EmailVerificationToken from '@/models/EmailVerificationToken';
 import bcrypt from 'bcryptjs';
-import { sendVerificationEmail } from '@/lib/email';
+import { createOtp } from '@/lib/otp';
+import { sendOtpEmail } from '@/lib/email';
+import { checkRateLimit } from '@/lib/rateLimit';
 
 export const dynamic = 'force-dynamic';
 
-const memoryUsers = global.memoryUsers || [
-  { _id: 'u1', name: 'Rayyan Ansari', email: 'user@kickhomecare.com', password: 'user123', role: 'customer', phone: '03001234567', emailVerified: true },
-  { _id: 'u2', name: 'Kick Admin', email: 'admin@kickhomecare.com', password: 'admin123', role: 'admin', phone: '03210009008', emailVerified: true }
-];
-global.memoryUsers = memoryUsers;
-
-const memoryTokens = global.memoryTokens || [];
-global.memoryTokens = memoryTokens;
-
 export async function POST(req) {
   try {
-    const { name, email, password, phone } = await req.json();
+    const body = await req.json().catch(() => ({}));
+    const { name, email, password, confirmPassword, phone } = body;
 
+    // 1. Validate fields
     if (!name || !email || !password) {
       return NextResponse.json(
-        { success: false, message: 'Please provide full name, email and password' },
+        { success: false, message: 'Please provide full name, email, and password.' },
         { status: 400 }
       );
     }
 
-    if (password.length < 6) {
-      return NextResponse.json(
-        { success: false, message: 'Password must be at least 6 characters long' },
-        { status: 400 }
-      );
-    }
-
+    const cleanName = name.trim();
     const cleanEmail = email.trim().toLowerCase();
 
-    // Securely hash password with bcrypt
-    const salt = await bcrypt.genSalt(10);
-    const passwordHash = await bcrypt.hash(password, salt);
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(cleanEmail)) {
+      return NextResponse.json(
+        { success: false, message: 'Please enter a valid email address.' },
+        { status: 400 }
+      );
+    }
 
-    // Generate cryptographically secure random verification token (64 hex chars)
-    const rawToken = crypto.randomBytes(32).toString('hex');
-    const tokenHash = crypto.createHash('sha256').update(rawToken).digest('hex');
-    const expiresAt = new Date(Date.now() + 30 * 60 * 1000); // 30 minutes expiry
+    // Validate password length
+    if (password.length < 6) {
+      return NextResponse.json(
+        { success: false, message: 'Password must be at least 6 characters long.' },
+        { status: 400 }
+      );
+    }
 
+    // Validate confirmation if provided
+    if (confirmPassword !== undefined && password !== confirmPassword) {
+      return NextResponse.json(
+        { success: false, message: 'Passwords do not match.' },
+        { status: 400 }
+      );
+    }
+
+    // 2. Rate limiting on registration attempts
+    const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+      req.headers.get('x-real-ip') ||
+      'unknown-ip';
+    const rateLimitResult = await checkRateLimit(`register:${clientIp}`, {
+      limit: 10,
+      windowSeconds: 15 * 60
+    });
+
+    if (!rateLimitResult.allowed) {
+      return NextResponse.json(
+        { success: false, message: 'Too many registration attempts. Please try again later.' },
+        { status: 429 }
+      );
+    }
+
+    // 3. Connect to Database
     const db = await connectDB();
     let userId;
+
+    // Securely hash password using bcrypt
+    const salt = await bcrypt.genSalt(10);
+    const passwordHash = await bcrypt.hash(password, salt);
 
     if (db && mongoose.connection.readyState === 1) {
       const existingUser = await User.findOne({ email: cleanEmail });
@@ -61,11 +85,10 @@ export async function POST(req) {
           );
         }
 
-        // Update details for unverified existing record
-        existingUser.fullName = name;
-        existingUser.password = password;
+        // Existing unverified account: update credentials and reset verification
+        existingUser.fullName = cleanName;
         existingUser.passwordHash = passwordHash;
-        if (phone) existingUser.phone = phone;
+        if (phone) existingUser.phone = phone.trim();
         existingUser.emailVerified = false;
         existingUser.emailVerifiedAt = null;
         await existingUser.save();
@@ -73,32 +96,22 @@ export async function POST(req) {
       } else {
         // Create new unverified user
         const newUser = await User.create({
-          fullName: name,
-          name,
+          fullName: cleanName,
+          name: cleanName,
           email: cleanEmail,
-          password,
           passwordHash,
-          phone: phone || '',
+          phone: phone ? phone.trim() : '',
+          role: 'customer',
           emailVerified: false,
           emailVerifiedAt: null
         });
         userId = newUser._id;
       }
-
-      // Invalidate any old tokens for this user
-      await EmailVerificationToken.deleteMany({ userId });
-
-      // Save hashed verification token
-      await EmailVerificationToken.create({
-        userId,
-        email: cleanEmail,
-        tokenHash,
-        expiresAt
-      });
-
     } else {
-      // Memory Store Fallback
+      // Memory Store Fallback for dev / offline
+      const memoryUsers = global.memoryUsers || [];
       const existingUser = memoryUsers.find(u => u.email === cleanEmail);
+
       if (existingUser && existingUser.emailVerified) {
         return NextResponse.json(
           { success: false, message: 'An account with this email already exists. Please sign in.' },
@@ -107,10 +120,11 @@ export async function POST(req) {
       }
 
       if (existingUser) {
-        existingUser.name = name;
+        existingUser.name = cleanName;
+        existingUser.fullName = cleanName;
         existingUser.password = password;
         existingUser.passwordHash = passwordHash;
-        existingUser.phone = phone || '';
+        existingUser.phone = phone ? phone.trim() : '';
         existingUser.emailVerified = false;
         existingUser.emailVerifiedAt = null;
         userId = existingUser._id;
@@ -118,48 +132,60 @@ export async function POST(req) {
         userId = 'm_' + Date.now();
         memoryUsers.push({
           _id: userId,
-          name,
+          name: cleanName,
+          fullName: cleanName,
           email: cleanEmail,
           password,
           passwordHash,
           role: 'customer',
-          phone: phone || '',
+          phone: phone ? phone.trim() : '',
           emailVerified: false,
           emailVerifiedAt: null,
           addresses: []
         });
       }
-
-      // Invalidate old memory tokens
-      const filtered = memoryTokens.filter(t => t.userId !== userId);
-      filtered.push({
-        userId,
-        email: cleanEmail,
-        tokenHash,
-        expiresAt
-      });
-      global.memoryTokens = filtered;
+      global.memoryUsers = memoryUsers;
     }
 
-    // Send branded verification email (Resend / SMTP / Dev fallback)
-    const emailResult = await sendVerificationEmail({
-      toEmail: cleanEmail,
-      userName: name,
-      rawToken
+    // 4. Generate cryptographically secure 6-digit OTP (60 SECONDS expiration)
+    const { code: otpCode } = await createOtp({
+      userId,
+      email: cleanEmail,
+      purpose: 'EMAIL_VERIFICATION',
+      expirationSeconds: 60
     });
 
+    // 5. Send real email via Resend
+    const emailResult = await sendOtpEmail({
+      toEmail: cleanEmail,
+      userName: cleanName,
+      otpCode,
+      purpose: 'EMAIL_VERIFICATION'
+    });
+
+    if (!emailResult.success && emailResult.provider === 'resend') {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "We couldn't send the verification email right now. Please try again."
+        },
+        { status: 500 }
+      );
+    }
+
+    // Return success without exposing OTP to client
     return NextResponse.json({
       success: true,
       requireVerification: true,
       email: cleanEmail,
-      message: "We've sent a verification link to your email address. Please verify your email before logging in.",
-      devVerificationUrl: emailResult.simulated ? emailResult.verificationUrl : undefined
+      expiresIn: 60,
+      message: `A 6-digit verification code has been sent to ${cleanEmail}.`
     });
 
   } catch (error) {
-    console.error('Registration API Error:', error);
+    console.error('Registration API Exception:', error);
     return NextResponse.json(
-      { success: false, message: error.message || 'Registration failed' },
+      { success: false, message: 'Registration failed. Please try again.' },
       { status: 500 }
     );
   }
