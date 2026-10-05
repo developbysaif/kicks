@@ -24,7 +24,15 @@ export async function GET(req) {
 
     return NextResponse.json({
       success: true,
-      user
+      user: {
+        _id: user._id,
+        name: user.fullName || user.name,
+        email: user.email,
+        role: user.role,
+        phone: user.phone || '',
+        emailVerified: user.emailVerified === true,
+        addresses: user.addresses || []
+      }
     });
   } catch (error) {
     return NextResponse.json(
