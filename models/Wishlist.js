@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import Favorite from './Favorite';
 
 const wishlistSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, unique: true },
@@ -8,4 +9,5 @@ const wishlistSchema = new mongoose.Schema({
 });
 
 const Wishlist = mongoose.models.Wishlist || mongoose.model('Wishlist', wishlistSchema);
+export { Favorite };
 export default Wishlist;

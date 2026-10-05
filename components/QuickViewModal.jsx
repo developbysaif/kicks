@@ -10,10 +10,8 @@ const QuickViewModal = ({ product, onClose }) => {
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
 
-  if (!product) return null;
-
   const [selectedVariation, setSelectedVariation] = useState(() => {
-    if (product.hasVariations && product.variations && product.variations.length > 0) {
+    if (product?.hasVariations && product?.variations && product?.variations.length > 0) {
       const group = product.variations[0];
       return group.options && group.options.length > 0 ? group.options[0].name : '';
     }
@@ -21,6 +19,8 @@ const QuickViewModal = ({ product, onClose }) => {
   });
 
   const [quantity, setQuantity] = useState(1);
+
+  if (!product) return null;
 
   let currentPrice = product.salePrice > 0 ? product.salePrice : product.price;
   let originalPrice = product.salePrice > 0 ? product.price : null;

@@ -6,35 +6,75 @@ const addressSchema = new mongoose.Schema({
   phone: { type: String, required: true },
   addressLine: { type: String, required: true },
   city: { type: String, required: true },
-  province: { type: String, required: true },
+  province: { type: String, default: 'Punjab' },
   postalCode: { type: String, default: '54000' },
   country: { type: String, default: 'Pakistan' },
   isDefault: { type: Boolean, default: false }
-});
+}, { _id: true });
 
 const userSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  email: { type: String, required: true, unique: true, lowercase: true, trim: true },
-  password: { type: String, required: true },
-  role: { type: String, enum: ['customer', 'admin'], default: 'customer' },
-  phone: { type: String, default: '' },
-  isBlocked: { type: Boolean, default: false },
-  addresses: [addressSchema],
-  resetPasswordToken: { type: String },
-  resetPasswordExpire: { type: Date }
+  fullName: { type: String, required: true, trim: true },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true,
+    trim: true,
+    index: true
+  },
+  phone: { type: String, default: '', trim: true },
+  passwordHash: { type: String, required: true },
+  role: {
+    type: String,
+    enum: ['customer', 'admin'],
+    default: 'customer',
+    index: true
+  },
+  emailVerified: { type: Boolean, default: false, index: true },
+  verificationCodeHash: { type: String, default: null },
+  verificationCodeExpiresAt: { type: Date, default: null },
+  verificationAttempts: { type: Number, default: 0 },
+  verificationResendCount: { type: Number, default: 0 },
+  verificationResendWindowStart: { type: Date, default: null },
+  resetCodeHash: { type: String, default: null },
+  resetCodeExpiresAt: { type: Date, default: null },
+  resetAttempts: { type: Number, default: 0 },
+  addresses: [addressSchema]
 }, {
-  timestamps: true
+  timestamps: true,
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true }
 });
 
+// Dual compatibility alias: 'name' mirrors 'fullName'
+userSchema.virtual('name')
+  .get(function () {
+    return this.fullName;
+  })
+  .set(function (v) {
+    this.fullName = v;
+  });
+
+// Compatibility virtual for 'password'
+userSchema.virtual('password')
+  .set(function (rawPassword) {
+    this._rawPassword = rawPassword;
+  });
+
 userSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) return next();
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
+  if (this._rawPassword) {
+    const salt = await bcrypt.genSalt(10);
+    this.passwordHash = await bcrypt.hash(this._rawPassword, salt);
+  } else if (this.isModified('passwordHash') && !this.passwordHash.startsWith('$2a$') && !this.passwordHash.startsWith('$2b$')) {
+    const salt = await bcrypt.genSalt(10);
+    this.passwordHash = await bcrypt.hash(this.passwordHash, salt);
+  }
   next();
 });
 
 userSchema.methods.matchPassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
+  if (!enteredPassword || !this.passwordHash) return false;
+  return await bcrypt.compare(enteredPassword, this.passwordHash);
 };
 
 const User = mongoose.models.User || mongoose.model('User', userSchema);
