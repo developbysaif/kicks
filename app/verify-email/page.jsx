@@ -189,12 +189,6 @@ function VerifyEmailContent() {
                   We&apos;ve sent a 6-digit verification code to:
                   <br />
                   <strong className="text-slate-800 font-semibold">{maskedEmail || 'your email'}</strong>
-                  {devHintCode && (
-                    <div className="mt-2.5 inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 border border-amber-200 rounded-full text-[11px] font-medium text-amber-800">
-                      <span>🧪 Sandbox Test Code:</span>
-                      <span className="font-mono font-black text-amber-950 tracking-wider">{devHintCode}</span>
-                    </div>
-                  )}
                 </>
               )}
             </p>

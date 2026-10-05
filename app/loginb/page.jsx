@@ -651,12 +651,6 @@ function LoginBContent() {
                       We&apos;ve sent a verification code to:{' '}
                       <strong className="text-slate-800">{getMaskedEmail(email)}</strong>
                     </p>
-                    {devHintCode && (
-                      <div className="mt-2.5 inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 border border-amber-200 rounded-full text-[11px] font-medium text-amber-800">
-                        <span>🧪 Sandbox Test Code:</span>
-                        <span className="font-mono font-black text-amber-950 tracking-wider">{devHintCode}</span>
-                      </div>
-                    )}
                   </div>
 
                   {/* 6-Digit OTP Input */}
@@ -822,12 +816,6 @@ function LoginBContent() {
                       A 6-digit code has been dispatched to:{' '}
                       <strong className="text-slate-800">{getMaskedEmail(email)}</strong>
                     </p>
-                    {devHintCode && (
-                      <div className="mt-2.5 inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 border border-amber-200 rounded-full text-[11px] font-medium text-amber-800">
-                        <span>🧪 Sandbox Test Code:</span>
-                        <span className="font-mono font-black text-amber-950 tracking-wider">{devHintCode}</span>
-                      </div>
-                    )}
                   </div>
 
                   <OtpInput

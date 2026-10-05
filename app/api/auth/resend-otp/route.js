@@ -107,17 +107,7 @@ export async function POST(req) {
       purpose
     });
 
-    if (!emailResult.success && emailResult.provider === 'resend') {
-      if (emailResult.sandboxRestricted) {
-        return NextResponse.json({
-          success: true,
-          expiresIn: 60,
-          devCode: emailResult.devCode,
-          sandboxWarning: true,
-          allowedEmail: emailResult.allowedEmail,
-          message: `Resend Sandbox Mode: Real emails only deliver to ${emailResult.allowedEmail}. For this email, your code is: ${emailResult.devCode}`
-        });
-      }
+    if (!emailResult.success) {
       return NextResponse.json(
         {
           success: false,
@@ -130,8 +120,9 @@ export async function POST(req) {
     return NextResponse.json({
       success: true,
       expiresIn: 60,
-      devCode: emailResult.simulated ? emailResult.devCode : undefined,
-      message: `A new 6-digit verification code has been sent to ${cleanEmail}.`
+      message: emailResult.routedTo
+        ? `A fresh 6-digit verification code has been dispatched to your inbox (${emailResult.routedTo}).`
+        : `A new 6-digit verification code has been sent to ${cleanEmail}.`
     });
 
   } catch (error) {

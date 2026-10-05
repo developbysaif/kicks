@@ -61,29 +61,18 @@ export async function POST(req) {
       });
 
       // Send real email via Resend
-      const emailResult = await sendOtpEmail({
+      await sendOtpEmail({
         toEmail: cleanEmail,
         userName,
         otpCode,
         purpose: 'PASSWORD_RESET'
       });
-
-      if (emailResult.sandboxRestricted) {
-        return NextResponse.json({
-          success: true,
-          email: cleanEmail,
-          devCode: emailResult.devCode,
-          sandboxWarning: true,
-          allowedEmail: emailResult.allowedEmail,
-          message: `Resend Sandbox Mode: Real emails only deliver to ${emailResult.allowedEmail}. For this email, your reset code is: ${emailResult.devCode}`
-        });
-      }
     }
 
     return NextResponse.json({
       success: true,
       email: cleanEmail,
-      message: 'If an account exists for this email address, a 6-digit verification code has been sent.'
+      message: 'If an account exists for this email address, a 6-digit verification code has been sent to your email.'
     });
 
   } catch (error) {
