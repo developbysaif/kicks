@@ -11,7 +11,9 @@ export default function AdminCategoriesPage() {
     { _id: 'c1', name: 'Shoe Care', slug: 'shoe-care', description: 'Premium shoe shiners, sneaker cleaners, polish sponges & shoe wax.', image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=800&q=80' },
     { _id: 'c2', name: 'Laundry Care', slug: 'laundry-care', description: 'Bleach liquid, fabric blue whiteners & conditioners.', image: 'https://images.unsplash.com/photo-1585421514738-01798e348b17?auto=format&fit=crop&w=800&q=80' },
     { _id: 'c3', name: 'Home Cleaning', slug: 'home-cleaning', description: 'Surface cleaners, bathroom sprays & toilet power gels.', image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=800&q=80' },
-    { _id: 'c4', name: 'Dish Care', slug: 'dish-care', description: 'Lemon dishwashing liquids & heavy duty dish sponges.', image: 'https://images.unsplash.com/photo-1585421514738-01798e348b17?auto=format&fit=crop&w=800&q=80' }
+    { _id: 'c4', name: 'Dish Care', slug: 'dish-care', description: 'Lemon dishwashing liquids & heavy duty dish sponges.', image: 'https://images.unsplash.com/photo-1585421514738-01798e348b17?auto=format&fit=crop&w=800&q=80' },
+    { _id: 'c5', name: 'Washroom Cleaning', slug: 'washroom-cleaning', description: 'Fast acting liquid drain openers, bathroom cleaners & toilet gels.', image: '/washroom cleaning.png' },
+    { _id: 'c6', name: 'Mosquito Protection', slug: 'mosquito-protection', description: 'Electric liquid mosquito repellents, skin lotions & sprays.', image: '/mosquito protection.png' }
   ]);
   const [loading, setLoading] = useState(false);
 

@@ -33,8 +33,8 @@ const productSchema = new mongoose.Schema({
   images: {
     type: [{ type: String }],
     validate: [
-      (val) => Array.isArray(val) && val.length >= 1 && val.length <= 3,
-      'Products must have between 1 and 3 images.'
+      (val) => Array.isArray(val) && val.length >= 1 && val.length <= 6,
+      'Products must have between 1 and 6 images.'
     ]
   },
   seoTitle: { type: String, default: '' },

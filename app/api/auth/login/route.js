@@ -8,8 +8,8 @@ import bcrypt from 'bcryptjs';
 export const dynamic = 'force-dynamic';
 
 const memoryUsers = global.memoryUsers || [
-  { _id: 'u1', name: 'Rayyan Ansari', email: 'user@kickhomecare.com', password: 'user123', role: 'customer', phone: '03001234567' },
-  { _id: 'u2', name: 'Kick Admin', email: 'admin@kickhomecare.com', password: 'admin123', role: 'admin', phone: '03210009008' }
+  { _id: 'u1', name: 'Rayyan Ansari', email: 'user@kickhomecare.com', password: 'user123', role: 'customer', phone: '03001234567', emailVerified: true },
+  { _id: 'u2', name: 'Kick Admin', email: 'admin@kickhomecare.com', password: 'admin123', role: 'admin', phone: '03210009008', emailVerified: true }
 ];
 global.memoryUsers = memoryUsers;
 
@@ -32,7 +32,7 @@ export async function POST(req) {
       const user = await User.findOne({ email: cleanEmail });
       if (!user) {
         return NextResponse.json(
-          { success: false, message: 'No account found with this email. Please click "Create One" to register.' },
+          { success: false, message: 'No account found with this email. Please click "Create Account" to register.' },
           { status: 404 }
         );
       }
@@ -47,7 +47,69 @@ export async function POST(req) {
 
       if (user.isBlocked) {
         return NextResponse.json(
-          { success: false, message: 'Your account has been suspended' },
+          { success: false, message: 'Your account has been suspended. Please contact support.' },
+          { status: 403 }
+        );
+      }
+
+      // Check email verification (admin accounts bypass)
+      if (user.emailVerified === false && user.role !== 'admin') {
+        return NextResponse.json(
+          {
+            success: false,
+            requireVerification: true,
+            email: cleanEmail,
+            message: 'Please verify your email before logging in.'
+          },
+          { status: 403 }
+        );
+      }
+
+      const token = generateToken({ id: user._id, role: user.role });
+
+      return NextResponse.json({
+        success: true,
+        token,
+        user: {
+          _id: user._id,
+          name: user.fullName || user.name,
+          email: user.email,
+          role: user.role,
+          phone: user.phone,
+          emailVerified: user.emailVerified !== false,
+          addresses: user.addresses
+        }
+      });
+    } else {
+      // Memory Store Fallback
+      const user = memoryUsers.find(u => u.email === cleanEmail);
+      if (!user) {
+        return NextResponse.json(
+          { success: false, message: 'No account found with this email. Please click "Create Account" to register.' },
+          { status: 404 }
+        );
+      }
+
+      let isMatch = user.password === password;
+      if (!isMatch && user.password?.startsWith('$2')) {
+        isMatch = await bcrypt.compare(password, user.password);
+      }
+
+      if (!isMatch) {
+        return NextResponse.json(
+          { success: false, message: 'Incorrect password. Please try again.' },
+          { status: 401 }
+        );
+      }
+
+      if (user.emailVerified === false && user.role !== 'admin') {
+        return NextResponse.json(
+          {
+            success: false,
+            requireVerification: true,
+            email: cleanEmail,
+            message: 'Please verify your email before logging in.'
+          },
           { status: 403 }
         );
       }
@@ -62,43 +124,8 @@ export async function POST(req) {
           name: user.name,
           email: user.email,
           role: user.role,
-          phone: user.phone,
-          addresses: user.addresses
-        }
-      });
-    } else {
-      // Cloud Fallback Store
-      const user = memoryUsers.find(u => u.email === cleanEmail);
-      if (!user) {
-        return NextResponse.json(
-          { success: false, message: 'No account found with this email. Please click "Create One" to register.' },
-          { status: 404 }
-        );
-      }
-
-      let isMatch = user.password === password;
-      if (!isMatch && user.password.startsWith('$2')) {
-        isMatch = await bcrypt.compare(password, user.password);
-      }
-
-      if (!isMatch) {
-        return NextResponse.json(
-          { success: false, message: 'Incorrect password. Please try again.' },
-          { status: 401 }
-        );
-      }
-
-      const token = generateToken({ id: user._id, role: user.role });
-
-      return NextResponse.json({
-        success: true,
-        token,
-        user: {
-          _id: user._id,
-          name: user.name,
-          email: user.email,
-          role: user.role,
           phone: user.phone || '',
+          emailVerified: user.emailVerified !== false,
           addresses: user.addresses || []
         }
       });
@@ -111,4 +138,3 @@ export async function POST(req) {
     );
   }
 }
-

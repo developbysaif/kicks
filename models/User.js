@@ -31,6 +31,7 @@ const userSchema = new mongoose.Schema({
     index: true
   },
   emailVerified: { type: Boolean, default: false, index: true },
+  emailVerifiedAt: { type: Date, default: null },
   verificationCodeHash: { type: String, default: null },
   verificationCodeExpiresAt: { type: Date, default: null },
   verificationAttempts: { type: Number, default: 0 },
@@ -61,15 +62,23 @@ userSchema.virtual('password')
     this._rawPassword = rawPassword;
   });
 
+userSchema.pre('validate', async function (next) {
+  if (this._rawPassword && (!this.passwordHash || !this.passwordHash.startsWith('$2'))) {
+    const salt = await bcrypt.genSalt(10);
+    this.passwordHash = await bcrypt.hash(this._rawPassword, salt);
+  }
+  if (next) next();
+});
+
 userSchema.pre('save', async function (next) {
-  if (this._rawPassword) {
+  if (this._rawPassword && (!this.passwordHash || !this.passwordHash.startsWith('$2'))) {
     const salt = await bcrypt.genSalt(10);
     this.passwordHash = await bcrypt.hash(this._rawPassword, salt);
   } else if (this.isModified('passwordHash') && !this.passwordHash.startsWith('$2a$') && !this.passwordHash.startsWith('$2b$')) {
     const salt = await bcrypt.genSalt(10);
     this.passwordHash = await bcrypt.hash(this.passwordHash, salt);
   }
-  next();
+  if (next) next();
 });
 
 userSchema.methods.matchPassword = async function (enteredPassword) {
