@@ -27,15 +27,16 @@ function VerifyEmailContent() {
   const tokenParam = searchParams.get('token');
   const emailParam = searchParams.get('email') || '';
 
+  const redirectParam = searchParams.get('redirect') || searchParams.get('next') || '';
+
   // UI state
-  const [email, setEmail] = useState(emailParam);
+  const [email, setEmail] = useState('');
   const [otpCode, setOtpCode] = useState('');
   const [status, setStatus] = useState('input'); // 'input' | 'verifying' | 'success' | 'expired' | 'invalid'
   const [timerSeconds, setTimerSeconds] = useState(60);
   const [resending, setResending] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
-  const [devHintCode, setDevHintCode] = useState('');
 
   // 60-Second Countdown Timer
   useEffect(() => {
@@ -55,6 +56,9 @@ function VerifyEmailContent() {
     setErrorMsg('');
     const res = await verifyEmail(rawToken, email);
     if (res.success) {
+      if (typeof window !== 'undefined') {
+        sessionStorage.removeItem('kicks_verify_email');
+      }
       setStatus('success');
       setSuccessMsg('Email verified successfully! Your account is active.');
     } else {
@@ -69,7 +73,7 @@ function VerifyEmailContent() {
   }, [email, verifyEmail]);
 
   const executeVerification = React.useCallback(async (codeToVerify, emailToVerify) => {
-    const targetEmail = emailToVerify || email;
+    const targetEmail = (emailToVerify || email || (typeof window !== 'undefined' ? sessionStorage.getItem('kicks_verify_email') : '') || '').trim().toLowerCase();
     if (!targetEmail || !codeToVerify || codeToVerify.length !== 6) {
       setErrorMsg('Please enter your email and full 6-digit code.');
       return;
@@ -82,6 +86,9 @@ function VerifyEmailContent() {
     const res = await verifyOtp(targetEmail, codeToVerify, 'EMAIL_VERIFICATION');
 
     if (res.success) {
+      if (typeof window !== 'undefined') {
+        sessionStorage.removeItem('kicks_verify_email');
+      }
       setStatus('success');
       setSuccessMsg('Email verified successfully! Your account is active.');
     } else {
@@ -97,13 +104,20 @@ function VerifyEmailContent() {
 
   // Handle token or OTP passed via URL query
   useEffect(() => {
-    if (emailParam) setEmail(emailParam);
+    const storedEmail = typeof window !== 'undefined' ? sessionStorage.getItem('kicks_verify_email') : null;
+    const initialEmail = emailParam || storedEmail || '';
+    if (initialEmail) {
+      setEmail(initialEmail);
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('kicks_verify_email', initialEmail);
+      }
+    }
 
     if (tokenParam) {
       if (/^\d{6}$/.test(tokenParam.trim())) {
         setOtpCode(tokenParam.trim());
-        if (emailParam) {
-          executeVerification(tokenParam.trim(), emailParam);
+        if (initialEmail) {
+          executeVerification(tokenParam.trim(), initialEmail);
         }
       } else {
         // Legacy 64-char token link
@@ -119,7 +133,8 @@ function VerifyEmailContent() {
 
   const handleResend = async () => {
     if (timerSeconds > 0 || resending) return;
-    if (!email) {
+    const targetEmail = (email || (typeof window !== 'undefined' ? sessionStorage.getItem('kicks_verify_email') : '') || '').trim().toLowerCase();
+    if (!targetEmail) {
       setErrorMsg('Please enter your email address to receive a code.');
       return;
     }
@@ -128,16 +143,18 @@ function VerifyEmailContent() {
     setErrorMsg('');
     setSuccessMsg('');
 
-    const res = await resendOtp(email, 'EMAIL_VERIFICATION');
+    const res = await resendOtp(targetEmail, 'EMAIL_VERIFICATION');
     setResending(false);
 
     if (res.success) {
-      setSuccessMsg(res.message || 'A fresh 6-digit code has been sent!');
-      if (res.devCode) setDevHintCode(res.devCode);
+      setSuccessMsg(res.message || 'A fresh 6-digit code has been dispatched to your email!');
       setTimerSeconds(60);
       setOtpCode('');
       setStatus('input');
     } else {
+      if (res.retryAfter && res.retryAfter > 0) {
+        setTimerSeconds(res.retryAfter);
+      }
       setErrorMsg(res.message || 'Failed to resend code.');
     }
   };
@@ -212,15 +229,15 @@ function VerifyEmailContent() {
             {status === 'success' ? (
               <div className="mt-8 space-y-3">
                 <Link
-                  href="/dashboard"
+                  href={redirectParam || "/dashboard"}
                   className="w-full py-3.5 px-4 bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-lg shadow-red-600/25 transition flex items-center justify-center gap-2"
                 >
-                  Continue to Dashboard
+                  {redirectParam && redirectParam.includes('checkout') ? 'Proceed to Checkout' : 'Continue to Dashboard'}
                   <ArrowRight className="w-4 h-4" />
                 </Link>
 
                 <Link
-                  href="/loginb"
+                  href={redirectParam ? `/loginb?redirect=${encodeURIComponent(redirectParam)}` : "/loginb"}
                   className="block text-xs font-semibold text-slate-500 hover:text-slate-800 transition pt-2"
                 >
                   Go to Sign In

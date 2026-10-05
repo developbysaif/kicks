@@ -6,8 +6,10 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { ShoppingBag, Trash2, ArrowRight, Tag } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { useAuth } from '@/context/AuthContext';
 
 export default function CartPage() {
+  const { user } = useAuth();
   const {
     cartItems,
     updateQuantity,
@@ -146,7 +148,10 @@ export default function CartPage() {
                   {couponError && <p className="text-[11px] text-rose-500 font-medium mt-1">{couponError}</p>}
                 </div>
 
-                <Link href="/checkout" className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl text-xs font-bold shadow-md transition-all flex items-center justify-center space-x-2">
+                <Link
+                  href={user ? "/checkout" : "/loginb?redirect=/checkout"}
+                  className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl text-xs font-bold shadow-md transition-all flex items-center justify-center space-x-2"
+                >
                   <span>Proceed to Checkout</span>
                   <ArrowRight className="w-4 h-4" />
                 </Link>

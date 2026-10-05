@@ -55,18 +55,26 @@ function LoginBContent() {
   const [successMsg, setSuccessMsg] = useState('');
   const [devHintCode, setDevHintCode] = useState('');
 
-  // Check URL parameters on mount
+  // Check URL parameters & session storage on mount
+  const redirectParam = searchParams.get('redirect') || searchParams.get('next') || '';
+
   useEffect(() => {
     const tab = searchParams.get('tab');
     const emailParam = searchParams.get('email');
     const verifyParam = searchParams.get('verify');
+    const storedEmail = typeof window !== 'undefined' ? sessionStorage.getItem('kicks_verify_email') : null;
+    const storedView = typeof window !== 'undefined' ? sessionStorage.getItem('kicks_verify_view') : null;
 
-    if (emailParam) setEmail(emailParam);
+    const activeEmail = emailParam || storedEmail || '';
+    if (activeEmail) setEmail(activeEmail);
 
-    if (verifyParam === 'true' && emailParam) {
+    if (verifyParam === 'true' && activeEmail) {
       setView('verify-otp');
       setOtpPurpose('EMAIL_VERIFICATION');
       setTimerSeconds(60);
+    } else if (storedView === 'verify-otp' && activeEmail) {
+      setView('verify-otp');
+      setOtpPurpose('EMAIL_VERIFICATION');
     } else if (tab === 'register' || tab === 'signup') {
       setView('signup');
     } else if (tab === 'forgot') {
@@ -120,18 +128,28 @@ function LoginBContent() {
     setLoading(false);
 
     if (res.success) {
+      if (typeof window !== 'undefined') {
+        sessionStorage.removeItem('kicks_verify_email');
+        sessionStorage.removeItem('kicks_verify_view');
+      }
       setSuccessMsg('Signed in successfully! Redirecting...');
       setTimeout(() => {
-        if (res.user?.role === 'admin') {
+        if (redirectParam) {
+          router.push(redirectParam);
+        } else if (res.user?.role === 'admin') {
           router.push('/admin');
         } else {
           router.push('/dashboard');
         }
-      }, 600);
+      }, 500);
     } else if (res.requireVerification) {
       // Unverified account: Transition to OTP verification screen with fresh 60s timer
+      const cleanEmail = email.trim().toLowerCase();
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('kicks_verify_email', cleanEmail);
+        sessionStorage.setItem('kicks_verify_view', 'verify-otp');
+      }
       setErrorMsg(res.message || "Your email is not verified. We've sent a 6-digit verification code to your email.");
-      if (res.devCode) setDevHintCode(res.devCode);
       setOtpPurpose('EMAIL_VERIFICATION');
       setOtpCode('');
       setTimerSeconds(60);
@@ -160,12 +178,16 @@ function LoginBContent() {
       return;
     }
 
-    const res = await register(name, email, password, confirmPassword, phone);
+    const cleanEmail = email.trim().toLowerCase();
+    const res = await register(name, cleanEmail, password, confirmPassword, phone);
     setLoading(false);
 
     if (res.success) {
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('kicks_verify_email', cleanEmail);
+        sessionStorage.setItem('kicks_verify_view', 'verify-otp');
+      }
       setSuccessMsg(res.message || "We've sent a 6-digit verification code to your email.");
-      if (res.devCode) setDevHintCode(res.devCode);
       setOtpPurpose('EMAIL_VERIFICATION');
       setOtpCode('');
       setTimerSeconds(60);
@@ -183,19 +205,34 @@ function LoginBContent() {
       return;
     }
 
+    const activeEmail = email || (typeof window !== 'undefined' ? sessionStorage.getItem('kicks_verify_email') : '');
+    if (!activeEmail) {
+      setErrorMsg('Email address not found. Please re-enter your email.');
+      setView('signin');
+      return;
+    }
+
     setLoading(true);
     setErrorMsg('');
     setSuccessMsg('');
 
-    const res = await verifyOtp(email, otpCode, otpPurpose);
+    const res = await verifyOtp(activeEmail, otpCode, otpPurpose);
     setLoading(false);
 
     if (res.success) {
+      if (typeof window !== 'undefined') {
+        sessionStorage.removeItem('kicks_verify_email');
+        sessionStorage.removeItem('kicks_verify_view');
+      }
       if (otpPurpose === 'EMAIL_VERIFICATION' || otpPurpose === 'LOGIN_VERIFICATION') {
-        setSuccessMsg('Email verified successfully! Opening your dashboard...');
+        setSuccessMsg(redirectParam ? 'Email verified! Proceeding to checkout...' : 'Email verified successfully! Opening dashboard...');
         setTimeout(() => {
-          router.push('/dashboard');
-        }, 700);
+          if (redirectParam) {
+            router.push(redirectParam);
+          } else {
+            router.push('/dashboard');
+          }
+        }, 600);
       } else if (otpPurpose === 'PASSWORD_RESET') {
         setResetToken(res.resetToken || '');
         setSuccessMsg('Code verified! Please create your new password.');
@@ -212,19 +249,27 @@ function LoginBContent() {
   const handleResendOtp = async () => {
     if (timerSeconds > 0 || resending) return;
 
+    const activeEmail = email || (typeof window !== 'undefined' ? sessionStorage.getItem('kicks_verify_email') : '');
+    if (!activeEmail) {
+      setErrorMsg('Please provide your email address to receive a new code.');
+      return;
+    }
+
     setResending(true);
     setErrorMsg('');
     setSuccessMsg('');
 
-    const res = await resendOtp(email, otpPurpose);
+    const res = await resendOtp(activeEmail, otpPurpose);
     setResending(false);
 
     if (res.success) {
-      setSuccessMsg(res.message || 'A fresh 6-digit verification code has been sent!');
-      if (res.devCode) setDevHintCode(res.devCode);
+      setSuccessMsg(res.message || 'A fresh 6-digit verification code has been dispatched to your email!');
       setTimerSeconds(60);
       setOtpCode('');
     } else {
+      if (res.retryAfter && res.retryAfter > 0) {
+        setTimerSeconds(res.retryAfter);
+      }
       setErrorMsg(res.message || 'Failed to resend verification code.');
     }
   };
@@ -369,6 +414,14 @@ function LoginBContent() {
 
             {/* Body Form Area */}
             <div className="p-6 sm:p-8">
+
+              {/* Checkout Gate Notice */}
+              {redirectParam && redirectParam.includes('checkout') && (
+                <div className="mb-5 p-3.5 bg-amber-50 border border-amber-200/80 rounded-2xl flex items-center gap-3 text-amber-900 text-xs font-semibold">
+                  <span className="text-base">🛒</span>
+                  <span>Please sign in or create an account to proceed with your order checkout.</span>
+                </div>
+              )}
 
               {/* Alerts */}
               {errorMsg && (

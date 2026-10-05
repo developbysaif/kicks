@@ -4,8 +4,10 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { X, Trash2, ShoppingBag, ArrowRight, Tag } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { useAuth } from '@/context/AuthContext';
 
 const CartDrawer = () => {
+  const { user } = useAuth();
   const {
     cartItems,
     isDrawerOpen,
@@ -195,7 +197,7 @@ const CartDrawer = () => {
               {/* Action Buttons */}
               <div className="space-y-2 pt-2">
                 <Link
-                  href="/checkout"
+                  href={user ? "/checkout" : "/loginb?redirect=/checkout"}
                   onClick={() => setIsDrawerOpen(false)}
                   className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-md transition-all flex items-center justify-center space-x-2"
                 >

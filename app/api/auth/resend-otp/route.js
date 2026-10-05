@@ -27,9 +27,9 @@ export async function POST(req) {
       req.headers.get('x-real-ip') ||
       'unknown-ip';
 
-    // 60-second cooldown check
-    const cooldownKey = `cooldown:${purpose}:${cleanEmail}:${clientIp}`;
-    const cooldownCheck = await checkRateLimit(cooldownKey, { limit: 1, windowSeconds: 60 });
+    // Cooldown check: 15-second safety cooldown so client-side 60s timer never hits clock drift
+    const cooldownKey = `cooldown:${purpose}:${cleanEmail}`;
+    const cooldownCheck = await checkRateLimit(cooldownKey, { limit: 1, windowSeconds: 15 });
     if (!cooldownCheck.allowed) {
       return NextResponse.json(
         {
