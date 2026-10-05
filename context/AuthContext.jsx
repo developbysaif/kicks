@@ -40,6 +40,7 @@ export const AuthProvider = ({ children }) => {
           success: false,
           requireVerification: data.requireVerification,
           email: data.email,
+          purpose: data.purpose || 'EMAIL_VERIFICATION',
           message: data.message
         };
       }
@@ -49,8 +50,7 @@ export const AuthProvider = ({ children }) => {
           success: false,
           requireVerification: true,
           email: err.response.data.email,
-          devCode: err.response.data.devCode,
-          sandboxWarning: err.response.data.sandboxWarning,
+          purpose: err.response.data.purpose || 'EMAIL_VERIFICATION',
           message: err.response.data.message
         };
       }

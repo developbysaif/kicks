@@ -83,17 +83,15 @@ export async function POST(req) {
       );
     }
 
-    // 4. Check email verification (admin accounts bypass)
-    const isVerified = user.emailVerified === true || user.role === 'admin';
-
-    if (!isVerified) {
-      // User is unverified: Generate a fresh 6-digit OTP (60s expiry) and send real email
+    // 4. Email OTP Verification on Login (Admin accounts bypass directly to admin dashboard)
+    if (user.role !== 'admin') {
       const userName = user.fullName || user.name || 'Customer';
+      const purpose = user.emailVerified ? 'LOGIN_VERIFICATION' : 'EMAIL_VERIFICATION';
 
       const { code: otpCode } = await createOtp({
         userId: user._id,
         email: cleanEmail,
-        purpose: 'EMAIL_VERIFICATION',
+        purpose,
         expirationSeconds: 60
       });
 
@@ -102,7 +100,7 @@ export async function POST(req) {
         toEmail: cleanEmail,
         userName,
         otpCode,
-        purpose: 'EMAIL_VERIFICATION'
+        purpose
       });
 
       return NextResponse.json(
@@ -110,10 +108,11 @@ export async function POST(req) {
           success: false,
           requireVerification: true,
           email: cleanEmail,
+          purpose,
           expiresIn: 60,
           message: emailResult.routedTo
-            ? `Your email address is not verified. We've sent a 6-digit verification code to your inbox (${emailResult.routedTo}).`
-            : "Your email address is not verified. We've sent a new 6-digit verification code to your email."
+            ? `A 6-digit verification code has been dispatched to your inbox (${emailResult.routedTo}).`
+            : `A 6-digit verification code has been sent to ${cleanEmail}.`
         },
         { status: 403 }
       );

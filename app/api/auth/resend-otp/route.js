@@ -81,13 +81,10 @@ export async function POST(req) {
       );
     }
 
-    if (purpose === 'EMAIL_VERIFICATION' && user.emailVerified) {
-      return NextResponse.json({
-        success: true,
-        alreadyVerified: true,
-        message: 'Your email address is already verified. You can sign in directly.'
-      });
-    }
+    // If user is already verified and requesting a code, use LOGIN_VERIFICATION so they receive their code
+    const activePurpose = (purpose === 'EMAIL_VERIFICATION' && user.emailVerified)
+      ? 'LOGIN_VERIFICATION'
+      : purpose;
 
     const userName = user.fullName || user.name || 'Customer';
 
@@ -95,7 +92,7 @@ export async function POST(req) {
     const { code: otpCode } = await createOtp({
       userId: user._id,
       email: cleanEmail,
-      purpose,
+      purpose: activePurpose,
       expirationSeconds: 60
     });
 
@@ -104,7 +101,7 @@ export async function POST(req) {
       toEmail: cleanEmail,
       userName,
       otpCode,
-      purpose
+      purpose: activePurpose
     });
 
     if (!emailResult.success) {
