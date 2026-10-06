@@ -97,7 +97,7 @@ const PRODUCTS_DATA = [
     numReviews: 114,
     volume: '200ml Active Pump',
     shortDescription: 'Ready-to-use self-foaming solution that breaks down stubborn street grime, dirt, and coffee stains effortlessly.',
-    images: ['/shoe-care-hero.jpg', '/Shoe Care.png'],
+    images: ['/Shoe Care.png', '/shoe-care-hero.jpg'],
     isFeatured: true,
     isBestSeller: false,
     badge: '-10% OFF'
@@ -116,7 +116,7 @@ const PRODUCTS_DATA = [
     numReviews: 93,
     volume: '250ml Aerosol',
     shortDescription: 'Breathable nano-coating barrier repelling liquids, rainwater, road slush, and dust for up to 4 weeks.',
-    images: ['/shoe-care-hero.jpg', '/Shoe Care.png'],
+    images: ['/Shoe Care.png', '/shoe-care-hero.jpg'],
     isFeatured: true,
     isBestSeller: true,
     badge: 'POPULAR'
@@ -154,7 +154,7 @@ const PRODUCTS_DATA = [
     numReviews: 78,
     volume: '150ml Mist Spray',
     shortDescription: 'Botanical tea tree & eucalyptus formula neutralizes microbial odors at the source for round-the-clock fresh footwear.',
-    images: ['/shoe-care-hero.jpg', '/Shoe Care.png'],
+    images: ['/Shoe Care.png', '/shoe-care-hero.jpg'],
     isFeatured: false,
     isBestSeller: false,
     badge: 'FRESH'
@@ -794,10 +794,10 @@ export default function ShoeCareClient() {
                         className="bg-white rounded-3xl border border-slate-200/80 p-4 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between relative group"
                       >
                         {/* Image Container with Badges */}
-                        <div className="relative aspect-square w-full rounded-2xl bg-[#f9f9f9] p-3 mb-4 flex items-center justify-center overflow-hidden border border-slate-100">
+                        <div className="relative aspect-square w-full rounded-2xl bg-gray-50 mb-4 flex items-center justify-center overflow-hidden border border-slate-100">
                           
                           {/* Badges Top Left */}
-                          <div className="absolute top-2.5 left-2.5 z-10 flex flex-col gap-1">
+                          <div className="absolute top-3 left-3 z-10 flex flex-col gap-1">
                             {product.badge && (
                               <span className="px-2.5 py-1 bg-[#D0161D] text-white text-[10px] font-black rounded-lg shadow-xs tracking-wider uppercase">
                                 {product.badge}
@@ -811,7 +811,7 @@ export default function ShoeCareClient() {
                           </div>
 
                           {/* Action Buttons Top Right */}
-                          <div className="absolute top-2.5 right-2.5 z-10 flex flex-col space-y-1.5 opacity-90 group-hover:opacity-100 transition-opacity">
+                          <div className="absolute top-3 right-3 z-10 flex flex-col space-y-1.5 opacity-90 group-hover:opacity-100 transition-opacity">
                             <button
                               onClick={() => toggleWishlist(product)}
                               className={`p-2 rounded-full shadow-sm transition-colors ${
@@ -839,15 +839,17 @@ export default function ShoeCareClient() {
                             </button>
                           </div>
 
-                          {/* Product Image */}
-                          <motion.img
-                            whileHover={{ scale: 1.08 }}
-                            transition={{ duration: 0.3 }}
-                            src={product.images[0]}
-                            alt={product.name}
-                            className="max-h-full max-w-full object-contain"
-                            loading="lazy"
-                          />
+                          {/* Product Image Link */}
+                          <Link href={`/product/${product.slug}`} className="block w-full h-full">
+                            <motion.img
+                              whileHover={{ scale: 1.06 }}
+                              transition={{ duration: 0.3 }}
+                              src={product.images[0]}
+                              alt={product.name}
+                              className="w-full h-full object-cover"
+                              loading="lazy"
+                            />
+                          </Link>
                         </div>
 
                         {/* Product Details */}
