@@ -618,11 +618,11 @@ export default function HomePage() {
             <div>
               <div className="flex items-center space-x-2">
                 <span className="w-1.5 h-6 bg-red-600 rounded-full"></span>
-                <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+                <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
                   Shop By Category
                 </h2>
               </div>
-              <p className="text-xs text-slate-500 mt-1 font-medium">
+              <p className="text-xs sm:text-sm text-slate-500 mt-1 font-medium">
                 Find the right products for every corner of your home.
               </p>
             </div>
@@ -659,10 +659,10 @@ export default function HomePage() {
                   </div>
 
                   <div>
-                    <h3 className="text-xs font-bold text-slate-900 group-hover:text-red-600 transition-colors">
+                    <h3 className="text-sm sm:text-base font-black text-slate-900 group-hover:text-red-600 transition-colors leading-snug">
                       {cat.name}
                     </h3>
-                    <div className="flex items-center justify-between mt-1 text-[11px] text-slate-400 font-medium">
+                    <div className="flex items-center justify-between mt-1.5 text-xs text-slate-500 font-medium">
                       <span>{cat.count}</span>
                       <span className="text-red-600 font-bold group-hover:translate-x-1 transition-transform">→</span>
                     </div>
