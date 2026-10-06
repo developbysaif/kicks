@@ -90,8 +90,8 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="text-gray-400 hover:text-red-500 transition-colors">
-                  Returns
+                <Link href="/refund-policy" className="text-gray-400 hover:text-red-500 transition-colors">
+                  Returns & Refunds
                 </Link>
               </li>
             </ul>
@@ -178,7 +178,7 @@ const Footer = () => {
               Terms & Conditions
             </Link>
             <span>|</span>
-            <Link href="/contact" className="hover:text-gray-300 transition-colors">
+            <Link href="/refund-policy" className="hover:text-gray-300 transition-colors">
               Refund Policy
             </Link>
           </div>
