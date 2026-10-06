@@ -710,42 +710,25 @@ export default function HomePage() {
         </section>
 
         {/* 4. ALL KICK PRODUCTS SECTION */}
-        <section className="space-y-6 pt-2">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-            <div>
-              <div className="flex items-center space-x-2">
-                <span className="w-1.5 h-6 bg-red-600 rounded-full"></span>
-                <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-3">
-                  <span>All Kick Products</span>
-                  <span className="text-xs font-bold px-2.5 py-0.5 bg-red-50 text-red-600 rounded-full border border-red-100">
-                    {filteredProducts.length} Items
-                  </span>
-                </h2>
-              </div>
-              <p className="text-xs sm:text-sm text-slate-500 mt-1 font-medium">
-                Complete range of authentic shoe care and home hygiene formulations.
-              </p>
-            </div>
-
-            {/* Category Filter Pills */}
-            <div className="flex flex-wrap items-center gap-2">
-              {FILTER_TABS.map((tab) => {
-                const isActive = selectedCategory === tab.slug;
-                return (
-                  <button
-                    key={tab.slug}
-                    onClick={() => setSelectedCategory(tab.slug)}
-                    className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
-                      isActive
-                        ? 'bg-red-600 text-white shadow-sm shadow-red-600/30'
-                        : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
-                    }`}
-                  >
-                    {tab.label}
-                  </button>
-                );
-              })}
-            </div>
+        <section className="space-y-6">
+          {/* Category Filter Pills */}
+          <div className="flex flex-wrap items-center gap-2">
+            {FILTER_TABS.map((tab) => {
+              const isActive = selectedCategory === tab.slug;
+              return (
+                <button
+                  key={tab.slug}
+                  onClick={() => setSelectedCategory(tab.slug)}
+                  className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
+                    isActive
+                      ? 'bg-red-600 text-white shadow-sm shadow-red-600/30'
+                      : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              );
+            })}
           </div>
 
           {/* Grid of All Products */}
