@@ -361,7 +361,7 @@ function LoginBContent() {
               <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-red-500/15 rounded-full blur-xl pointer-events-none" />
 
               {/* Kicks Logo & Brand Text */}
-              <div className="relative flex flex-col items-center justify-center mb-5">
+              <div className="relative flex flex-col items-center justify-center mb-3">
                 <Link href="/" className="inline-flex flex-col items-center group focus:outline-none" title="Kicks Home Care">
                   <div className="bg-white px-5 py-2.5 rounded-2xl shadow-lg shadow-black/25 ring-4 ring-white/10 group-hover:scale-105 transition-transform duration-200">
                     <img
@@ -376,27 +376,28 @@ function LoginBContent() {
                 </Link>
               </div>
 
-              <h1 className="text-2xl font-black tracking-tight text-white">
-                {view === 'signin' && 'Welcome Back'}
-                {view === 'signup' && 'Create an Account'}
-                {view === 'verify-otp' && 'Verify Your Email'}
-                {view === 'forgot-email' && 'Forgot Password'}
-                {view === 'forgot-otp' && 'Enter Reset Code'}
-                {view === 'forgot-newpass' && 'Create New Password'}
-              </h1>
+              {/* Title Section (Verification & Reset flows only) */}
+              {view !== 'signin' && view !== 'signup' && (
+                <div className="mt-2">
+                  <h1 className="text-2xl font-black tracking-tight text-white">
+                    {view === 'verify-otp' && 'Verify Your Email'}
+                    {view === 'forgot-email' && 'Forgot Password'}
+                    {view === 'forgot-otp' && 'Enter Reset Code'}
+                    {view === 'forgot-newpass' && 'Create New Password'}
+                  </h1>
 
-              <p className="mt-1.5 text-xs text-slate-300 font-medium">
-                {view === 'signin' && 'Sign in to access your orders, wishlist & dashboard'}
-                {view === 'signup' && 'Join Kicks to experience premium shoe & home care'}
-                {view === 'verify-otp' && 'Enter the 6-digit code sent to your email'}
-                {view === 'forgot-email' && "We'll send a 60-second verification code to your email"}
-                {view === 'forgot-otp' && 'Enter the 6-digit code to reset your password'}
-                {view === 'forgot-newpass' && 'Set a strong new password for your account'}
-              </p>
+                  <p className="mt-1.5 text-xs text-slate-300 font-medium">
+                    {view === 'verify-otp' && 'Enter the 6-digit code sent to your email'}
+                    {view === 'forgot-email' && "We'll send a 60-second verification code to your email"}
+                    {view === 'forgot-otp' && 'Enter the 6-digit code to reset your password'}
+                    {view === 'forgot-newpass' && 'Set a strong new password for your account'}
+                  </p>
+                </div>
+              )}
 
               {/* Mode Switch Tabs (Only on Sign In / Sign Up) */}
               {(view === 'signin' || view === 'signup') && (
-                <div className="mt-6 p-1 bg-white/10 backdrop-blur-md rounded-2xl flex items-center">
+                <div className="mt-4 p-1 bg-white/10 backdrop-blur-md rounded-2xl flex items-center">
                   <button
                     type="button"
                     onClick={() => {
