@@ -18,23 +18,31 @@ const productSchema = new mongoose.Schema({
   name: { type: String, required: true, trim: true },
   slug: { type: String, required: true, unique: true, lowercase: true, trim: true, index: true },
   categoryId: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true, index: true },
+  subcategoryId: { type: mongoose.Schema.Types.ObjectId, ref: 'Subcategory', default: null, index: true },
+  brand: { type: String, default: 'Kick Home Care', trim: true },
   shortDescription: { type: String, default: '' },
   description: { type: String, required: true },
   price: { type: Number, required: true, min: 0, index: true },
   compareAtPrice: { type: Number, default: null },
+  costPrice: { type: Number, default: null },
   sizeLabel: { type: String, default: '' },
   variants: [variantGroupSchema],
   stock: { type: Number, required: true, default: 0, min: 0 },
   sku: { type: String, required: true, unique: true, uppercase: true, trim: true, index: true },
+  trackInventory: { type: Boolean, default: true },
+  allowBackorders: { type: Boolean, default: false },
   isFeatured: { type: Boolean, default: false, index: true },
   isActive: { type: Boolean, default: true, index: true },
+  status: { type: String, enum: ['published', 'draft', 'archived'], default: 'published', index: true },
+  tags: [{ type: String, trim: true }],
+  collections: [{ type: String, trim: true }],
   ratingAvg: { type: Number, default: 5.0, min: 0, max: 5, index: true },
   ratingCount: { type: Number, default: 0, min: 0 },
   images: {
     type: [{ type: String }],
     validate: [
-      (val) => Array.isArray(val) && val.length >= 1 && val.length <= 6,
-      'Products must have between 1 and 6 images.'
+      (val) => Array.isArray(val) && val.length >= 1 && val.length <= 8,
+      'Products must have between 1 and 8 images.'
     ]
   },
   seoTitle: { type: String, default: '' },
@@ -52,6 +60,22 @@ productSchema.virtual('category')
   })
   .set(function (v) {
     this.categoryId = v;
+  });
+
+productSchema.virtual('subcategory')
+  .get(function () {
+    return this.subcategoryId;
+  })
+  .set(function (v) {
+    this.subcategoryId = v;
+  });
+
+productSchema.virtual('stockQuantity')
+  .get(function () {
+    return this.stock;
+  })
+  .set(function (v) {
+    this.stock = v;
   });
 
 productSchema.virtual('rating')

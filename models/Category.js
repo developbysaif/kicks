@@ -7,7 +7,10 @@ const categorySchema = new mongoose.Schema({
   imageUrl: { type: String, default: '' },
   bannerUrl: { type: String, default: '' },
   sortOrder: { type: Number, default: 0, index: true },
-  isActive: { type: Boolean, default: true, index: true }
+  isActive: { type: Boolean, default: true, index: true },
+  status: { type: String, enum: ['published', 'draft', 'archived'], default: 'published', index: true },
+  seoTitle: { type: String, default: '' },
+  seoDescription: { type: String, default: '' }
 }, {
   timestamps: true,
   toJSON: { virtuals: true },

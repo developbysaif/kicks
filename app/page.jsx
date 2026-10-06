@@ -64,305 +64,6 @@ const HERO_SLIDES = [
   }
 ];
 
-const CATEGORIES_DATA = [
-  {
-    name: 'Shoe Care',
-    slug: 'shoe-care',
-    count: '12 Products',
-    image: '/Shoe Care.png',
-    bgColor: 'bg-amber-50/50',
-    borderColor: 'border-amber-100'
-  },
-  {
-    name: 'Laundry Care',
-    slug: 'laundry-care',
-    count: '10 Products',
-    image: '/laundry Care.png',
-    bgColor: 'bg-blue-50/50',
-    borderColor: 'border-blue-100'
-  },
-  {
-    name: 'Home Cleaning',
-    slug: 'home-cleaning',
-    count: '15 Products',
-    image: '/Home Cleaning.png',
-    bgColor: 'bg-emerald-50/50',
-    borderColor: 'border-emerald-100'
-  },
-  {
-    name: 'Dish Care',
-    slug: 'dish-care',
-    count: '8 Products',
-    image: '/dish care.png',
-    bgColor: 'bg-teal-50/50',
-    borderColor: 'border-teal-100'
-  },
-  {
-    name: 'Washroom Cleaning',
-    slug: 'washroom-cleaning',
-    count: '6 Products',
-    image: '/washroom cleaning.png',
-    bgColor: 'bg-slate-50',
-    borderColor: 'border-slate-200'
-  },
-  {
-    name: 'Mosquito Protection',
-    slug: 'mosquito-protection',
-    count: '5 Products',
-    image: '/mosquito protection.png',
-    bgColor: 'bg-purple-50/50',
-    borderColor: 'border-purple-100'
-  }
-];
-
-const ALL_CATALOG_PRODUCTS = [
-  {
-    _id: 'p1',
-    name: 'Kick Bleach Liquid Ultra Clean',
-    slug: 'kick-bleach-liquid',
-    category: { name: 'Laundry Care', slug: 'laundry-care' },
-    price: 500,
-    salePrice: 425,
-    rating: 5.0,
-    numReviews: 499,
-    volume: '1 Litre',
-    images: ['/whitner bleach.png', '/laundry Care.png'],
-    isFeatured: true
-  },
-  {
-    _id: 'p2',
-    name: 'Kick Whitner Bleach Liquid 500ml',
-    slug: 'kick-whitner-bleach-500ml',
-    category: { name: 'Laundry Care', slug: 'laundry-care' },
-    price: 250,
-    salePrice: 220,
-    rating: 4.9,
-    numReviews: 140,
-    volume: '500ml',
-    images: ['/laundry Care.png', '/whitner bleach.png'],
-    isFeatured: true
-  },
-  {
-    _id: 'p3',
-    name: 'Kick Dishwash Liquid',
-    slug: 'kick-dishwash-liquid',
-    category: { name: 'Dish Care', slug: 'dish-care' },
-    price: 350,
-    salePrice: 315,
-    rating: 5.0,
-    numReviews: 156,
-    volume: '500ml',
-    images: ['/dish wash liquid.png', '/dish care.png'],
-    isFeatured: true
-  },
-  {
-    _id: 'p4',
-    name: 'Kick Dishwash Liquid One-Kick Drop 1 Litre',
-    slug: 'kick-dishwash-liquid-1l',
-    category: { name: 'Dish Care', slug: 'dish-care' },
-    price: 490,
-    salePrice: 430,
-    rating: 5.0,
-    numReviews: 320,
-    volume: '1 Litre',
-    images: ['/dish care.png', '/dish wash liquid.png'],
-    isFeatured: false
-  },
-  {
-    _id: 'p5',
-    name: 'Kick White Sneaker Cleaner',
-    slug: 'kick-white-sneaker-cleaner',
-    category: { name: 'Shoe Care', slug: 'shoe-care' },
-    price: 420,
-    salePrice: 380,
-    rating: 5.0,
-    numReviews: 82,
-    volume: '500ml',
-    images: ['/Shoe Care.png'],
-    isFeatured: true
-  },
-  {
-    _id: 'p6',
-    name: 'Liquid Shoe Polish',
-    slug: 'liquid-shoe-polish',
-    category: { name: 'Shoe Care', slug: 'shoe-care' },
-    price: 520,
-    salePrice: 0,
-    rating: 5.0,
-    numReviews: 72,
-    volume: 'Black / Brown / Neutral',
-    hasVariants: true,
-    images: ['/liquid shoe polish.png'],
-    isFeatured: true
-  },
-  {
-    _id: 'p7',
-    name: 'Kick Active Foam Sneaker Cleanser',
-    slug: 'kick-active-foam-sneaker-cleanser',
-    category: { name: 'Shoe Care', slug: 'shoe-care' },
-    price: 490,
-    salePrice: 440,
-    rating: 4.9,
-    numReviews: 114,
-    volume: '200ml Active Pump',
-    images: ['/Shoe Care.png'],
-    isFeatured: true
-  },
-  {
-    _id: 'p8',
-    name: 'Kick Hydrophobic Shield Rain & Stain Protector',
-    slug: 'kick-hydrophobic-shield-protector',
-    category: { name: 'Shoe Care', slug: 'shoe-care' },
-    price: 650,
-    salePrice: 590,
-    rating: 4.9,
-    numReviews: 93,
-    volume: '250ml Aerosol',
-    images: ['/Shoe Care.png'],
-    isFeatured: true
-  },
-  {
-    _id: 'p9',
-    name: 'Kick Ergonomic 100% Horsehair Shoe Brush',
-    slug: 'kick-ergonomic-horsehair-shoe-brush',
-    category: { name: 'Shoe Care', slug: 'shoe-care' },
-    price: 320,
-    salePrice: 280,
-    rating: 4.8,
-    numReviews: 64,
-    volume: 'Hardwood Handle',
-    images: ['/Shoe Care.png'],
-    isFeatured: false
-  },
-  {
-    _id: 'p10',
-    name: 'Kick Fresh Shoe & Sneaker Deodorizer Spray',
-    slug: 'kick-fresh-shoe-deodorizer-spray',
-    category: { name: 'Shoe Care', slug: 'shoe-care' },
-    price: 380,
-    salePrice: 340,
-    rating: 4.9,
-    numReviews: 78,
-    volume: '150ml Mist Spray',
-    images: ['/Shoe Care.png'],
-    isFeatured: false
-  },
-  {
-    _id: 'p11',
-    name: 'Kick Super Wax Shoe Polish Tin 50g',
-    slug: 'kick-super-wax-shoe-polish-tin',
-    category: { name: 'Shoe Care', slug: 'shoe-care' },
-    price: 240,
-    salePrice: 220,
-    rating: 4.9,
-    numReviews: 152,
-    volume: '50g Metal Tin',
-    images: ['/Shoe Care.png'],
-    isFeatured: false
-  },
-  {
-    _id: 'p12',
-    name: 'Kick Instant Shoe Shiner Sponge',
-    slug: 'kick-instant-shoe-shiner-sponge',
-    category: { name: 'Shoe Care', slug: 'shoe-care' },
-    price: 220,
-    salePrice: 200,
-    rating: 4.9,
-    numReviews: 96,
-    volume: 'Travel Sponge',
-    images: ['/Shoe Care.png'],
-    isFeatured: false
-  },
-  {
-    _id: 'p13',
-    name: 'Kick Perfumed White Phenyle 2.75L',
-    slug: 'kick-perfumed-white-phenyle',
-    category: { name: 'Home Cleaning', slug: 'home-cleaning' },
-    price: 650,
-    salePrice: 580,
-    rating: 5.0,
-    numReviews: 210,
-    volume: '2.75 Litre Bottle',
-    images: ['/Home Cleaning.png', '/Phenyle.jpg.jpeg'],
-    isFeatured: true
-  },
-  {
-    _id: 'p14',
-    name: 'Kick Surface Cleaner Floor Mop Liquid',
-    slug: 'kick-surface-cleaner-liquid',
-    category: { name: 'Home Cleaning', slug: 'home-cleaning' },
-    price: 380,
-    salePrice: 340,
-    rating: 4.9,
-    numReviews: 95,
-    volume: '1 Litre',
-    images: ['/Home Cleaning.png'],
-    isFeatured: true
-  },
-  {
-    _id: 'p15',
-    name: 'Kick Drain Opener Fast Acting 1 Litre',
-    slug: 'kick-drain-opener',
-    category: { name: 'Washroom Cleaning', slug: 'washroom-cleaning' },
-    price: 520,
-    salePrice: 0,
-    rating: 5.0,
-    numReviews: 170,
-    volume: '1 Litre',
-    images: ['/kick drain opener.png', '/washroom cleaning.png'],
-    isFeatured: true
-  },
-  {
-    _id: 'p16',
-    name: 'Kick 10X Bathroom & Toilet Power Cleaner',
-    slug: 'kick-toilet-bathroom-cleaner',
-    category: { name: 'Washroom Cleaning', slug: 'washroom-cleaning' },
-    price: 450,
-    salePrice: 390,
-    rating: 4.9,
-    numReviews: 112,
-    volume: '500ml Angled Nozzle',
-    images: ['/washroom cleaning.png', '/kick drain opener.png'],
-    isFeatured: true
-  },
-  {
-    _id: 'p17',
-    name: 'Kick Mosquit Advance Liquid Machine + Refill',
-    slug: 'kick-mosquito-advance-machine-refill',
-    category: { name: 'Mosquito Protection', slug: 'mosquito-protection' },
-    price: 680,
-    salePrice: 0,
-    rating: 5.0,
-    numReviews: 203,
-    volume: '45ml (60 Nights)',
-    images: ['/mosquito protection.png'],
-    isFeatured: true
-  },
-  {
-    _id: 'p18',
-    name: 'Kick Mosquit Repellent Aerosol Spray 300ml',
-    slug: 'kick-mosquito-spray-300ml',
-    category: { name: 'Mosquito Protection', slug: 'mosquito-protection' },
-    price: 550,
-    salePrice: 480,
-    rating: 4.9,
-    numReviews: 88,
-    volume: '300ml Can',
-    images: ['/mosquito protection.png'],
-    isFeatured: true
-  }
-];
-
-const FILTER_TABS = [
-  { label: 'All Products', slug: 'all' },
-  { label: 'Shoe Care', slug: 'shoe-care' },
-  { label: 'Laundry Care', slug: 'laundry-care' },
-  { label: 'Home Cleaning', slug: 'home-cleaning' },
-  { label: 'Dish Care', slug: 'dish-care' },
-  { label: 'Washroom Cleaning', slug: 'washroom-cleaning' },
-  { label: 'Mosquito Protection', slug: 'mosquito-protection' }
-];
-
 const TESTIMONIALS = [
   {
     initials: 'AK',
@@ -385,7 +86,9 @@ const TESTIMONIALS = [
 ];
 
 export default function HomePage() {
-  const [products, setProducts] = useState(ALL_CATALOG_PRODUCTS);
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [loadingProducts, setLoadingProducts] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const [quickViewProduct, setQuickViewProduct] = useState(null);
@@ -402,17 +105,28 @@ export default function HomePage() {
   };
 
   useEffect(() => {
-    fetchProducts();
+    fetchInitialData();
   }, []);
 
-  const fetchProducts = async () => {
+  const fetchInitialData = async () => {
     try {
-      const { data } = await axios.get('/api/products');
-      if (data.success && Array.isArray(data.products) && data.products.length > 0) {
-        setProducts(data.products);
+      setLoadingProducts(true);
+      const [prodRes, catRes] = await Promise.all([
+        axios.get('/api/products').catch(() => null),
+        axios.get('/api/categories').catch(() => null)
+      ]);
+
+      if (prodRes?.data?.success && Array.isArray(prodRes.data.products)) {
+        setProducts(prodRes.data.products);
+      }
+
+      if (catRes?.data?.success && Array.isArray(catRes.data.categories)) {
+        setCategories(catRes.data.categories);
       }
     } catch (err) {
-      console.warn('Using fallback catalog products:', err);
+      console.error('Error fetching homepage live catalog:', err);
+    } finally {
+      setLoadingProducts(false);
     }
   };
 
@@ -433,14 +147,16 @@ export default function HomePage() {
     ? products.filter((p) => p.isFeatured).slice(0, 4)
     : products.slice(0, 4);
 
+  const filterTabs = [
+    { label: 'All Products', slug: 'all' },
+    ...categories.map((c) => ({ label: c.name, slug: c.slug }))
+  ];
+
   const filteredProducts = selectedCategory === 'all'
     ? products
     : products.filter((prod) => {
-        const catSlug = prod.category?.slug || '';
-        const catName = (prod.category?.name || '').toLowerCase();
-        if (selectedCategory === 'washroom-cleaning') {
-          return catSlug === 'washroom-cleaning' || catSlug === 'drain-care' || catName.includes('washroom') || catName.includes('drain');
-        }
+        const catSlug = prod.categoryId?.slug || prod.category?.slug || (typeof prod.category === 'string' ? prod.category : '');
+        const catName = (prod.categoryId?.name || prod.category?.name || '').toLowerCase();
         return catSlug === selectedCategory || catName.replace(/\s+/g, '-').includes(selectedCategory);
       });
 
@@ -634,23 +350,23 @@ export default function HomePage() {
           </Link>
         </div>
 
-        {/* 6 Category Cards — Clean White Cards on Red */}
+        {/* Category Cards — Clean White Cards on Red */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-          {CATEGORIES_DATA.map((cat) => (
+          {categories.map((cat) => (
             <motion.div
               key={cat.slug}
               whileHover={{ y: -5 }}
               transition={{ duration: 0.2 }}
             >
               <Link
-                href={`/category/${cat.slug}`}
+                href={cat.slug === 'shoe-care' ? '/shop/shoe-care' : `/category/${cat.slug}`}
                 className="group p-3.5 sm:p-4 rounded-2xl bg-white hover:bg-slate-50 border border-white/40 shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col justify-between relative overflow-hidden block h-full"
               >
                 <div className="aspect-square w-full rounded-xl overflow-hidden mb-3 bg-slate-50 border border-slate-100">
                   <motion.img
                     whileHover={{ scale: 1.1 }}
                     transition={{ duration: 0.3 }}
-                    src={cat.image}
+                    src={cat.image || '/Shoe Care.png'}
                     alt={cat.name}
                     className="w-full h-full object-cover"
                   />
@@ -661,7 +377,7 @@ export default function HomePage() {
                     {cat.name}
                   </h3>
                   <div className="flex items-center justify-between mt-1.5 text-xs text-black/70 font-bold">
-                    <span>{cat.count}</span>
+                    <span>{cat.productCount ? `${cat.productCount} Products` : 'Explore'}</span>
                     <span className="text-black font-black group-hover:translate-x-1 transition-transform">→</span>
                   </div>
                 </div>
@@ -733,7 +449,7 @@ export default function HomePage() {
 
         {/* Category Filter Pills on Red */}
         <div className="flex flex-wrap items-center gap-2 mb-8">
-          {FILTER_TABS.map((tab) => {
+          {filterTabs.map((tab) => {
             const isActive = selectedCategory === tab.slug;
             return (
               <button
@@ -752,15 +468,32 @@ export default function HomePage() {
         </div>
 
         {/* Grid of All Products — White Cards on Red */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {filteredProducts.map((prod) => (
-            <ProductCard
-              key={prod._id || prod.slug}
-              product={prod}
-              onQuickView={(p) => setQuickViewProduct(p)}
-            />
-          ))}
-        </div>
+        {loadingProducts ? (
+          <div className="text-center py-16 text-white font-bold text-sm">
+            Loading products...
+          </div>
+        ) : filteredProducts.length === 0 ? (
+          <div className="bg-white rounded-3xl p-12 text-center border border-white/20 shadow-xl max-w-lg mx-auto">
+            <p className="text-base font-bold text-slate-800">No products found in this category.</p>
+            <p className="text-xs text-slate-500 mt-1">Please check back soon or browse our other categories.</p>
+            <button
+              onClick={() => setSelectedCategory('all')}
+              className="mt-4 px-5 py-2.5 bg-[#D0161D] text-white text-xs font-bold rounded-xl shadow-sm hover:bg-red-800 transition"
+            >
+              View All Products
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {filteredProducts.map((prod) => (
+              <ProductCard
+                key={prod._id || prod.slug}
+                product={prod}
+                onQuickView={(p) => setQuickViewProduct(p)}
+              />
+            ))}
+          </div>
+        )}
       </PageSection>
 
       {/* 5. WHY CHOOSE US & WHAT OUR CUSTOMERS SAY — WHITE */}

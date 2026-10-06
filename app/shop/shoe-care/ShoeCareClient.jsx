@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
+import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Sparkles,
@@ -22,7 +23,8 @@ import {
   SlidersHorizontal,
   RotateCcw,
   Zap,
-  Info
+  Info,
+  Loader2
 } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -30,174 +32,6 @@ import QuickViewModal from '@/components/QuickViewModal';
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
 import { useCompare } from '@/context/CompareContext';
-
-// Color palette constants for strict adherence
-// Primary: #1F3A5F | Secondary: #2E7D6B | Background: #F7F8F6 | Accent: #F4B942 | Text: #1E293B
-
-const SUB_CATEGORIES = [
-  { id: 'all', name: 'All Products', count: 8, icon: '✨' },
-  { id: 'cleaners', name: 'Shoe Cleaners', count: 3, icon: '🧼', desc: 'Foam & liquid cleansers for instant grime removal' },
-  { id: 'sneaker-care', name: 'Sneaker Care', count: 2, icon: '👟', desc: 'Specialized whiteners & sole scrub formulations' },
-  { id: 'leather-care', name: 'Leather Care', count: 3, icon: '👞', desc: 'Nourishing wax creams and high-gloss polish' },
-  { id: 'protectors', name: 'Shoe Protectors', count: 1, icon: '🛡️', desc: 'Hydrophobic nano-coatings against rain and stains' },
-  { id: 'brushes', name: 'Cleaning Brushes', count: 1, icon: '🪥', desc: 'Ergonomic horsehair & synthetic bristle tools' },
-  { id: 'fresheners', name: 'Shoe Fresheners', count: 1, icon: '🌿', desc: 'Active antibacterial deodorizer sprays' }
-];
-
-const PRODUCTS_DATA = [
-  {
-    _id: 'sc-1',
-    name: 'Kick Whito - White Sneaker & Joggers Cleaner',
-    slug: 'kick-whito-white-sneaker-cleaner',
-    categoryType: 'sneaker-care',
-    material: 'Sneaker / Canvas',
-    brand: 'Kick Home Care',
-    inStock: true,
-    price: 420,
-    salePrice: 380,
-    rating: 5.0,
-    numReviews: 82,
-    volume: '500ml Applicator',
-    shortDescription: 'Restores brilliant optic white glow to midsoles, rubber caps, and sports canvas with built-in sponge.',
-    images: ['/Shoe Care.png', '/promo-shoe.jpg'],
-    isFeatured: true,
-    isBestSeller: true,
-    badge: '-10% OFF'
-  },
-  {
-    _id: 'sc-2',
-    name: 'Kick Super Liquid Shoe Polish (Black / Brown / Neutral)',
-    slug: 'kick-super-liquid-shoe-polish',
-    categoryType: 'leather-care',
-    material: 'Leather',
-    brand: 'Kick Professional',
-    inStock: true,
-    price: 520,
-    salePrice: 0,
-    rating: 5.0,
-    numReviews: 72,
-    volume: '75ml Bottle',
-    shortDescription: 'Enriched with genuine Brazilian carnauba wax for deep leather nourishing, waterproof seal, and instant shine.',
-    images: ['/liquid shoe polish.png', '/Shoe Care.png'],
-    isFeatured: true,
-    isBestSeller: true,
-    badge: 'BESTSELLER'
-  },
-  {
-    _id: 'sc-3',
-    name: 'Kick Active Foam Sneaker Cleanser',
-    slug: 'kick-active-foam-sneaker-cleanser',
-    categoryType: 'cleaners',
-    material: 'Sneaker / Canvas',
-    brand: 'Kick Sport',
-    inStock: true,
-    price: 490,
-    salePrice: 440,
-    rating: 4.9,
-    numReviews: 114,
-    volume: '200ml Active Pump',
-    shortDescription: 'Ready-to-use self-foaming solution that breaks down stubborn street grime, dirt, and coffee stains effortlessly.',
-    images: ['/Shoe Care.png', '/shoe-care-hero.jpg'],
-    isFeatured: true,
-    isBestSeller: false,
-    badge: '-10% OFF'
-  },
-  {
-    _id: 'sc-4',
-    name: 'Kick Hydrophobic Shield Rain & Stain Protector',
-    slug: 'kick-hydrophobic-shield-protector',
-    categoryType: 'protectors',
-    material: 'All Materials',
-    brand: 'Kick Professional',
-    inStock: true,
-    price: 650,
-    salePrice: 590,
-    rating: 4.9,
-    numReviews: 93,
-    volume: '250ml Aerosol',
-    shortDescription: 'Breathable nano-coating barrier repelling liquids, rainwater, road slush, and dust for up to 4 weeks.',
-    images: ['/Shoe Care.png', '/shoe-care-hero.jpg'],
-    isFeatured: true,
-    isBestSeller: true,
-    badge: 'POPULAR'
-  },
-  {
-    _id: 'sc-5',
-    name: 'Kick Ergonomic 100% Horsehair Shoe Brush',
-    slug: 'kick-ergonomic-horsehair-shoe-brush',
-    categoryType: 'brushes',
-    material: 'Leather',
-    brand: 'Kick Professional',
-    inStock: true,
-    price: 320,
-    salePrice: 280,
-    rating: 4.8,
-    numReviews: 64,
-    volume: 'Solid Hardwood Handle',
-    shortDescription: 'Ultra-soft dense natural horsehair bristles buff polish to mirror luster without scratching tender leather grains.',
-    images: ['/Shoe Care.png', '/shoes cleaning.jpg.jpeg'],
-    isFeatured: false,
-    isBestSeller: false,
-    badge: '-13% OFF'
-  },
-  {
-    _id: 'sc-6',
-    name: 'Kick Fresh Shoe & Sneaker Deodorizer Spray',
-    slug: 'kick-fresh-shoe-deodorizer-spray',
-    categoryType: 'fresheners',
-    material: 'All Materials',
-    brand: 'Kick Home Care',
-    inStock: true,
-    price: 380,
-    salePrice: 340,
-    rating: 4.9,
-    numReviews: 78,
-    volume: '150ml Mist Spray',
-    shortDescription: 'Botanical tea tree & eucalyptus formula neutralizes microbial odors at the source for round-the-clock fresh footwear.',
-    images: ['/Shoe Care.png', '/shoe-care-hero.jpg'],
-    isFeatured: false,
-    isBestSeller: false,
-    badge: 'FRESH'
-  },
-  {
-    _id: 'sc-7',
-    name: 'Kick Super Wax Shoe Polish Tin 50g',
-    slug: 'kick-super-wax-shoe-polish-tin',
-    categoryType: 'leather-care',
-    material: 'Leather',
-    brand: 'Kick Home Care',
-    inStock: true,
-    price: 240,
-    salePrice: 220,
-    rating: 4.9,
-    numReviews: 152,
-    volume: '50g Classic Metal Tin',
-    shortDescription: 'Heritage military-grade solid beeswax formula for deep recoloring, scuff concealing, and mirror spit shine.',
-    images: ['/Shoe Care.png', '/shoes cleaning.jpg.jpeg'],
-    isFeatured: false,
-    isBestSeller: true,
-    badge: 'VALUE PACK'
-  },
-  {
-    _id: 'sc-8',
-    name: 'Kick Instant Shiner Silicone Travel Sponge',
-    slug: 'kick-instant-shiner-silicone-sponge',
-    categoryType: 'cleaners',
-    material: 'Leather',
-    brand: 'Kick Home Care',
-    inStock: true,
-    price: 220,
-    salePrice: 190,
-    rating: 4.7,
-    numReviews: 59,
-    volume: 'Pre-oiled Travel Casing',
-    shortDescription: 'Mess-free pocket silicone sponge applicator providing an instant glossy mirror touch-up before business meetings.',
-    images: ['/Shoe Care.png', '/promo-shoe.jpg'],
-    isFeatured: false,
-    isBestSeller: false,
-    badge: '-14% OFF'
-  }
-];
 
 const SHOP_BY_NEEDS = [
   {
@@ -334,6 +168,11 @@ export default function ShoeCareClient() {
   const { toggleWishlist, isInWishlist } = useWishlist();
   const { addToCompare } = useCompare();
 
+  // Dynamic database state
+  const [products, setProducts] = useState([]);
+  const [subcategories, setSubcategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   // Filter States
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [priceFilter, setPriceFilter] = useState('all');
@@ -348,13 +187,66 @@ export default function ShoeCareClient() {
   const [quickViewProduct, setQuickViewProduct] = useState(null);
   const [activeFaq, setActiveFaq] = useState(null);
 
+  useEffect(() => {
+    fetchShoeCareData();
+  }, []);
+
+  const fetchShoeCareData = async () => {
+    try {
+      setLoading(true);
+      const [prodRes, subRes] = await Promise.all([
+        axios.get('/api/products?category=shoe-care').catch(() => null),
+        axios.get('/api/subcategories?category=shoe-care').catch(() => null)
+      ]);
+
+      if (prodRes?.data?.success && Array.isArray(prodRes.data.products)) {
+        setProducts(prodRes.data.products);
+      } else {
+        setProducts([]);
+      }
+
+      if (subRes?.data?.success && Array.isArray(subRes.data.subcategories)) {
+        setSubcategories(subRes.data.subcategories);
+      } else {
+        setSubcategories([]);
+      }
+    } catch (err) {
+      console.error('Error fetching shoe care data:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Dynamic Subcategories List
+  const subCategoriesList = useMemo(() => {
+    return [
+      { id: 'all', name: 'All Products', count: products.length, icon: '✨' },
+      ...subcategories.map((s) => {
+        const count = products.filter((p) => {
+          const sub = p.subcategoryId?.slug || p.subcategory?.slug || p.subcategoryId;
+          return sub === s.slug || sub === s._id;
+        }).length;
+        return {
+          id: s.slug,
+          name: s.name,
+          count,
+          icon: '👟',
+          desc: s.description || ''
+        };
+      })
+    ];
+  }, [products, subcategories]);
+
   // Filter Logic
   const filteredProducts = useMemo(() => {
-    let result = [...PRODUCTS_DATA];
+    let result = [...products];
 
-    // Category Type
+    // Category / Subcategory Type
     if (selectedCategory !== 'all') {
-      result = result.filter((p) => p.categoryType === selectedCategory);
+      result = result.filter((p) => {
+        const subSlug = p.subcategoryId?.slug || p.subcategory?.slug || p.subcategoryId;
+        return subSlug === selectedCategory;
+      });
     }
 
     // Price
@@ -374,21 +266,16 @@ export default function ShoeCareClient() {
       result = result.filter((p) => p.brand === selectedBrand);
     }
 
-    // Material
-    if (selectedMaterial !== 'all') {
-      result = result.filter((p) => p.material === selectedMaterial || p.material === 'All Materials');
-    }
-
     // Rating
     if (selectedRating === '4.8') {
-      result = result.filter((p) => p.rating >= 4.8);
+      result = result.filter((p) => (p.rating || 5) >= 4.8);
     } else if (selectedRating === '4.5') {
-      result = result.filter((p) => p.rating >= 4.5);
+      result = result.filter((p) => (p.rating || 5) >= 4.5);
     }
 
     // Stock
     if (inStockOnly) {
-      result = result.filter((p) => p.inStock);
+      result = result.filter((p) => (p.stock > 0 || p.inStock));
     }
 
     // Sorting
@@ -397,13 +284,13 @@ export default function ShoeCareClient() {
     } else if (sortBy === 'price-high') {
       result.sort((a, b) => (b.salePrice || b.price) - (a.salePrice || a.price));
     } else if (sortBy === 'rating') {
-      result.sort((a, b) => b.rating - a.rating);
+      result.sort((a, b) => (b.rating || 5) - (a.rating || 5));
     } else if (sortBy === 'newest') {
-      result.sort((a, b) => b.numReviews - a.numReviews);
+      result.sort((a, b) => (b.numReviews || 0) - (a.numReviews || 0));
     }
 
     return result;
-  }, [selectedCategory, priceFilter, selectedBrand, selectedMaterial, selectedRating, inStockOnly, sortBy]);
+  }, [products, selectedCategory, priceFilter, selectedBrand, selectedRating, inStockOnly, sortBy]);
 
   const resetFilters = () => {
     setSelectedCategory('all');
@@ -558,7 +445,7 @@ export default function ShoeCareClient() {
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3">
-                {SUB_CATEGORIES.map((cat) => {
+                {subCategoriesList.map((cat) => {
                   const isActive = selectedCategory === cat.id;
                   return (
                     <button
@@ -603,7 +490,7 @@ export default function ShoeCareClient() {
               </span>
               {selectedCategory !== 'all' && (
                 <span className="px-2.5 py-1 bg-red-50 text-[#D0161D] text-[11px] font-bold rounded-full flex items-center space-x-1 border border-red-100">
-                  <span>{SUB_CATEGORIES.find((c) => c.id === selectedCategory)?.name}</span>
+                  <span>{subCategoriesList.find((c) => c.id === selectedCategory)?.name}</span>
                   <button onClick={() => setSelectedCategory('all')} className="hover:text-red-800">
                     <X className="w-3 h-3" />
                   </button>
@@ -667,7 +554,7 @@ export default function ShoeCareClient() {
               <div className="space-y-2">
                 <h4 className="text-xs font-bold text-[#D0161D] uppercase tracking-wider">Product Type</h4>
                 <div className="space-y-1.5 text-xs text-slate-600">
-                  {SUB_CATEGORIES.map((cat) => (
+                  {subCategoriesList.map((cat) => (
                     <label
                       key={cat.id}
                       className="flex items-center justify-between cursor-pointer hover:text-[#D0161D] py-1"
@@ -767,7 +654,12 @@ export default function ShoeCareClient() {
 
             {/* PRODUCT GRID (9 Columns) */}
             <div className="lg:col-span-9">
-              {filteredProducts.length === 0 ? (
+              {loading ? (
+                <div className="bg-white rounded-3xl p-16 text-center border border-slate-200">
+                  <Loader2 className="w-8 h-8 animate-spin text-red-600 mx-auto mb-2" />
+                  <p className="text-xs font-bold text-slate-500">Loading products...</p>
+                </div>
+              ) : filteredProducts.length === 0 ? (
                 <div className="bg-white rounded-3xl p-12 text-center border border-slate-200">
                   <div className="w-16 h-16 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-4">
                     <Info className="w-8 h-8" />
@@ -789,6 +681,10 @@ export default function ShoeCareClient() {
                     const isWish = isInWishlist(product._id);
                     const currentPrice = product.salePrice > 0 ? product.salePrice : product.price;
                     const originalPrice = product.salePrice > 0 ? product.price : null;
+                    const imageSrc =
+                      (Array.isArray(product.images) && product.images[0]) ||
+                      product.image ||
+                      '/Shoe Care.png';
 
                     return (
                       <motion.div
@@ -848,7 +744,7 @@ export default function ShoeCareClient() {
                             <motion.img
                               whileHover={{ scale: 1.06 }}
                               transition={{ duration: 0.3 }}
-                              src={product.images[0]}
+                              src={imageSrc}
                               alt={product.name}
                               className="w-full h-full object-cover"
                               loading="lazy"
@@ -1208,7 +1104,7 @@ export default function ShoeCareClient() {
               <div className="space-y-2">
                 <h4 className="text-xs font-bold text-[#D0161D] uppercase">Product Type</h4>
                 <div className="grid grid-cols-2 gap-2 text-xs">
-                  {SUB_CATEGORIES.map((cat) => (
+                  {subCategoriesList.map((cat) => (
                     <button
                       key={cat.id}
                       onClick={() => setSelectedCategory(cat.id)}

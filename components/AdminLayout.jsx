@@ -18,7 +18,8 @@ import {
   X,
   ShieldCheck,
   ArrowLeft,
-  BookOpen
+  BookOpen,
+  FolderTree
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 
@@ -31,6 +32,7 @@ const AdminLayout = ({ children }) => {
     { label: 'Dashboard Overview', path: '/admin', icon: LayoutDashboard },
     { label: 'Products Catalog', path: '/admin/products', icon: Package },
     { label: 'Category Management', path: '/admin/categories', icon: Layers },
+    { label: 'Subcategories', path: '/admin/subcategories', icon: FolderTree },
     { label: 'Blog Articles', path: '/admin/blogs', icon: BookOpen },
     { label: 'Order Management', path: '/admin/orders', icon: ShoppingBag },
     { label: 'Inventory & Stock', path: '/admin/inventory', icon: Boxes },
