@@ -87,9 +87,9 @@ export default function ContactPage() {
                   <Mail className="w-3.5 h-3.5" />
                   <span>GET IN TOUCH</span>
                 </div>
-                <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+                <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
                   Send Us a Message
-                </h2>
+                </h1>
                 <p className="text-xs text-slate-500 font-medium mt-1">
                   Fill out the form below and we'll get back to you as soon as possible.
                 </p>

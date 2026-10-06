@@ -45,10 +45,11 @@ const ProductCard = ({ product, onQuickView }) => {
         )}
 
         {/* Action Buttons Top Right */}
-        <div className="absolute top-3 right-3 z-10 flex flex-col space-y-1.5 opacity-0 group-hover:opacity-100 transition-all duration-200">
+        <div className="absolute top-3 right-3 z-10 flex flex-col space-y-1.5 opacity-90 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-200">
           <motion.button
             whileTap={{ scale: 0.85 }}
             onClick={() => toggleWishlist(product)}
+            aria-label={isWishlisted ? `Remove ${product.name} from wishlist` : `Add ${product.name} to wishlist`}
             className={`p-2 rounded-full shadow-md transition-colors ${
               isWishlisted ? 'bg-[#D0161D] text-white' : 'bg-white text-gray-400 hover:text-[#D0161D] border border-gray-100'
             }`}
@@ -60,6 +61,7 @@ const ProductCard = ({ product, onQuickView }) => {
           <motion.button
             whileTap={{ scale: 0.85 }}
             onClick={() => addToCompare(product)}
+            aria-label={`Compare ${product.name}`}
             className="p-2 bg-white text-gray-400 hover:text-gray-700 rounded-full shadow-md border border-gray-100 transition-colors"
             title="Compare"
           >
@@ -70,6 +72,7 @@ const ProductCard = ({ product, onQuickView }) => {
             <motion.button
               whileTap={{ scale: 0.85 }}
               onClick={() => onQuickView(product)}
+              aria-label={`Quick view ${product.name}`}
               className="p-2 bg-white text-gray-400 hover:text-[#D0161D] rounded-full shadow-md border border-gray-100 transition-colors"
               title="Quick View"
             >
@@ -79,12 +82,14 @@ const ProductCard = ({ product, onQuickView }) => {
         </div>
 
         {/* Product Image Link */}
-        <Link href={`/product/${product.slug}`} className="block w-full h-full">
+        <Link href={`/product/${product.slug}`} className="block w-full h-full" aria-label={`View ${product.name}`}>
           <motion.img
             whileHover={{ scale: 1.06 }}
             transition={{ duration: 0.3 }}
             src={primaryImage}
             alt={product.name}
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-cover"
           />
         </Link>
@@ -142,6 +147,7 @@ const ProductCard = ({ product, onQuickView }) => {
         <motion.button
           whileTap={{ scale: 0.95 }}
           onClick={() => addToCart(product, '', 1)}
+          aria-label={product.hasVariants ? `Select options for ${product.name}` : `Add ${product.name} to cart`}
           className="w-full py-2.5 px-4 bg-[#D0161D] hover:bg-red-800 text-white rounded-xl font-bold text-xs tracking-wide transition-colors flex items-center justify-center space-x-2 shadow-sm"
         >
           <ShoppingBag className="w-4 h-4" />

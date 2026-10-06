@@ -14,7 +14,7 @@ export default function DashboardPage() {
   useEffect(() => {
     if (!loading) {
       if (!user) {
-        router.push('/loginb');
+        router.push('/login');
       } else if (user.emailVerified === false && user.role !== 'admin') {
         router.push(`/verify-email?email=${encodeURIComponent(user.email || '')}`);
       }
@@ -39,7 +39,7 @@ export default function DashboardPage() {
             You must be signed in with a verified account to view the dashboard.
           </p>
           <Link
-            href="/loginb"
+            href="/login"
             className="inline-block px-6 py-3 bg-red-600 text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-md hover:bg-red-700 transition"
           >
             Sign In / Register

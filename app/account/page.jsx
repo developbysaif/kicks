@@ -44,7 +44,7 @@ export default function AccountPage() {
         <main className="flex-1 max-w-7xl mx-auto px-4 py-20 text-center space-y-4">
           <User className="w-16 h-16 text-slate-300 mx-auto" />
           <h2 className="text-xl font-bold text-slate-800">Please Sign In to Access Your Dashboard</h2>
-          <Link href="/loginb" className="inline-block px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl text-xs uppercase tracking-wider transition">
+          <Link href="/login" className="inline-block px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl text-xs uppercase tracking-wider transition">
             Sign In / Register
           </Link>
         </main>

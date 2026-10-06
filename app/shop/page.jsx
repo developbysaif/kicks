@@ -133,8 +133,10 @@ function ShopContent() {
               </div>
 
               <div className="flex items-center space-x-3 w-full sm:w-auto">
-                <label className="text-xs font-bold text-slate-500 whitespace-nowrap">Sort By:</label>
+                <label htmlFor="shop-sort-select" className="text-xs font-bold text-slate-500 whitespace-nowrap">Sort By:</label>
                 <select
+                  id="shop-sort-select"
+                  aria-label="Sort products by"
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
                   className="bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold px-3 py-2 outline-none focus:border-red-500 text-slate-800"

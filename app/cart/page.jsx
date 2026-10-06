@@ -152,7 +152,7 @@ export default function CartPage() {
                     </div>
 
                     <Link
-                      href={user ? "/checkout" : "/loginb?redirect=/checkout"}
+                      href={user ? "/checkout" : "/login?redirect=/checkout"}
                       className="w-full py-3.5 bg-[#D0161D] hover:bg-red-800 text-white rounded-2xl text-xs font-black uppercase tracking-wider shadow-md transition-all flex items-center justify-center space-x-2"
                     >
                       <span>Proceed to Checkout</span>

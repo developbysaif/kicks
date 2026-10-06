@@ -507,7 +507,7 @@ export default function CheckoutPage() {
                         Password *
                       </label>
                       <Link
-                        href="/loginb?tab=forgot"
+                        href="/login?tab=forgot"
                         className="text-xs font-semibold text-red-600 hover:text-red-700 transition"
                       >
                         Forgot password?
@@ -555,7 +555,7 @@ export default function CheckoutPage() {
                     <p className="text-xs text-slate-500">
                       Need a separate full login page?{' '}
                       <Link
-                        href="/loginb?redirect=/checkout"
+                        href="/login?redirect=/checkout"
                         className="font-bold text-red-600 hover:text-red-700 underline"
                       >
                         Open Full Login Screen

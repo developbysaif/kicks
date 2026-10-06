@@ -670,6 +670,7 @@ export default function HomePage() {
             <input
               type="email"
               required
+              aria-label="Email address for newsletter"
               value={newsletterEmail}
               onChange={(e) => setNewsletterEmail(e.target.value)}
               placeholder="Enter your email address..."

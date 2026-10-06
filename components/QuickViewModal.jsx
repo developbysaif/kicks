@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { X, Star, ShoppingBag, Heart } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
@@ -9,6 +9,20 @@ import { useWishlist } from '@/context/WishlistContext';
 const QuickViewModal = ({ product, onClose }) => {
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
+
+  useEffect(() => {
+    if (product) {
+      document.body.style.overflow = 'hidden';
+      const handleKeyDown = (e) => {
+        if (e.key === 'Escape') onClose();
+      };
+      window.addEventListener('keydown', handleKeyDown);
+      return () => {
+        document.body.style.overflow = '';
+        window.removeEventListener('keydown', handleKeyDown);
+      };
+    }
+  }, [product, onClose]);
 
   const [selectedVariation, setSelectedVariation] = useState(() => {
     if (product?.hasVariations && product?.variations && product?.variations.length > 0) {
@@ -41,12 +55,19 @@ const QuickViewModal = ({ product, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
-      <div className="relative w-full max-w-3xl bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row border border-slate-100 max-h-[90vh] overflow-y-auto z-50">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <div
+        className="relative w-full max-w-3xl bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row border border-slate-100 max-h-[90vh] overflow-y-auto z-50"
+        onClick={(e) => e.stopPropagation()}
+      >
         
         {/* Close Button */}
         <button
           onClick={onClose}
+          aria-label="Close product quick view"
           className="absolute top-4 right-4 z-20 p-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-full transition-colors"
         >
           <X className="w-5 h-5" />
@@ -117,6 +138,7 @@ const QuickViewModal = ({ product, onClose }) => {
               <div className="flex items-center border border-slate-200 rounded-xl overflow-hidden">
                 <button
                   onClick={() => setQuantity(q => Math.max(1, q - 1))}
+                  aria-label="Decrease quantity"
                   className="px-3 py-1 bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold"
                 >
                   -
@@ -124,6 +146,7 @@ const QuickViewModal = ({ product, onClose }) => {
                 <span className="px-4 text-xs font-bold">{quantity}</span>
                 <button
                   onClick={() => setQuantity(q => q + 1)}
+                  aria-label="Increase quantity"
                   className="px-3 py-1 bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold"
                 >
                   +
@@ -137,6 +160,7 @@ const QuickViewModal = ({ product, onClose }) => {
             <div className="flex space-x-3">
               <button
                 onClick={handleAddToCart}
+                aria-label={`Add ${product.name} to shopping cart`}
                 className="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded-xl shadow-md transition-all flex items-center justify-center space-x-2"
               >
                 <ShoppingBag className="w-4 h-4" />
@@ -144,6 +168,7 @@ const QuickViewModal = ({ product, onClose }) => {
               </button>
               <button
                 onClick={() => toggleWishlist(product)}
+                aria-label={`Add ${product.name} to wishlist`}
                 className="p-3 border border-slate-200 hover:border-rose-200 rounded-xl text-slate-600 hover:text-rose-500 transition-colors"
               >
                 <Heart className={`w-5 h-5 ${isInWishlist(product._id) ? 'fill-rose-500 text-rose-500' : ''}`} />

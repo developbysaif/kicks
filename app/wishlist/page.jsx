@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ProductCard from '@/components/ProductCard';
@@ -28,12 +29,12 @@ export default function WishlistPage() {
                 <Heart className="w-16 h-16 text-slate-300 mx-auto mb-3" />
                 <p className="text-base font-bold text-slate-800">Your Wishlist is Empty</p>
                 <p className="text-xs text-slate-500 mt-1 mb-6">Click the heart icon on any product to save it here!</p>
-                <a
+                <Link
                   href="/shop"
                   className="px-6 py-3 bg-[#D0161D] hover:bg-red-800 text-white rounded-xl text-xs font-bold transition shadow-sm inline-block"
                 >
                   Explore Products
-                </a>
+                </Link>
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

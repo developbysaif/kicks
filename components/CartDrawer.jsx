@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { X, Trash2, ShoppingBag, ArrowRight, Tag } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
@@ -26,6 +26,20 @@ const CartDrawer = () => {
 
   const [couponInput, setCouponInput] = useState('');
   const [applying, setApplying] = useState(false);
+
+  useEffect(() => {
+    if (isDrawerOpen) {
+      document.body.style.overflow = 'hidden';
+      const handleKeyDown = (e) => {
+        if (e.key === 'Escape') setIsDrawerOpen(false);
+      };
+      window.addEventListener('keydown', handleKeyDown);
+      return () => {
+        document.body.style.overflow = '';
+        window.removeEventListener('keydown', handleKeyDown);
+      };
+    }
+  }, [isDrawerOpen, setIsDrawerOpen]);
 
   if (!isDrawerOpen) return null;
 
@@ -59,6 +73,7 @@ const CartDrawer = () => {
             </div>
             <button
               onClick={() => setIsDrawerOpen(false)}
+              aria-label="Close cart drawer"
               className="p-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-200/50 transition-colors"
             >
               <X className="w-5 h-5" />
@@ -96,6 +111,7 @@ const CartDrawer = () => {
                           <h4 className="text-xs font-bold text-slate-900 line-clamp-1">{name}</h4>
                           <button
                             onClick={() => removeFromCart(item._id)}
+                            aria-label={`Remove ${name} from cart`}
                             className="text-slate-400 hover:text-rose-500 p-1 transition-colors"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
@@ -111,6 +127,7 @@ const CartDrawer = () => {
                         <div className="flex items-center border border-slate-200 rounded-lg overflow-hidden text-xs">
                           <button
                             onClick={() => updateQuantity(item._id, item.quantity - 1)}
+                            aria-label={`Decrease quantity of ${name}`}
                             className="px-2 py-0.5 bg-slate-50 hover:bg-slate-100 font-bold"
                           >
                             -
@@ -118,6 +135,7 @@ const CartDrawer = () => {
                           <span className="px-2.5 font-semibold text-slate-800">{item.quantity}</span>
                           <button
                             onClick={() => updateQuantity(item._id, item.quantity + 1)}
+                            aria-label={`Increase quantity of ${name}`}
                             className="px-2 py-0.5 bg-slate-50 hover:bg-slate-100 font-bold"
                           >
                             +
@@ -197,7 +215,7 @@ const CartDrawer = () => {
               {/* Action Buttons */}
               <div className="space-y-2 pt-2">
                 <Link
-                  href={user ? "/checkout" : "/loginb?redirect=/checkout"}
+                  href={user ? "/checkout" : "/login?redirect=/checkout"}
                   onClick={() => setIsDrawerOpen(false)}
                   className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-md transition-all flex items-center justify-center space-x-2"
                 >

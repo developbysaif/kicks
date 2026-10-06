@@ -72,6 +72,7 @@ function TrackOrderContent() {
               <input
                 type="text"
                 placeholder="KICK-XXXXXX"
+                aria-label="Enter Kick Order ID"
                 value={orderId}
                 onChange={(e) => setOrderId(e.target.value)}
                 className="flex-1 px-4 py-3 bg-white text-slate-900 rounded-xl text-xs font-bold uppercase outline-none focus:ring-2 focus:ring-[#D0161D]"

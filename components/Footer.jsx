@@ -24,16 +24,32 @@ const Footer = () => {
 
             {/* Social Icons */}
             <div className="flex items-center space-x-3 pt-2">
-              <a href="#" className="w-8 h-8 rounded-full bg-slate-800 hover:bg-red-600 text-gray-300 hover:text-white flex items-center justify-center transition-colors">
+              <a
+                href="#"
+                aria-label="Follow Kick Home Care on Facebook"
+                className="w-8 h-8 rounded-full bg-slate-800 hover:bg-red-600 text-gray-300 hover:text-white flex items-center justify-center transition-colors"
+              >
                 <Facebook className="w-4 h-4" />
               </a>
-              <a href="#" className="w-8 h-8 rounded-full bg-slate-800 hover:bg-red-600 text-gray-300 hover:text-white flex items-center justify-center transition-colors">
+              <a
+                href="#"
+                aria-label="Follow Kick Home Care on Instagram"
+                className="w-8 h-8 rounded-full bg-slate-800 hover:bg-red-600 text-gray-300 hover:text-white flex items-center justify-center transition-colors"
+              >
                 <Instagram className="w-4 h-4" />
               </a>
-              <a href="#" className="w-8 h-8 rounded-full bg-slate-800 hover:bg-red-600 text-gray-300 hover:text-white flex items-center justify-center transition-colors">
+              <a
+                href="#"
+                aria-label="Subscribe to Kick Home Care on YouTube"
+                className="w-8 h-8 rounded-full bg-slate-800 hover:bg-red-600 text-gray-300 hover:text-white flex items-center justify-center transition-colors"
+              >
                 <Youtube className="w-4 h-4" />
               </a>
-              <a href="#" className="w-8 h-8 rounded-full bg-slate-800 hover:bg-red-600 text-gray-300 hover:text-white flex items-center justify-center transition-colors">
+              <a
+                href="#"
+                aria-label="Connect with Kick Home Care on LinkedIn"
+                className="w-8 h-8 rounded-full bg-slate-800 hover:bg-red-600 text-gray-300 hover:text-white flex items-center justify-center transition-colors"
+              >
                 <Linkedin className="w-4 h-4" />
               </a>
             </div>
@@ -120,7 +136,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link href="/category/dish-care" className="text-gray-400 hover:text-red-500 transition-colors">
-                  Bath Care
+                  Dish Care
                 </Link>
               </li>
               <li>
@@ -168,7 +184,7 @@ const Footer = () => {
 
         {/* Bottom Copyright Bar */}
         <div className="pt-6 flex flex-col md:flex-row items-center justify-between text-xs text-gray-500 space-y-3 md:space-y-0">
-          <p>© 2025 KICK Home Care. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} KICK Home Care. All rights reserved.</p>
           <div className="flex items-center space-x-6">
             <Link href="/privacy-policy" className="hover:text-gray-300 transition-colors">
               Privacy Policy

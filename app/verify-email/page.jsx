@@ -237,7 +237,7 @@ function VerifyEmailContent() {
                 </Link>
 
                 <Link
-                  href={redirectParam ? `/loginb?redirect=${encodeURIComponent(redirectParam)}` : "/loginb"}
+                  href={redirectParam ? `/login?redirect=${encodeURIComponent(redirectParam)}` : "/login"}
                   className="block text-xs font-semibold text-slate-500 hover:text-slate-800 transition pt-2"
                 >
                   Go to Sign In
@@ -327,7 +327,7 @@ function VerifyEmailContent() {
 
                 <div className="pt-2">
                   <Link
-                    href="/loginb"
+                    href="/login"
                     className="text-xs font-semibold text-slate-500 hover:text-slate-800 transition inline-flex items-center gap-1.5"
                   >
                     <ArrowLeft className="w-3.5 h-3.5" />

@@ -54,6 +54,42 @@ const Header = () => {
     setCategoriesDropdown(false);
   }, [pathname]);
 
+  // Handle Escape key to close mobile menu & suggestion popups
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setMobileMenuOpen(false);
+        setShowSuggestions(false);
+        setCategoriesDropdown(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  // Handle outside click to close search suggestions
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (searchRef.current && !searchRef.current.contains(e.target)) {
+        setShowSuggestions(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileMenuOpen]);
+
   const fetchCategories = async () => {
     try {
       const { data } = await axios.get('/api/categories');
@@ -133,13 +169,14 @@ const Header = () => {
         {/* Mobile Hamburger */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
           className="lg:hidden p-2 text-gray-700 hover:text-red-600 focus:outline-none"
         >
           {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
 
         {/* Logo */}
-        <Link href="/" className="flex flex-col group">
+        <Link href="/" className="flex flex-col group" aria-label="Kick Home Care Home">
           <img src="/kick%20logo.png" alt="KICK Home Care" className="h-12 sm:h-14 w-auto object-contain" />
         </Link>
 
@@ -156,6 +193,7 @@ const Header = () => {
             <button
               type="submit"
               className="absolute right-1 w-10 h-10 bg-red-600 hover:bg-red-700 text-white rounded-full flex items-center justify-center transition-colors shadow-sm"
+              aria-label="Search products"
               title="Search"
             >
               <Search className="w-4 h-4" />
@@ -213,6 +251,7 @@ const Header = () => {
               </Link>
               <button
                 onClick={logout}
+                aria-label="Logout"
                 className="p-1.5 text-gray-400 hover:text-red-600 transition-colors"
                 title="Logout"
               >
@@ -232,6 +271,7 @@ const Header = () => {
           {/* Wishlist Icon */}
           <Link
             href="/wishlist"
+            aria-label={`Wishlist with ${wishlistCount} items`}
             className="relative p-1.5 hover:text-red-600 transition-colors"
             title="Wishlist"
           >
@@ -244,6 +284,7 @@ const Header = () => {
           {/* Cart Icon Drawer Trigger */}
           <button
             onClick={() => setIsDrawerOpen(true)}
+            aria-label={`Shopping cart with ${itemCount} items`}
             className="relative p-1.5 hover:text-red-600 transition-colors flex items-center"
             title="Cart"
           >
@@ -379,7 +420,7 @@ const Header = () => {
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full py-2 px-4 bg-gray-50 text-xs rounded-full border border-gray-200 focus:outline-none"
             />
-            <button type="submit" className="absolute right-2 top-2 text-red-600">
+            <button type="submit" aria-label="Submit search" className="absolute right-2 top-2 text-red-600">
               <Search className="w-4 h-4" />
             </button>
           </form>
