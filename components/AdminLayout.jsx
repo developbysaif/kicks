@@ -17,7 +17,8 @@ import {
   Menu,
   X,
   ShieldCheck,
-  ArrowLeft
+  ArrowLeft,
+  BookOpen
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 
@@ -30,6 +31,7 @@ const AdminLayout = ({ children }) => {
     { label: 'Dashboard Overview', path: '/admin', icon: LayoutDashboard },
     { label: 'Products Catalog', path: '/admin/products', icon: Package },
     { label: 'Category Management', path: '/admin/categories', icon: Layers },
+    { label: 'Blog Articles', path: '/admin/blogs', icon: BookOpen },
     { label: 'Order Management', path: '/admin/orders', icon: ShoppingBag },
     { label: 'Inventory & Stock', path: '/admin/inventory', icon: Boxes },
     { label: 'Customer Accounts', path: '/admin/customers', icon: Users },

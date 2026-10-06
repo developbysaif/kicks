@@ -6,17 +6,20 @@ const blogPostSchema = new mongoose.Schema({
   excerpt: { type: String, default: '', trim: true },
   content: { type: String, required: true },
   coverImageUrl: { type: String, default: '' },
+  category: { type: String, default: 'Shoe Care', trim: true, index: true },
+  authorName: { type: String, default: 'Kick Care Experts', trim: true },
   authorId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null, index: true },
+  readTime: { type: String, default: '4 min read', trim: true },
   tags: [{ type: String, trim: true }],
   seoTitle: { type: String, default: '', trim: true },
   seoDescription: { type: String, default: '', trim: true },
   status: {
     type: String,
     enum: ['draft', 'published'],
-    default: 'draft',
+    default: 'published',
     index: true
   },
-  publishedAt: { type: Date, default: null, index: true }
+  publishedAt: { type: Date, default: Date.now, index: true }
 }, {
   timestamps: true,
   collection: 'blogPosts'
