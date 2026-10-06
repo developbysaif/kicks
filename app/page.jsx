@@ -746,150 +746,152 @@ export default function HomePage() {
 
 
         {/* 5. WHY CHOOSE US & WHAT OUR CUSTOMERS SAY */}
-        <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start pt-2">
-          
-          {/* Left Column: Why Choose Us */}
-          <div className="lg:col-span-7 space-y-6">
-            <div>
-              <div className="flex items-center space-x-2">
-                <span className="w-1.5 h-6 bg-red-600 rounded-full"></span>
-                <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Why Choose Us</h2>
+        <section className="bg-[#D0161D] rounded-3xl p-6 sm:p-8 lg:p-10 shadow-xl text-white">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            {/* Left Column: Why Choose Us */}
+            <div className="lg:col-span-7 space-y-6">
+              <div>
+                <div className="flex items-center space-x-2">
+                  <span className="w-1.5 h-6 bg-black rounded-full"></span>
+                  <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">Why Choose Us</h2>
+                </div>
+                <p className="text-sm sm:text-base text-white/90 mt-1.5 font-medium">
+                  Your trust inspires us to do better every day.
+                </p>
               </div>
-              <p className="text-sm sm:text-base text-slate-600 mt-1.5 font-medium">
-                Your trust inspires us to do better every day.
-              </p>
-            </div>
 
-            {/* 4 Feature Cards Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              
-              <motion.div
-                whileHover={{ y: -4, scale: 1.02 }}
-                transition={{ duration: 0.2 }}
-                className="p-5 sm:p-6 rounded-2xl bg-slate-50 border border-slate-100 flex items-start space-x-4 hover:shadow-md transition-all cursor-default"
-              >
-                <div className="w-12 h-12 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center shrink-0 border border-red-100 shadow-xs">
-                  <ShieldCheck className="w-6 h-6" />
-                </div>
-                <div>
-                  <h4 className="text-base sm:text-lg font-bold text-slate-900">Trusted Quality</h4>
-                  <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">Premium products you can rely on.</p>
-                </div>
-              </motion.div>
+              {/* 4 Feature Cards Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                
+                <motion.div
+                  whileHover={{ y: -4, scale: 1.02 }}
+                  transition={{ duration: 0.2 }}
+                  className="p-5 sm:p-6 rounded-2xl bg-white border border-white/40 shadow-md hover:shadow-2xl flex items-start space-x-4 transition-all cursor-default"
+                >
+                  <div className="w-12 h-12 rounded-2xl bg-slate-100 text-black flex items-center justify-center shrink-0 border border-slate-200 shadow-xs">
+                    <ShieldCheck className="w-6 h-6 text-[#D0161D]" />
+                  </div>
+                  <div>
+                    <h4 className="text-base sm:text-lg font-black text-black">Trusted Quality</h4>
+                    <p className="text-xs sm:text-sm text-black/70 mt-1 font-medium leading-relaxed">Premium products you can rely on.</p>
+                  </div>
+                </motion.div>
 
-              <motion.div
-                whileHover={{ y: -4, scale: 1.02 }}
-                transition={{ duration: 0.2 }}
-                className="p-5 sm:p-6 rounded-2xl bg-slate-50 border border-slate-100 flex items-start space-x-4 hover:shadow-md transition-all cursor-default"
-              >
-                <div className="w-12 h-12 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center shrink-0 border border-red-100 shadow-xs">
-                  <Sparkles className="w-6 h-6" />
-                </div>
-                <div>
-                  <h4 className="text-base sm:text-lg font-bold text-slate-900">Effective Products</h4>
-                  <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">Designed for real results.</p>
-                </div>
-              </motion.div>
+                <motion.div
+                  whileHover={{ y: -4, scale: 1.02 }}
+                  transition={{ duration: 0.2 }}
+                  className="p-5 sm:p-6 rounded-2xl bg-white border border-white/40 shadow-md hover:shadow-2xl flex items-start space-x-4 transition-all cursor-default"
+                >
+                  <div className="w-12 h-12 rounded-2xl bg-slate-100 text-black flex items-center justify-center shrink-0 border border-slate-200 shadow-xs">
+                    <Sparkles className="w-6 h-6 text-[#D0161D]" />
+                  </div>
+                  <div>
+                    <h4 className="text-base sm:text-lg font-black text-black">Effective Products</h4>
+                    <p className="text-xs sm:text-sm text-black/70 mt-1 font-medium leading-relaxed">Designed for real results.</p>
+                  </div>
+                </motion.div>
 
-              <motion.div
-                whileHover={{ y: -4, scale: 1.02 }}
-                transition={{ duration: 0.2 }}
-                className="p-5 sm:p-6 rounded-2xl bg-slate-50 border border-slate-100 flex items-start space-x-4 hover:shadow-md transition-all cursor-default"
-              >
-                <div className="w-12 h-12 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center shrink-0 border border-red-100 shadow-xs">
-                  <Truck className="w-6 h-6" />
-                </div>
-                <div>
-                  <h4 className="text-base sm:text-lg font-bold text-slate-900">Fast Delivery</h4>
-                  <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">Across Pakistan.</p>
-                </div>
-              </motion.div>
+                <motion.div
+                  whileHover={{ y: -4, scale: 1.02 }}
+                  transition={{ duration: 0.2 }}
+                  className="p-5 sm:p-6 rounded-2xl bg-white border border-white/40 shadow-md hover:shadow-2xl flex items-start space-x-4 transition-all cursor-default"
+                >
+                  <div className="w-12 h-12 rounded-2xl bg-slate-100 text-black flex items-center justify-center shrink-0 border border-slate-200 shadow-xs">
+                    <Truck className="w-6 h-6 text-[#D0161D]" />
+                  </div>
+                  <div>
+                    <h4 className="text-base sm:text-lg font-black text-black">Fast Delivery</h4>
+                    <p className="text-xs sm:text-sm text-black/70 mt-1 font-medium leading-relaxed">Across Pakistan.</p>
+                  </div>
+                </motion.div>
 
-              <motion.div
-                whileHover={{ y: -4, scale: 1.02 }}
-                transition={{ duration: 0.2 }}
-                className="p-5 sm:p-6 rounded-2xl bg-slate-50 border border-slate-100 flex items-start space-x-4 hover:shadow-md transition-all cursor-default"
-              >
-                <div className="w-12 h-12 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center shrink-0 border border-red-100 shadow-xs">
-                  <Headphones className="w-6 h-6" />
-                </div>
-                <div>
-                  <h4 className="text-base sm:text-lg font-bold text-slate-900">Customer Satisfaction</h4>
-                  <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">We're here to help.</p>
-                </div>
-              </motion.div>
+                <motion.div
+                  whileHover={{ y: -4, scale: 1.02 }}
+                  transition={{ duration: 0.2 }}
+                  className="p-5 sm:p-6 rounded-2xl bg-white border border-white/40 shadow-md hover:shadow-2xl flex items-start space-x-4 transition-all cursor-default"
+                >
+                  <div className="w-12 h-12 rounded-2xl bg-slate-100 text-black flex items-center justify-center shrink-0 border border-slate-200 shadow-xs">
+                    <Headphones className="w-6 h-6 text-[#D0161D]" />
+                  </div>
+                  <div>
+                    <h4 className="text-base sm:text-lg font-black text-black">Customer Satisfaction</h4>
+                    <p className="text-xs sm:text-sm text-black/70 mt-1 font-medium leading-relaxed">We're here to help.</p>
+                  </div>
+                </motion.div>
 
-            </div>
-          </div>
-
-          {/* Right Column: What Our Customers Say */}
-          <div className="lg:col-span-5 space-y-6">
-            <div>
-              <div className="flex items-center space-x-2">
-                <span className="w-1.5 h-6 bg-red-600 rounded-full"></span>
-                <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">What Our Customers Say</h2>
               </div>
-              <p className="text-sm sm:text-base text-slate-600 mt-1.5 font-medium">
-                Real feedback from real customers.
-              </p>
             </div>
 
-            {/* Testimonial Card */}
-            <motion.div
-              whileHover={{ y: -4 }}
-              transition={{ duration: 0.3 }}
-              className="p-6 sm:p-7 rounded-2xl bg-slate-50 border border-slate-100 relative space-y-5 hover:shadow-lg transition-all"
-            >
-              
-              <div className="flex items-center space-x-3.5">
-                <div className="w-12 h-12 rounded-full bg-red-100 border border-red-200 overflow-hidden shrink-0 flex items-center justify-center font-extrabold text-red-600 text-base">
-                  {TESTIMONIALS[currentTestimonial].initials}
+            {/* Right Column: What Our Customers Say */}
+            <div className="lg:col-span-5 space-y-6">
+              <div>
+                <div className="flex items-center space-x-2">
+                  <span className="w-1.5 h-6 bg-black rounded-full"></span>
+                  <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">What Our Customers Say</h2>
                 </div>
-                <div>
-                  {/* 5 Stars */}
-                  <div className="flex items-center text-amber-400 gap-0.5">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-amber-400" />
-                    ))}
+                <p className="text-sm sm:text-base text-white/90 mt-1.5 font-medium">
+                  Real feedback from real customers.
+                </p>
+              </div>
+
+              {/* Testimonial Card */}
+              <motion.div
+                whileHover={{ y: -4 }}
+                transition={{ duration: 0.3 }}
+                className="p-6 sm:p-7 rounded-2xl bg-white border border-white/40 relative space-y-5 shadow-md hover:shadow-2xl transition-all"
+              >
+                
+                <div className="flex items-center space-x-3.5">
+                  <div className="w-12 h-12 rounded-full bg-black text-white overflow-hidden shrink-0 flex items-center justify-center font-black text-base shadow-sm">
+                    {TESTIMONIALS[currentTestimonial].initials}
+                  </div>
+                  <div>
+                    {/* 5 Stars */}
+                    <div className="flex items-center text-amber-500 gap-0.5">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-4 h-4 fill-amber-500" />
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <p className="text-sm sm:text-base text-slate-700 italic font-medium leading-relaxed min-h-[4rem]">
-                {TESTIMONIALS[currentTestimonial].quote}
-              </p>
+                <p className="text-sm sm:text-base text-black/90 italic font-medium leading-relaxed min-h-[4rem]">
+                  "{TESTIMONIALS[currentTestimonial].quote}"
+                </p>
 
-              <div className="flex items-center justify-between pt-3 border-t border-slate-200/80">
-                <div>
-                  <h5 className="text-sm sm:text-base font-bold text-slate-900">{TESTIMONIALS[currentTestimonial].name}</h5>
-                  <span className="text-xs font-semibold text-slate-400">{TESTIMONIALS[currentTestimonial].location}</span>
+                <div className="flex items-center justify-between pt-3 border-t border-slate-100">
+                  <div>
+                    <h5 className="text-sm sm:text-base font-black text-black">{TESTIMONIALS[currentTestimonial].name}</h5>
+                    <span className="text-xs font-bold text-slate-500">{TESTIMONIALS[currentTestimonial].location}</span>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <motion.button
+                      whileTap={{ scale: 0.9 }}
+                      whileHover={{ scale: 1.1 }}
+                      onClick={() => setCurrentTestimonial((prev) => (prev - 1 + TESTIMONIALS.length) % TESTIMONIALS.length)}
+                      className="w-9 h-9 bg-slate-100 hover:bg-black hover:text-white text-black rounded-full flex items-center justify-center border border-slate-200 shadow-sm transition-colors"
+                      aria-label="Previous Testimonial"
+                    >
+                      <ChevronLeft className="w-4 h-4" />
+                    </motion.button>
+                    <motion.button
+                      whileTap={{ scale: 0.9 }}
+                      whileHover={{ scale: 1.1 }}
+                      onClick={() => setCurrentTestimonial((prev) => (prev + 1) % TESTIMONIALS.length)}
+                      className="w-9 h-9 bg-slate-100 hover:bg-black hover:text-white text-black rounded-full flex items-center justify-center border border-slate-200 shadow-sm transition-colors"
+                      aria-label="Next Testimonial"
+                    >
+                      <ChevronRight className="w-4 h-4" />
+                    </motion.button>
+                  </div>
                 </div>
 
-                <div className="flex items-center space-x-2">
-                  <motion.button
-                    whileTap={{ scale: 0.9 }}
-                    whileHover={{ scale: 1.1 }}
-                    onClick={() => setCurrentTestimonial((prev) => (prev - 1 + TESTIMONIALS.length) % TESTIMONIALS.length)}
-                    className="w-9 h-9 bg-white text-slate-700 rounded-full flex items-center justify-center border border-slate-200 shadow-sm hover:text-red-600 hover:border-red-300 transition-colors"
-                    aria-label="Previous Testimonial"
-                  >
-                    <ChevronLeft className="w-4 h-4" />
-                  </motion.button>
-                  <motion.button
-                    whileTap={{ scale: 0.9 }}
-                    whileHover={{ scale: 1.1 }}
-                    onClick={() => setCurrentTestimonial((prev) => (prev + 1) % TESTIMONIALS.length)}
-                    className="w-9 h-9 bg-white text-slate-700 rounded-full flex items-center justify-center border border-slate-200 shadow-sm hover:text-red-600 hover:border-red-300 transition-colors"
-                    aria-label="Next Testimonial"
-                  >
-                    <ChevronRight className="w-4 h-4" />
-                  </motion.button>
-                </div>
-              </div>
+              </motion.div>
+            </div>
 
-            </motion.div>
           </div>
-
         </section>
 
         {/* 6. NEWSLETTER BANNER */}
