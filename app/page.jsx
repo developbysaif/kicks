@@ -114,10 +114,10 @@ const CATEGORIES_DATA = [
   }
 ];
 
-const INITIAL_FEATURED_PRODUCTS = [
+const ALL_CATALOG_PRODUCTS = [
   {
     _id: 'p1',
-    name: 'Kick Bleach Liquid',
+    name: 'Kick Bleach Liquid Ultra Clean',
     slug: 'kick-bleach-liquid',
     category: { name: 'Laundry Care', slug: 'laundry-care' },
     price: 500,
@@ -125,11 +125,24 @@ const INITIAL_FEATURED_PRODUCTS = [
     rating: 5.0,
     numReviews: 499,
     volume: '1 Litre',
-    images: ['/whitner bleach.png'],
+    images: ['/whitner bleach.png', '/laundry Care.png'],
     isFeatured: true
   },
   {
     _id: 'p2',
+    name: 'Kick Whitner Bleach Liquid 500ml',
+    slug: 'kick-whitner-bleach-500ml',
+    category: { name: 'Laundry Care', slug: 'laundry-care' },
+    price: 250,
+    salePrice: 220,
+    rating: 4.9,
+    numReviews: 140,
+    volume: '500ml',
+    images: ['/laundry Care.png', '/whitner bleach.png'],
+    isFeatured: true
+  },
+  {
+    _id: 'p3',
     name: 'Kick Dishwash Liquid',
     slug: 'kick-dishwash-liquid',
     category: { name: 'Dish Care', slug: 'dish-care' },
@@ -138,11 +151,24 @@ const INITIAL_FEATURED_PRODUCTS = [
     rating: 5.0,
     numReviews: 156,
     volume: '500ml',
-    images: ['/dish wash liquid.png'],
+    images: ['/dish wash liquid.png', '/dish care.png'],
     isFeatured: true
   },
   {
-    _id: 'p3',
+    _id: 'p4',
+    name: 'Kick Dishwash Liquid One-Kick Drop 1 Litre',
+    slug: 'kick-dishwash-liquid-1l',
+    category: { name: 'Dish Care', slug: 'dish-care' },
+    price: 490,
+    salePrice: 430,
+    rating: 5.0,
+    numReviews: 320,
+    volume: '1 Litre',
+    images: ['/dish care.png', '/dish wash liquid.png'],
+    isFeatured: false
+  },
+  {
+    _id: 'p5',
     name: 'Kick White Sneaker Cleaner',
     slug: 'kick-white-sneaker-cleaner',
     category: { name: 'Shoe Care', slug: 'shoe-care' },
@@ -155,7 +181,7 @@ const INITIAL_FEATURED_PRODUCTS = [
     isFeatured: true
   },
   {
-    _id: 'p4',
+    _id: 'p6',
     name: 'Liquid Shoe Polish',
     slug: 'liquid-shoe-polish',
     category: { name: 'Shoe Care', slug: 'shoe-care' },
@@ -169,8 +195,112 @@ const INITIAL_FEATURED_PRODUCTS = [
     isFeatured: true
   },
   {
-    _id: 'p5',
-    name: 'Kick Drain Opener',
+    _id: 'p7',
+    name: 'Kick Active Foam Sneaker Cleanser',
+    slug: 'kick-active-foam-sneaker-cleanser',
+    category: { name: 'Shoe Care', slug: 'shoe-care' },
+    price: 490,
+    salePrice: 440,
+    rating: 4.9,
+    numReviews: 114,
+    volume: '200ml Active Pump',
+    images: ['/Shoe Care.png'],
+    isFeatured: true
+  },
+  {
+    _id: 'p8',
+    name: 'Kick Hydrophobic Shield Rain & Stain Protector',
+    slug: 'kick-hydrophobic-shield-protector',
+    category: { name: 'Shoe Care', slug: 'shoe-care' },
+    price: 650,
+    salePrice: 590,
+    rating: 4.9,
+    numReviews: 93,
+    volume: '250ml Aerosol',
+    images: ['/Shoe Care.png'],
+    isFeatured: true
+  },
+  {
+    _id: 'p9',
+    name: 'Kick Ergonomic 100% Horsehair Shoe Brush',
+    slug: 'kick-ergonomic-horsehair-shoe-brush',
+    category: { name: 'Shoe Care', slug: 'shoe-care' },
+    price: 320,
+    salePrice: 280,
+    rating: 4.8,
+    numReviews: 64,
+    volume: 'Hardwood Handle',
+    images: ['/Shoe Care.png'],
+    isFeatured: false
+  },
+  {
+    _id: 'p10',
+    name: 'Kick Fresh Shoe & Sneaker Deodorizer Spray',
+    slug: 'kick-fresh-shoe-deodorizer-spray',
+    category: { name: 'Shoe Care', slug: 'shoe-care' },
+    price: 380,
+    salePrice: 340,
+    rating: 4.9,
+    numReviews: 78,
+    volume: '150ml Mist Spray',
+    images: ['/Shoe Care.png'],
+    isFeatured: false
+  },
+  {
+    _id: 'p11',
+    name: 'Kick Super Wax Shoe Polish Tin 50g',
+    slug: 'kick-super-wax-shoe-polish-tin',
+    category: { name: 'Shoe Care', slug: 'shoe-care' },
+    price: 240,
+    salePrice: 220,
+    rating: 4.9,
+    numReviews: 152,
+    volume: '50g Metal Tin',
+    images: ['/Shoe Care.png'],
+    isFeatured: false
+  },
+  {
+    _id: 'p12',
+    name: 'Kick Instant Shoe Shiner Sponge',
+    slug: 'kick-instant-shoe-shiner-sponge',
+    category: { name: 'Shoe Care', slug: 'shoe-care' },
+    price: 220,
+    salePrice: 200,
+    rating: 4.9,
+    numReviews: 96,
+    volume: 'Travel Sponge',
+    images: ['/Shoe Care.png'],
+    isFeatured: false
+  },
+  {
+    _id: 'p13',
+    name: 'Kick Perfumed White Phenyle 2.75L',
+    slug: 'kick-perfumed-white-phenyle',
+    category: { name: 'Home Cleaning', slug: 'home-cleaning' },
+    price: 650,
+    salePrice: 580,
+    rating: 5.0,
+    numReviews: 210,
+    volume: '2.75 Litre Bottle',
+    images: ['/Home Cleaning.png', '/Phenyle.jpg.jpeg'],
+    isFeatured: true
+  },
+  {
+    _id: 'p14',
+    name: 'Kick Surface Cleaner Floor Mop Liquid',
+    slug: 'kick-surface-cleaner-liquid',
+    category: { name: 'Home Cleaning', slug: 'home-cleaning' },
+    price: 380,
+    salePrice: 340,
+    rating: 4.9,
+    numReviews: 95,
+    volume: '1 Litre',
+    images: ['/Home Cleaning.png'],
+    isFeatured: true
+  },
+  {
+    _id: 'p15',
+    name: 'Kick Drain Opener Fast Acting 1 Litre',
     slug: 'kick-drain-opener',
     category: { name: 'Washroom Cleaning', slug: 'washroom-cleaning' },
     price: 520,
@@ -178,26 +308,85 @@ const INITIAL_FEATURED_PRODUCTS = [
     rating: 5.0,
     numReviews: 170,
     volume: '1 Litre',
-    images: ['/kick drain opener.png'],
+    images: ['/kick drain opener.png', '/washroom cleaning.png'],
     isFeatured: true
   },
   {
-    _id: 'p6',
-    name: 'Kick Drain Opener',
-    slug: 'kick-drain-opener-spray',
+    _id: 'p16',
+    name: 'Kick 10X Bathroom & Toilet Power Cleaner',
+    slug: 'kick-toilet-bathroom-cleaner',
+    category: { name: 'Washroom Cleaning', slug: 'washroom-cleaning' },
+    price: 450,
+    salePrice: 390,
+    rating: 4.9,
+    numReviews: 112,
+    volume: '500ml Angled Nozzle',
+    images: ['/washroom cleaning.png', '/kick drain opener.png'],
+    isFeatured: true
+  },
+  {
+    _id: 'p17',
+    name: 'Kick Mosquit Advance Liquid Machine + Refill',
+    slug: 'kick-mosquito-advance-machine-refill',
     category: { name: 'Mosquito Protection', slug: 'mosquito-protection' },
     price: 680,
     salePrice: 0,
     rating: 5.0,
     numReviews: 203,
-    volume: '45ml',
+    volume: '45ml (60 Nights)',
+    images: ['/mosquito protection.png'],
+    isFeatured: true
+  },
+  {
+    _id: 'p18',
+    name: 'Kick Mosquit Repellent Aerosol Spray 300ml',
+    slug: 'kick-mosquito-spray-300ml',
+    category: { name: 'Mosquito Protection', slug: 'mosquito-protection' },
+    price: 550,
+    salePrice: 480,
+    rating: 4.9,
+    numReviews: 88,
+    volume: '300ml Can',
     images: ['/mosquito protection.png'],
     isFeatured: true
   }
 ];
 
+const FILTER_TABS = [
+  { label: 'All Products', slug: 'all' },
+  { label: 'Shoe Care', slug: 'shoe-care' },
+  { label: 'Laundry Care', slug: 'laundry-care' },
+  { label: 'Home Cleaning', slug: 'home-cleaning' },
+  { label: 'Dish Care', slug: 'dish-care' },
+  { label: 'Washroom Cleaning', slug: 'washroom-cleaning' },
+  { label: 'Mosquito Protection', slug: 'mosquito-protection' }
+];
+
+const TESTIMONIALS = [
+  {
+    initials: 'AK',
+    name: 'Ayesha Khan',
+    location: 'Lahore',
+    quote: '"Kick products are amazing! My shoes have never looked this clean. Highly recommended!"'
+  },
+  {
+    initials: 'BA',
+    name: 'Bilal Ahmed',
+    location: 'Karachi',
+    quote: '"The drain opener and bathroom cleaner worked like magic in minutes. 100% genuine products with fast delivery."'
+  },
+  {
+    initials: 'UT',
+    name: 'Usman Tariq',
+    location: 'Islamabad',
+    quote: '"Kick Bleach Liquid and sneaker cleaner are top notch quality. Much better than imported brands and very economical."'
+  }
+];
+
 export default function HomePage() {
-  const [products, setProducts] = useState(INITIAL_FEATURED_PRODUCTS);
+  const [products, setProducts] = useState(ALL_CATALOG_PRODUCTS);
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const [quickViewProduct, setQuickViewProduct] = useState(null);
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterStatus, setNewsletterStatus] = useState('');
@@ -222,7 +411,7 @@ export default function HomePage() {
         setProducts(data.products);
       }
     } catch (err) {
-      console.warn('Using initial fallback products:', err);
+      console.warn('Using fallback catalog products:', err);
     }
   };
 
@@ -238,6 +427,21 @@ export default function HomePage() {
       setNewsletterEmail('');
     }
   };
+
+  const featuredProducts = products.filter((p) => p.isFeatured).length > 0
+    ? products.filter((p) => p.isFeatured).slice(0, 4)
+    : products.slice(0, 4);
+
+  const filteredProducts = selectedCategory === 'all'
+    ? products
+    : products.filter((prod) => {
+        const catSlug = prod.category?.slug || '';
+        const catName = (prod.category?.name || '').toLowerCase();
+        if (selectedCategory === 'washroom-cleaning') {
+          return catSlug === 'washroom-cleaning' || catSlug === 'drain-care' || catName.includes('washroom') || catName.includes('drain');
+        }
+        return catSlug === selectedCategory || catName.replace(/\s+/g, '-').includes(selectedCategory);
+      });
 
   return (
     <div className="min-h-screen flex flex-col bg-white text-slate-800 font-sans">
@@ -479,8 +683,8 @@ export default function HomePage() {
                   Featured Products
                 </h2>
               </div>
-              <p className="text-xs text-slate-500 mt-1 font-medium">
-                Top picks for a cleaner, healthier home.
+              <p className="text-xs sm:text-sm text-slate-500 mt-1 font-medium">
+                Top picks for a cleaner, healthier home and pristine footwear.
               </p>
             </div>
 
@@ -493,11 +697,62 @@ export default function HomePage() {
             </Link>
           </div>
 
-          {/* 4 Product Cards Grid — Bigger, 4 per row */}
+          {/* 4 Featured Cards Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {products.slice(0, 4).map((prod) => (
+            {featuredProducts.map((prod) => (
               <ProductCard
-                key={prod._id}
+                key={`feat-${prod._id || prod.slug}`}
+                product={prod}
+                onQuickView={(p) => setQuickViewProduct(p)}
+              />
+            ))}
+          </div>
+        </section>
+
+        {/* 4. ALL KICK PRODUCTS SECTION */}
+        <section className="space-y-6 pt-2">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div>
+              <div className="flex items-center space-x-2">
+                <span className="w-1.5 h-6 bg-red-600 rounded-full"></span>
+                <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-3">
+                  <span>All Kick Products</span>
+                  <span className="text-xs font-bold px-2.5 py-0.5 bg-red-50 text-red-600 rounded-full border border-red-100">
+                    {filteredProducts.length} Items
+                  </span>
+                </h2>
+              </div>
+              <p className="text-xs sm:text-sm text-slate-500 mt-1 font-medium">
+                Complete range of authentic shoe care and home hygiene formulations.
+              </p>
+            </div>
+
+            {/* Category Filter Pills */}
+            <div className="flex flex-wrap items-center gap-2">
+              {FILTER_TABS.map((tab) => {
+                const isActive = selectedCategory === tab.slug;
+                return (
+                  <button
+                    key={tab.slug}
+                    onClick={() => setSelectedCategory(tab.slug)}
+                    className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
+                      isActive
+                        ? 'bg-red-600 text-white shadow-sm shadow-red-600/30'
+                        : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Grid of All Products */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {filteredProducts.map((prod) => (
+              <ProductCard
+                key={prod._id || prod.slug}
                 product={prod}
                 onQuickView={(p) => setQuickViewProduct(p)}
               />
@@ -584,76 +839,76 @@ export default function HomePage() {
         </section>
 
         {/* 5. WHY CHOOSE US & WHAT OUR CUSTOMERS SAY */}
-        <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start pt-2">
           
           {/* Left Column: Why Choose Us */}
           <div className="lg:col-span-7 space-y-6">
             <div>
               <div className="flex items-center space-x-2">
                 <span className="w-1.5 h-6 bg-red-600 rounded-full"></span>
-                <h2 className="text-xl font-black text-slate-900">Why Choose Us</h2>
+                <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Why Choose Us</h2>
               </div>
-              <p className="text-xs text-slate-500 mt-1 font-medium">
+              <p className="text-sm sm:text-base text-slate-600 mt-1.5 font-medium">
                 Your trust inspires us to do better every day.
               </p>
             </div>
 
             {/* 4 Feature Cards Grid */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               
               <motion.div
                 whileHover={{ y: -4, scale: 1.02 }}
                 transition={{ duration: 0.2 }}
-                className="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex items-start space-x-3 hover:shadow-md transition-all cursor-default"
+                className="p-5 sm:p-6 rounded-2xl bg-slate-50 border border-slate-100 flex items-start space-x-4 hover:shadow-md transition-all cursor-default"
               >
-                <div className="w-9 h-9 rounded-full bg-red-50 text-red-600 flex items-center justify-center shrink-0 border border-red-100">
-                  <ShieldCheck className="w-5 h-5" />
+                <div className="w-12 h-12 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center shrink-0 border border-red-100 shadow-xs">
+                  <ShieldCheck className="w-6 h-6" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-bold text-slate-900">Trusted Quality</h4>
-                  <p className="text-[11px] text-slate-500 mt-0.5">Premium products you can rely on.</p>
+                  <h4 className="text-base sm:text-lg font-bold text-slate-900">Trusted Quality</h4>
+                  <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">Premium products you can rely on.</p>
                 </div>
               </motion.div>
 
               <motion.div
                 whileHover={{ y: -4, scale: 1.02 }}
                 transition={{ duration: 0.2 }}
-                className="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex items-start space-x-3 hover:shadow-md transition-all cursor-default"
+                className="p-5 sm:p-6 rounded-2xl bg-slate-50 border border-slate-100 flex items-start space-x-4 hover:shadow-md transition-all cursor-default"
               >
-                <div className="w-9 h-9 rounded-full bg-red-50 text-red-600 flex items-center justify-center shrink-0 border border-red-100">
-                  <Sparkles className="w-5 h-5" />
+                <div className="w-12 h-12 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center shrink-0 border border-red-100 shadow-xs">
+                  <Sparkles className="w-6 h-6" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-bold text-slate-900">Effective Products</h4>
-                  <p className="text-[11px] text-slate-500 mt-0.5">Designed for real results.</p>
+                  <h4 className="text-base sm:text-lg font-bold text-slate-900">Effective Products</h4>
+                  <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">Designed for real results.</p>
                 </div>
               </motion.div>
 
               <motion.div
                 whileHover={{ y: -4, scale: 1.02 }}
                 transition={{ duration: 0.2 }}
-                className="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex items-start space-x-3 hover:shadow-md transition-all cursor-default"
+                className="p-5 sm:p-6 rounded-2xl bg-slate-50 border border-slate-100 flex items-start space-x-4 hover:shadow-md transition-all cursor-default"
               >
-                <div className="w-9 h-9 rounded-full bg-red-50 text-red-600 flex items-center justify-center shrink-0 border border-red-100">
-                  <Truck className="w-5 h-5" />
+                <div className="w-12 h-12 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center shrink-0 border border-red-100 shadow-xs">
+                  <Truck className="w-6 h-6" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-bold text-slate-900">Fast Delivery</h4>
-                  <p className="text-[11px] text-slate-500 mt-0.5">Across Pakistan.</p>
+                  <h4 className="text-base sm:text-lg font-bold text-slate-900">Fast Delivery</h4>
+                  <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">Across Pakistan.</p>
                 </div>
               </motion.div>
 
               <motion.div
                 whileHover={{ y: -4, scale: 1.02 }}
                 transition={{ duration: 0.2 }}
-                className="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex items-start space-x-3 hover:shadow-md transition-all cursor-default"
+                className="p-5 sm:p-6 rounded-2xl bg-slate-50 border border-slate-100 flex items-start space-x-4 hover:shadow-md transition-all cursor-default"
               >
-                <div className="w-9 h-9 rounded-full bg-red-50 text-red-600 flex items-center justify-center shrink-0 border border-red-100">
-                  <Headphones className="w-5 h-5" />
+                <div className="w-12 h-12 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center shrink-0 border border-red-100 shadow-xs">
+                  <Headphones className="w-6 h-6" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-bold text-slate-900">Customer Satisfaction</h4>
-                  <p className="text-[11px] text-slate-500 mt-0.5">We're here to help.</p>
+                  <h4 className="text-base sm:text-lg font-bold text-slate-900">Customer Satisfaction</h4>
+                  <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">We're here to help.</p>
                 </div>
               </motion.div>
 
@@ -665,9 +920,9 @@ export default function HomePage() {
             <div>
               <div className="flex items-center space-x-2">
                 <span className="w-1.5 h-6 bg-red-600 rounded-full"></span>
-                <h2 className="text-xl font-black text-slate-900">What Our Customers Say</h2>
+                <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">What Our Customers Say</h2>
               </div>
-              <p className="text-xs text-slate-500 mt-1 font-medium">
+              <p className="text-sm sm:text-base text-slate-600 mt-1.5 font-medium">
                 Real feedback from real customers.
               </p>
             </div>
@@ -676,45 +931,49 @@ export default function HomePage() {
             <motion.div
               whileHover={{ y: -4 }}
               transition={{ duration: 0.3 }}
-              className="p-5 rounded-2xl bg-slate-50 border border-slate-100 relative space-y-4 hover:shadow-lg transition-all"
+              className="p-6 sm:p-7 rounded-2xl bg-slate-50 border border-slate-100 relative space-y-5 hover:shadow-lg transition-all"
             >
               
-              <div className="flex items-center space-x-3">
-                <div className="w-11 h-11 rounded-full bg-red-100 border border-red-200 overflow-hidden shrink-0 flex items-center justify-center font-bold text-red-600 text-sm">
-                  AK
+              <div className="flex items-center space-x-3.5">
+                <div className="w-12 h-12 rounded-full bg-red-100 border border-red-200 overflow-hidden shrink-0 flex items-center justify-center font-extrabold text-red-600 text-base">
+                  {TESTIMONIALS[currentTestimonial].initials}
                 </div>
                 <div>
                   {/* 5 Stars */}
-                  <div className="flex items-center text-amber-400">
+                  <div className="flex items-center text-amber-400 gap-0.5">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-3.5 h-3.5 fill-amber-400" />
+                      <Star key={i} className="w-4 h-4 fill-amber-400" />
                     ))}
                   </div>
                 </div>
               </div>
 
-              <p className="text-xs text-slate-600 italic font-medium leading-relaxed">
-                "Kick products are amazing! My shoes have never looked this clean. Highly recommended!"
+              <p className="text-sm sm:text-base text-slate-700 italic font-medium leading-relaxed min-h-[4rem]">
+                {TESTIMONIALS[currentTestimonial].quote}
               </p>
 
-              <div className="flex items-center justify-between pt-2 border-t border-slate-200/60">
+              <div className="flex items-center justify-between pt-3 border-t border-slate-200/80">
                 <div>
-                  <h5 className="text-xs font-bold text-slate-900">Ayesha Khan</h5>
-                  <span className="text-[10px] text-slate-400">Lahore</span>
+                  <h5 className="text-sm sm:text-base font-bold text-slate-900">{TESTIMONIALS[currentTestimonial].name}</h5>
+                  <span className="text-xs font-semibold text-slate-400">{TESTIMONIALS[currentTestimonial].location}</span>
                 </div>
 
                 <div className="flex items-center space-x-2">
                   <motion.button
                     whileTap={{ scale: 0.9 }}
                     whileHover={{ scale: 1.1 }}
-                    className="w-7 h-7 bg-white text-slate-600 rounded-full flex items-center justify-center border border-slate-200 shadow-sm hover:text-red-600 transition-colors"
+                    onClick={() => setCurrentTestimonial((prev) => (prev - 1 + TESTIMONIALS.length) % TESTIMONIALS.length)}
+                    className="w-9 h-9 bg-white text-slate-700 rounded-full flex items-center justify-center border border-slate-200 shadow-sm hover:text-red-600 hover:border-red-300 transition-colors"
+                    aria-label="Previous Testimonial"
                   >
                     <ChevronLeft className="w-4 h-4" />
                   </motion.button>
                   <motion.button
                     whileTap={{ scale: 0.9 }}
                     whileHover={{ scale: 1.1 }}
-                    className="w-7 h-7 bg-white text-slate-600 rounded-full flex items-center justify-center border border-slate-200 shadow-sm hover:text-red-600 transition-colors"
+                    onClick={() => setCurrentTestimonial((prev) => (prev + 1) % TESTIMONIALS.length)}
+                    className="w-9 h-9 bg-white text-slate-700 rounded-full flex items-center justify-center border border-slate-200 shadow-sm hover:text-red-600 hover:border-red-300 transition-colors"
+                    aria-label="Next Testimonial"
                   >
                     <ChevronRight className="w-4 h-4" />
                   </motion.button>
