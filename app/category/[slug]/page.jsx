@@ -10,6 +10,15 @@ import ProductCard from '@/components/ProductCard';
 import QuickViewModal from '@/components/QuickViewModal';
 
 const CATEGORY_META = {
+  'shoe-care': {
+    name: 'Shoe Care',
+    bannerImage: '/Shoe%20Main%20Category%20Banner.jpg.jpeg',
+    tagline: 'Keep Your Shoes Looking Like New',
+    description:
+      'Discover practical shoe care solutions designed to clean, protect and maintain your favorite footwear.',
+    color: 'from-slate-900 to-red-950',
+    fallbackProducts: []
+  },
   'laundry-care': {
     name: 'Laundry Care',
     bannerImage: '/laundry Care.png',

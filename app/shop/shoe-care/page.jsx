@@ -15,7 +15,7 @@ export const metadata = {
     siteName: 'Kick Home Care',
     images: [
       {
-        url: '/shoe-care-hero.jpg',
+        url: '/Shoe%20Main%20Category%20Banner.jpg.jpeg',
         width: 1200,
         height: 675,
         alt: 'Kick Premium Shoe Care Products'
@@ -29,7 +29,7 @@ export const metadata = {
     title: 'Shoe Care Products | Cleaners, Protectors & Accessories',
     description:
       'Explore shoe care products for cleaning, protecting and maintaining sneakers, leather shoes and everyday footwear.',
-    images: ['/shoe-care-hero.jpg']
+    images: ['/Shoe%20Main%20Category%20Banner.jpg.jpeg']
   }
 };
 

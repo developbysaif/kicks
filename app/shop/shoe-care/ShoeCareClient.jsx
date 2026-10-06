@@ -457,7 +457,7 @@ export default function ShoeCareClient() {
         <section
           className="relative overflow-hidden text-white min-h-[420px] sm:min-h-[520px] flex items-end"
           style={{
-            backgroundImage: 'url(/shoe-care-hero.jpg)',
+            backgroundImage: "url('/Shoe%20Main%20Category%20Banner.jpg.jpeg')",
             backgroundSize: 'cover',
             backgroundPosition: 'center'
           }}
