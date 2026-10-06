@@ -170,7 +170,7 @@ const Footer = () => {
         <div className="pt-6 flex flex-col md:flex-row items-center justify-between text-xs text-gray-500 space-y-3 md:space-y-0">
           <p>© 2025 KICK Home Care. All rights reserved.</p>
           <div className="flex items-center space-x-6">
-            <Link href="/contact" className="hover:text-gray-300 transition-colors">
+            <Link href="/privacy-policy" className="hover:text-gray-300 transition-colors">
               Privacy Policy
             </Link>
             <span>|</span>
