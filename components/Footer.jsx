@@ -152,7 +152,14 @@ const Footer = () => {
               </li>
               <li className="flex items-start space-x-2">
                 <MapPin className="w-4 h-4 text-red-500 shrink-0 mt-0.5" />
-                <span>123 Main Street, Lahore Pakistan</span>
+                <a
+                  href="https://maps.app.goo.gl/YKeqSm5kSDWwqWbh7"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-red-400 transition-colors"
+                >
+                  Kick Home Care, Lahore, Pakistan
+                </a>
               </li>
             </ul>
           </div>

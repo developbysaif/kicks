@@ -17,7 +17,9 @@ import {
   RotateCcw,
   Zap,
   CheckCircle2,
-  Sparkles
+  Sparkles,
+  ExternalLink,
+  Navigation
 } from 'lucide-react';
 
 export default function ContactPage() {
@@ -294,17 +296,95 @@ export default function ContactPage() {
               <div className="space-y-1">
                 <h3 className="text-sm font-bold text-slate-900">Visit Us</h3>
                 <p className="text-xs text-slate-500 font-medium">
-                  Our office is located in Lahore, Pakistan.
+                  Our main office & store in Lahore, Pakistan.
                 </p>
                 <div className="pt-2 text-xs font-bold text-slate-700 flex items-start space-x-1.5">
                   <MapPin className="w-3.5 h-3.5 text-red-600 shrink-0 mt-0.5" />
-                  <span>123 Main Street, Lahore, Pakistan</span>
+                  <span>Kick Home Care, Lahore, Pakistan</span>
+                </div>
+                <div className="pt-2">
+                  <a
+                    href="https://maps.app.goo.gl/YKeqSm5kSDWwqWbh7"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center space-x-1 text-xs font-bold text-red-600 hover:text-red-700 hover:underline"
+                  >
+                    <span>View on Google Maps</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
                 </div>
               </div>
             </div>
 
           </div>
 
+        </section>
+
+        {/* 2.5 GOOGLE MAP & STORE LOCATION */}
+        <section className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden p-6 sm:p-10 space-y-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div>
+              <div className="inline-flex items-center space-x-1.5 px-3 py-1 bg-red-50 text-red-600 rounded-full text-[10px] font-black uppercase tracking-wider mb-2">
+                <MapPin className="w-3.5 h-3.5" />
+                <span>STORE LOCATION</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+                Visit Us at Kick Home Care
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
+                Locate us easily or get direct driving directions on Google Maps.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3">
+              <a
+                href="https://maps.app.goo.gl/YKeqSm5kSDWwqWbh7"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center space-x-2 px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold transition shadow-sm"
+              >
+                <MapPin className="w-4 h-4" />
+                <span>Open in Google Maps</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+              <a
+                href="https://www.google.com/maps/dir/?api=1&destination=31.5412362,74.2598963"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center space-x-2 px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition shadow-sm"
+              >
+                <Navigation className="w-4 h-4 text-red-500" />
+                <span>Get Directions</span>
+              </a>
+            </div>
+          </div>
+
+          {/* Interactive Map Iframe Container */}
+          <div className="relative w-full rounded-2xl overflow-hidden border border-slate-200 shadow-inner bg-slate-100">
+            <iframe
+              title="Kick Home Care Google Maps Location"
+              src="https://maps.google.com/maps?q=31.5412362,74.2598963+(Kick+Home+Care)&t=&z=16&ie=UTF8&iwloc=B&output=embed"
+              className="w-full h-[360px] sm:h-[420px] lg:h-[460px] border-0"
+              allowFullScreen=""
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+
+            {/* Quick Location Badge Overlay */}
+            <div className="hidden sm:flex absolute bottom-4 left-4 bg-white/95 backdrop-blur-md rounded-2xl p-4 border border-slate-200/80 shadow-lg max-w-sm items-start space-x-3">
+              <div className="w-10 h-10 rounded-xl bg-red-600 text-white flex items-center justify-center shrink-0 shadow-sm">
+                <MapPin className="w-5 h-5" />
+              </div>
+              <div className="text-xs">
+                <div className="font-black text-slate-900 text-sm">Kick Home Care</div>
+                <div className="text-slate-500 font-medium">Lahore, Punjab, Pakistan</div>
+                <div className="text-[11px] text-emerald-600 font-bold mt-1 flex items-center space-x-1">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
+                  <span>Open: Mon - Sun (9:00 AM - 10:00 PM)</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
 
         {/* 3. HOW CAN WE HELP? (WE'RE HERE FOR YOU) */}
