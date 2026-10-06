@@ -465,10 +465,6 @@ export default function ShoeCareClient() {
           {/* Layered overlays: dark gradient for text readability */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/20" />
 
-          {/* Kick Logo badge top-right */}
-          <div className="absolute top-5 right-5 bg-white/15 backdrop-blur-md rounded-2xl px-4 py-2.5 border border-white/20 flex items-center space-x-2">
-            <img src="/kick logo redesign-01.png" alt="Kick" className="h-7 object-contain" />
-          </div>
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-14 sm:pb-20 relative z-10 w-full">
             <div className="max-w-2xl space-y-5">

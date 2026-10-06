@@ -319,14 +319,6 @@ export default function CategoryPage({ params }) {
           {/* Dark overlay for text readability */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 to-black/20" />
 
-          {/* Logo badge top-right */}
-          <div className="absolute top-5 right-5 bg-white/15 backdrop-blur-md rounded-2xl px-3 py-2 border border-white/25 flex items-center space-x-2">
-            <img
-              src="/kick logo redesign-01.png"
-              alt="Kick"
-              className="h-6 object-contain"
-            />
-          </div>
 
           {/* Text content pinned to bottom */}
           <div className="relative z-10 p-8 sm:p-12 space-y-3 max-w-3xl">
