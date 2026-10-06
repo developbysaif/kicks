@@ -613,23 +613,23 @@ export default function HomePage() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-16 space-y-14 w-full">
         
         {/* 2. SHOP BY CATEGORY SECTION */}
-        <section className="space-y-6">
-          <div className="flex items-center justify-between">
+        <section className="bg-[#D0161D] rounded-3xl p-6 sm:p-8 lg:p-10 shadow-xl space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <div className="flex items-center space-x-2">
-                <span className="w-1.5 h-6 bg-red-600 rounded-full"></span>
-                <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+                <span className="w-1.5 h-6 bg-black rounded-full"></span>
+                <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
                   Shop By Category
                 </h2>
               </div>
-              <p className="text-xs sm:text-sm text-slate-500 mt-1 font-medium">
+              <p className="text-xs sm:text-sm text-white/90 mt-1 font-medium">
                 Find the right products for every corner of your home.
               </p>
             </div>
 
             <Link
               href="/shop"
-              className="text-xs font-bold text-red-600 hover:text-red-700 flex items-center space-x-1 group"
+              className="text-xs font-black text-black bg-white hover:bg-black hover:text-white px-4 py-2.5 rounded-full flex items-center space-x-1.5 group transition-all shadow-sm w-fit"
             >
               <span>View All Categories</span>
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
@@ -638,7 +638,7 @@ export default function HomePage() {
 
           {/* 6 Grid Cards */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-            {CATEGORIES_DATA.map((cat, index) => (
+            {CATEGORIES_DATA.map((cat) => (
               <motion.div
                 key={cat.slug}
                 whileHover={{ y: -5 }}
@@ -646,9 +646,9 @@ export default function HomePage() {
               >
                 <Link
                   href={`/category/${cat.slug}`}
-                  className={`group p-4 rounded-2xl border ${cat.borderColor} ${cat.bgColor} hover:shadow-lg transition-all duration-300 flex flex-col justify-between relative overflow-hidden block h-full`}
+                  className="group p-3.5 sm:p-4 rounded-2xl bg-white hover:bg-slate-50 border border-white/40 shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col justify-between relative overflow-hidden block h-full"
                 >
-                  <div className="aspect-square w-full rounded-xl overflow-hidden mb-3 bg-white border border-slate-100">
+                  <div className="aspect-square w-full rounded-xl overflow-hidden mb-3 bg-slate-50 border border-slate-100">
                     <motion.img
                       whileHover={{ scale: 1.1 }}
                       transition={{ duration: 0.3 }}
@@ -659,12 +659,12 @@ export default function HomePage() {
                   </div>
 
                   <div>
-                    <h3 className="text-sm sm:text-base font-black text-slate-900 group-hover:text-red-600 transition-colors leading-snug">
+                    <h3 className="text-sm sm:text-base font-black text-black group-hover:text-[#D0161D] transition-colors leading-snug">
                       {cat.name}
                     </h3>
-                    <div className="flex items-center justify-between mt-1.5 text-xs text-slate-500 font-medium">
+                    <div className="flex items-center justify-between mt-1.5 text-xs text-black/70 font-bold">
                       <span>{cat.count}</span>
-                      <span className="text-red-600 font-bold group-hover:translate-x-1 transition-transform">→</span>
+                      <span className="text-black font-black group-hover:translate-x-1 transition-transform">→</span>
                     </div>
                   </div>
                 </Link>
