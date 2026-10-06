@@ -3,8 +3,6 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import OtpInput from '@/components/OtpInput';
 import { useAuth } from '@/context/AuthContext';
 import {
@@ -339,11 +337,20 @@ function LoginBContent() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 font-sans selection:bg-red-500 selection:text-white">
-      <Header />
-
-      <main className="flex-1 flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex flex-col justify-center bg-slate-50 font-sans selection:bg-red-500 selection:text-white py-10 sm:py-14">
+      <main className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-md">
+
+          {/* Back to Home Link */}
+          <div className="mb-4 flex items-center justify-start">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 text-xs font-semibold text-slate-500 hover:text-slate-900 transition-colors py-1.5 px-3 rounded-xl hover:bg-slate-200/60"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back to Home
+            </Link>
+          </div>
 
           {/* Card Container */}
           <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/60 border border-slate-100 overflow-hidden transition-all duration-300">
@@ -353,8 +360,20 @@ function LoginBContent() {
               <div className="absolute -top-12 -right-12 w-36 h-36 bg-red-600/20 rounded-full blur-2xl pointer-events-none" />
               <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-red-500/15 rounded-full blur-xl pointer-events-none" />
 
-              <div className="relative inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-red-600 to-red-500 shadow-lg shadow-red-600/30 mb-4 ring-4 ring-white/10">
-                <span className="font-black text-2xl tracking-tighter text-white">K</span>
+              {/* Kicks Logo & Brand Text */}
+              <div className="relative flex flex-col items-center justify-center mb-5">
+                <Link href="/" className="inline-flex flex-col items-center group focus:outline-none" title="Kicks Home Care">
+                  <div className="bg-white px-5 py-2.5 rounded-2xl shadow-lg shadow-black/25 ring-4 ring-white/10 group-hover:scale-105 transition-transform duration-200">
+                    <img
+                      src="/kick%20logo.png"
+                      alt="Kicks Home Care"
+                      className="h-10 sm:h-12 w-auto object-contain"
+                    />
+                  </div>
+                  <span className="mt-2.5 text-xs sm:text-sm font-bold tracking-widest text-slate-200 uppercase group-hover:text-red-400 transition-colors">
+                    kicks home care
+                  </span>
+                </Link>
               </div>
 
               <h1 className="text-2xl font-black tracking-tight text-white">
@@ -1065,8 +1084,6 @@ function LoginBContent() {
 
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 }
