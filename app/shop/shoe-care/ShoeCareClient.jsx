@@ -523,71 +523,75 @@ export default function ShoeCareClient() {
           </div>
         </section>
 
-        {/* 4. CATEGORY INTRO SECTION */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-xs">
-            <div className="max-w-3xl space-y-3">
-              <span className="text-xs font-bold text-[#D0161D] uppercase tracking-wider">
-                Footwear Hygiene &amp; Longevity
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-black text-[#1A1A1A] tracking-tight">
-                Shoe Care Products
-              </h2>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                Whether you step out in crisp white sneakers, fine leather oxfords, or casual everyday trainers, proper footwear maintenance extends shoe lifespan and preserves aesthetic appeal. Discover our comprehensive range of specialized shoe cleaners, conditioning waxes, hydrophobic protector sprays, and ergonomic brushes tailored to care for leather, suede, nubuck, canvas, and mesh without damaging sensitive fibers.
-              </p>
+        {/* 4. SECTION 2 (RED) -> CATEGORY INTRO & BROWSE SUB-CATEGORIES */}
+        <section id="categories-sub" className="bg-[#D0161D] text-white py-12 sm:py-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+            {/* Intro Card - White background for maximum contrast */}
+            <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-sm">
+              <div className="max-w-3xl space-y-3">
+                <span className="text-xs font-bold text-[#D0161D] uppercase tracking-wider">
+                  Footwear Hygiene &amp; Longevity
+                </span>
+                <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+                  Shoe Care Products
+                </h2>
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
+                  Whether you step out in crisp white sneakers, fine leather oxfords, or casual everyday trainers, proper footwear maintenance extends shoe lifespan and preserves aesthetic appeal. Discover our comprehensive range of specialized shoe cleaners, conditioning waxes, hydrophobic protector sprays, and ergonomic brushes tailored to care for leather, suede, nubuck, canvas, and mesh without damaging sensitive fibers.
+                </p>
+              </div>
+            </div>
+
+            {/* Sub-Category Pills Browser */}
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-sm font-black uppercase tracking-wider text-white">
+                  Browse by Sub-Category
+                </h3>
+                {selectedCategory !== 'all' && (
+                  <button
+                    onClick={() => setSelectedCategory('all')}
+                    className="text-xs font-bold text-white/90 underline hover:text-white"
+                  >
+                    Show All
+                  </button>
+                )}
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3">
+                {SUB_CATEGORIES.map((cat) => {
+                  const isActive = selectedCategory === cat.id;
+                  return (
+                    <button
+                      key={cat.id}
+                      onClick={() => {
+                        setSelectedCategory(cat.id);
+                        const prodSection = document.getElementById('products-section');
+                        if (prodSection) prodSection.scrollIntoView({ behavior: 'smooth' });
+                      }}
+                      className={`p-3.5 rounded-2xl text-left transition-all duration-200 border flex flex-col justify-between ${
+                        isActive
+                          ? 'bg-slate-900 text-white border-black shadow-lg scale-102 ring-2 ring-white'
+                          : 'bg-white text-slate-900 border-white/20 hover:shadow-md'
+                      }`}
+                    >
+                      <span className="text-2xl mb-2">{cat.icon}</span>
+                      <div>
+                        <h4 className="text-xs font-black line-clamp-1">{cat.name}</h4>
+                        <span className={`text-[10px] ${isActive ? 'text-white/80' : 'text-slate-500 font-medium'}`}>
+                          {cat.count} Items
+                        </span>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </section>
 
-        {/* 5. PRODUCT SUB-CATEGORIES (CARDS) */}
-        <section id="categories-sub" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-black uppercase tracking-wider text-[#1A1A1A]">
-              Browse by Sub-Category
-            </h3>
-            {selectedCategory !== 'all' && (
-              <button
-                onClick={() => setSelectedCategory('all')}
-                className="text-xs font-bold text-[#D0161D] hover:underline"
-              >
-                Show All
-              </button>
-            )}
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3">
-            {SUB_CATEGORIES.map((cat) => {
-              const isActive = selectedCategory === cat.id;
-              return (
-                <button
-                  key={cat.id}
-                  onClick={() => {
-                    setSelectedCategory(cat.id);
-                    const prodSection = document.getElementById('products-section');
-                    if (prodSection) prodSection.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className={`p-3.5 rounded-2xl text-left transition-all duration-200 border flex flex-col justify-between ${
-                    isActive
-                      ? 'bg-[#D0161D] text-white border-[#D0161D] shadow-md scale-102'
-                      : 'bg-white text-slate-700 border-slate-200/80 hover:border-[#D0161D]/40 hover:shadow-sm'
-                  }`}
-                >
-                  <span className="text-2xl mb-2">{cat.icon}</span>
-                  <div>
-                    <h4 className="text-xs font-bold line-clamp-1">{cat.name}</h4>
-                    <span className={`text-[10px] ${isActive ? 'text-white/80' : 'text-slate-400'}`}>
-                      {cat.count} Items
-                    </span>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* 6. MAIN PRODUCT SECTION WITH FILTERS & SORT */}
-        <section id="products-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        {/* 6. SECTION 3 (WHITE) -> MAIN PRODUCT SECTION WITH FILTERS & SORT */}
+        <section id="products-section" className="bg-white py-12 sm:py-16 lg:py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           {/* Top Control Bar */}
           <div className="bg-white rounded-2xl p-4 mb-6 border border-slate-200/80 shadow-xs flex flex-wrap items-center justify-between gap-4">
@@ -914,54 +918,59 @@ export default function ShoeCareClient() {
             </div>
 
           </div>
+          </div>
         </section>
 
-        {/* 7. SHOP BY NEED SECTION */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="text-center max-w-2xl mx-auto mb-8 space-y-2">
-            <span className="text-xs font-bold text-[#D0161D] uppercase tracking-wider">Targeted Care</span>
-            <h3 className="text-2xl sm:text-3xl font-black text-[#1A1A1A] tracking-tight">
-              Shop Footwear By Need
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-500">
-              Select your immediate shoe care objective to find formulas tailored to the job.
-            </p>
-          </div>
+        {/* 7. SECTION 4 (RED) -> SHOP BY NEED SECTION */}
+        <section className="bg-[#D0161D] text-white py-12 sm:py-16 lg:py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
+              <span className="inline-block px-3 py-1 rounded-full bg-white/10 text-white text-xs font-bold uppercase tracking-wider">
+                Targeted Care
+              </span>
+              <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+                Shop Footwear By Need
+              </h3>
+              <p className="text-xs sm:text-sm text-white/90 font-medium">
+                Select your immediate shoe care objective to find formulas tailored to the job.
+              </p>
+            </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            {SHOP_BY_NEEDS.map((item, idx) => (
-              <div
-                key={idx}
-                onClick={() => {
-                  setSelectedCategory(item.action);
-                  const prodSection = document.getElementById('products-section');
-                  if (prodSection) prodSection.scrollIntoView({ behavior: 'smooth' });
-                }}
-                className="group relative rounded-3xl overflow-hidden p-6 bg-white border border-slate-200/80 shadow-xs hover:shadow-xl transition-all duration-300 cursor-pointer flex flex-col justify-between"
-              >
-                <div>
-                  <div className="w-12 h-12 rounded-2xl bg-[#f9f9f9] border border-slate-100 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">
-                    {item.icon}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+              {SHOP_BY_NEEDS.map((item, idx) => (
+                <div
+                  key={idx}
+                  onClick={() => {
+                    setSelectedCategory(item.action);
+                    const prodSection = document.getElementById('products-section');
+                    if (prodSection) prodSection.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="group relative rounded-3xl overflow-hidden p-6 bg-white text-slate-900 border border-white/20 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="w-12 h-12 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">
+                      {item.icon}
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 group-hover:text-[#D0161D] transition-colors">
+                      {item.title}
+                    </h4>
+                    <p className="text-[11px] text-slate-600 mt-1 leading-relaxed">
+                      {item.description}
+                    </p>
                   </div>
-                  <h4 className="text-sm font-bold text-[#1A1A1A] group-hover:text-[#D0161D] transition-colors">
-                    {item.title}
-                  </h4>
-                  <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">
-                    {item.description}
-                  </p>
-                </div>
 
-                <div className="pt-4 mt-4 border-t border-slate-100 flex items-center text-xs font-bold text-[#D0161D] group-hover:translate-x-1 transition-transform">
-                  <span>Explore Products</span>
-                  <ChevronRight className="w-3.5 h-3.5 ml-1" />
+                  <div className="pt-4 mt-4 border-t border-slate-100 flex items-center text-xs font-bold text-[#D0161D] group-hover:translate-x-1 transition-transform">
+                    <span>Explore Products</span>
+                    <ChevronRight className="w-3.5 h-3.5 ml-1" />
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </section>
 
-        {/* 8. BENEFITS SECTION */}
-        <section className="bg-white border-y border-slate-200/80 py-16">
+        {/* 8. SECTION 5 (WHITE) -> BENEFITS SECTION */}
+        <section className="bg-white border-y border-slate-200/80 py-12 sm:py-16 lg:py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
               <span className="text-xs font-bold text-[#D0161D] uppercase tracking-wider">Quality Assurance</span>
@@ -993,43 +1002,47 @@ export default function ShoeCareClient() {
           </div>
         </section>
 
-        {/* 9. HOW IT WORKS (3 STEPS) */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
-            <span className="text-xs font-bold text-[#D0161D] uppercase tracking-wider">Expert Methodology</span>
-            <h3 className="text-2xl sm:text-3xl font-black text-[#1A1A1A] tracking-tight">
-              How It Works
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-500">
-              Three simple steps to restore and protect your entire footwear collection at home.
-            </p>
-          </div>
+        {/* 9. SECTION 6 (RED) -> HOW IT WORKS (3 STEPS) */}
+        <section className="bg-[#D0161D] text-white py-12 sm:py-16 lg:py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
+              <span className="inline-block px-3 py-1 rounded-full bg-white/10 text-white text-xs font-bold uppercase tracking-wider">
+                Expert Methodology
+              </span>
+              <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+                How It Works
+              </h3>
+              <p className="text-xs sm:text-sm text-white/90 font-medium">
+                Three simple steps to restore and protect your entire footwear collection at home.
+              </p>
+            </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {HOW_IT_WORKS.map((step, idx) => (
-              <div
-                key={idx}
-                className="bg-white rounded-3xl p-8 border border-slate-200/80 shadow-xs relative flex flex-col justify-between"
-              >
-                <div>
-                  <span className="text-3xl font-black text-[#D0161D]/15 font-mono block mb-3">
-                    {step.step}
-                  </span>
-                  <h4 className="text-base font-bold text-[#1A1A1A] mb-2">{step.title}</h4>
-                  <p className="text-xs text-slate-600 leading-relaxed">{step.desc}</p>
-                </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {HOW_IT_WORKS.map((step, idx) => (
+                <div
+                  key={idx}
+                  className="bg-white text-slate-900 rounded-3xl p-8 border border-white/20 shadow-sm relative flex flex-col justify-between"
+                >
+                  <div>
+                    <span className="text-3xl font-black text-[#D0161D] font-mono block mb-3">
+                      {step.step}
+                    </span>
+                    <h4 className="text-base font-bold text-slate-900 mb-2">{step.title}</h4>
+                    <p className="text-xs text-slate-600 leading-relaxed">{step.desc}</p>
+                  </div>
 
-                <div className="mt-6 pt-4 border-t border-slate-100 flex items-center text-xs font-bold text-[#D0161D]">
-                  <CheckCircle2 className="w-4 h-4 mr-2" />
-                  <span>Kick Certified Step</span>
+                  <div className="mt-6 pt-4 border-t border-slate-100 flex items-center text-xs font-bold text-[#D0161D]">
+                    <CheckCircle2 className="w-4 h-4 mr-2" />
+                    <span>Kick Certified Step</span>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </section>
 
-        {/* 10. CUSTOMER REVIEWS */}
-        <section className="bg-white border-y border-slate-200/80 py-16">
+        {/* 10. SECTION 7 (WHITE) -> CUSTOMER REVIEWS */}
+        <section className="bg-white border-y border-slate-200/80 py-12 sm:py-16 lg:py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
               <span className="text-xs font-bold text-[#D0161D] uppercase tracking-wider">Verified Feedback</span>
@@ -1064,59 +1077,63 @@ export default function ShoeCareClient() {
           </div>
         </section>
 
-        {/* 11. FAQ ACCORDION */}
-        <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="text-center mb-10 space-y-2">
-            <span className="text-xs font-bold text-[#D0161D] uppercase tracking-wider">Common Questions</span>
-            <h3 className="text-2xl sm:text-3xl font-black text-[#1A1A1A] tracking-tight">
-              Frequently Asked Questions
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-500">
-              Clear, practical advice for maintaining footwear materials.
-            </p>
-          </div>
+        {/* 11. SECTION 8 (RED) -> FAQ ACCORDION */}
+        <section className="bg-[#D0161D] text-white py-12 sm:py-16 lg:py-20">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-10 space-y-2">
+              <span className="inline-block px-3 py-1 rounded-full bg-white/10 text-white text-xs font-bold uppercase tracking-wider">
+                Common Questions
+              </span>
+              <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+                Frequently Asked Questions
+              </h3>
+              <p className="text-xs sm:text-sm text-white/90 font-medium">
+                Clear, practical advice for maintaining footwear materials.
+              </p>
+            </div>
 
-          <div className="space-y-3">
-            {FAQS.map((faq, fIdx) => {
-              const isOpen = activeFaq === fIdx;
-              return (
-                <div
-                  key={fIdx}
-                  className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-xs transition-colors"
-                >
-                  <button
-                    onClick={() => setActiveFaq(isOpen ? null : fIdx)}
-                    className="w-full p-5 text-left flex items-center justify-between font-bold text-xs sm:text-sm text-[#1A1A1A] hover:text-[#D0161D] transition-colors"
+            <div className="space-y-3">
+              {FAQS.map((faq, fIdx) => {
+                const isOpen = activeFaq === fIdx;
+                return (
+                  <div
+                    key={fIdx}
+                    className="bg-white rounded-2xl border border-white/20 overflow-hidden shadow-sm transition-colors"
                   >
-                    <span>{faq.q}</span>
-                    <ChevronDown
-                      className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
-                        isOpen ? 'rotate-180 text-[#D0161D]' : ''
-                      }`}
-                    />
-                  </button>
+                    <button
+                      onClick={() => setActiveFaq(isOpen ? null : fIdx)}
+                      className="w-full p-5 text-left flex items-center justify-between font-bold text-xs sm:text-sm text-[#1A1A1A] hover:text-[#D0161D] transition-colors"
+                    >
+                      <span>{faq.q}</span>
+                      <ChevronDown
+                        className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
+                          isOpen ? 'rotate-180 text-[#D0161D]' : ''
+                        }`}
+                      />
+                    </button>
 
-                  <AnimatePresence>
-                    {isOpen && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className="px-5 pb-5 text-xs text-slate-600 leading-relaxed border-t border-slate-100 pt-3"
-                      >
-                        {faq.a}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              );
-            })}
+                    <AnimatePresence>
+                      {isOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="px-5 pb-5 text-xs text-slate-600 leading-relaxed border-t border-slate-100 pt-3"
+                        >
+                          {faq.a}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </section>
 
-        {/* 12. COMPREHENSIVE SEO CONTENT SECTION (550+ words natural text) */}
-        <section className="bg-white border-t border-slate-200/80 py-16">
+        {/* 12. SECTION 9 (WHITE) -> COMPREHENSIVE SEO CONTENT SECTION */}
+        <section className="bg-white border-t border-slate-200/80 py-12 sm:py-16 lg:py-20">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 text-slate-700 text-xs sm:text-sm leading-relaxed">
             
             <div className="space-y-2 border-b border-slate-100 pb-4">

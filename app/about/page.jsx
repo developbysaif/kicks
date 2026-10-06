@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import PageSection from '@/components/PageSection';
 
 const CATEGORIES_DATA = [
   {
@@ -100,8 +101,8 @@ export default function AboutPage() {
     <div className="min-h-screen bg-[#f7f7f2] text-slate-800 font-sans">
       <Header />
 
-      <main className="max-w-[1280px] mx-auto bg-white shadow-[0_0_0_1px_rgba(15,23,42,0.02)]">
-        {/* 1. HERO BANNER SECTION (SAME TO SAME AS REFERENCE) */}
+      <main className="w-full flex-1">
+        {/* 1. HERO BANNER SECTION — WHITE */}
         <section className="relative w-full overflow-hidden bg-white border-b border-slate-200">
           
           {/* Top center accent red notch */}
@@ -199,33 +200,34 @@ export default function AboutPage() {
 
         </section>
 
-        <section className="px-4 sm:px-6 lg:px-8 py-12 md:py-16 border-b border-slate-200">
+        {/* 2. WHO WE ARE SECTION — RED */}
+        <PageSection variant="red" className="border-t border-b border-red-700/20">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
             <div className="space-y-5">
               <div className="flex items-center gap-2">
-                <span className="h-0.5 w-8 bg-[#D0161D]" />
-                <span className="text-[11px] font-black uppercase tracking-[0.22em] text-[#D0161D]">Who We Are</span>
+                <span className="h-0.5 w-8 bg-white" />
+                <span className="text-[11px] font-black uppercase tracking-[0.22em] text-white">Who We Are</span>
               </div>
 
-              <h2 className="text-2xl sm:text-3xl font-black text-[#111111] tracking-[-0.04em]">Who We Are</h2>
+              <h2 className="text-2xl sm:text-3xl font-black text-white tracking-[-0.04em]">Who We Are</h2>
 
-              <p className="text-sm text-slate-600 leading-relaxed">
+              <p className="text-sm text-white/90 leading-relaxed font-medium">
                 KICK Home Care is a proud Pakistani brand that brings you high-quality home care products designed for everyday life.
               </p>
-              <p className="text-sm text-slate-600 leading-relaxed">
+              <p className="text-sm text-white/90 leading-relaxed font-medium">
                 We specialize in practical, reliable and effective cleaning and care solutions that help you maintain a cleaner home, healthier living and a brighter tomorrow. From your shoes to your kitchen, bathroom to your surroundings — KICK has you covered.
               </p>
 
               <Link
                 href="/shop"
-                className="inline-flex items-center gap-2 rounded-full bg-[#D0161D] px-5 py-2.5 text-xs font-bold text-white transition hover:bg-red-800"
+                className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-xs font-black text-black transition hover:bg-black hover:text-white shadow-md w-fit"
               >
                 <span>Our Products</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
 
-            <div className="relative rounded-[28px] overflow-hidden border border-slate-200 shadow-[0_10px_30px_rgba(15,23,42,0.08)]">
+            <div className="relative rounded-[28px] overflow-hidden border border-white/20 shadow-2xl">
               <img
                 src="/about-who-we-are.jpg"
                 alt="Pakistani family enjoying a clean home with KICK Home Care products"
@@ -242,11 +244,12 @@ export default function AboutPage() {
               </div>
             </div>
           </div>
-        </section>
+        </PageSection>
 
-        <section className="bg-slate-50 px-4 sm:px-6 lg:px-8 py-12 md:py-16 border-b border-slate-200">
+        {/* 3. OUR BRAND STORY — WHITE */}
+        <PageSection variant="white">
           <div className="grid grid-cols-1 lg:grid-cols-[1.02fr_1.08fr] gap-8 md:gap-12 items-center">
-            <div className="relative rounded-[28px] overflow-hidden border border-slate-200 shadow-[0_10px_30px_rgba(15,23,42,0.08)] order-2 lg:order-1">
+            <div className="relative rounded-[28px] overflow-hidden border border-slate-200 shadow-md order-2 lg:order-1">
               <img
                 src="/about-brand-story.jpg"
                 alt="KICK Home Care — A Brand Born from Care"
@@ -271,48 +274,58 @@ export default function AboutPage() {
 
               <h2 className="text-2xl sm:text-3xl font-black text-[#111111] tracking-[-0.04em]">Our Brand Story</h2>
 
-              <p className="text-sm text-slate-600 leading-relaxed">
+              <p className="text-sm text-slate-600 leading-relaxed font-normal">
                 KICK Home Care started with a simple belief — that every home deserves products that work, are safe and make life easier.
               </p>
-              <p className="text-sm text-slate-600 leading-relaxed">
+              <p className="text-sm text-slate-600 leading-relaxed font-normal">
                 What began as a commitment to quality and care has grown into a trusted name across Pakistan, helping millions of households keep their homes clean, fresh and well cared for.
               </p>
             </div>
           </div>
-        </section>
+        </PageSection>
 
-        <section className="px-4 sm:px-6 lg:px-8 py-12 md:py-16 border-b border-slate-200">
+        {/* 4. MISSION & VISION — RED */}
+        <PageSection variant="red" className="border-t border-b border-red-700/20">
+          <div className="mb-8">
+            <div className="flex items-center gap-2">
+              <span className="h-0.5 w-8 bg-white" />
+              <span className="text-[11px] font-black uppercase tracking-[0.22em] text-white">Our Purpose</span>
+            </div>
+            <h2 className="mt-2 text-2xl sm:text-3xl font-black text-white tracking-[-0.04em]">Mission & Vision</h2>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-            <div className="rounded-[28px] border border-slate-200 bg-white p-7 shadow-sm hover:shadow-md transition-all">
-              <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-[#D0161D]/10">
+            <div className="rounded-[28px] border border-white/20 bg-white p-7 shadow-xl hover:shadow-2xl transition-all">
+              <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-red-50 text-[#D0161D]">
                 <Target className="h-6 w-6 text-[#D0161D]" />
               </div>
               <h3 className="text-xl font-black text-[#111111]">Our Mission</h3>
-              <p className="mt-3 text-sm leading-relaxed text-slate-600">
+              <p className="mt-3 text-sm leading-relaxed text-slate-700 font-medium">
                 To provide high-quality, safe and affordable home care products that make everyday life cleaner, healthier and more convenient for every household in Pakistan.
               </p>
             </div>
 
-            <div className="rounded-[28px] border border-slate-200 bg-white p-7 shadow-sm hover:shadow-md transition-all">
-              <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-[#D0161D]/10">
+            <div className="rounded-[28px] border border-white/20 bg-white p-7 shadow-xl hover:shadow-2xl transition-all">
+              <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-red-50 text-[#D0161D]">
                 <Eye className="h-6 w-6 text-[#D0161D]" />
               </div>
               <h3 className="text-xl font-black text-[#111111]">Our Vision</h3>
-              <p className="mt-3 text-sm leading-relaxed text-slate-600">
+              <p className="mt-3 text-sm leading-relaxed text-slate-700 font-medium">
                 To be the most trusted and loved home care brand in Pakistan, known for quality, innovation and care — today and for generations to come.
               </p>
             </div>
           </div>
-        </section>
+        </PageSection>
 
-        <section className="bg-slate-50 px-4 sm:px-6 lg:px-8 py-12 md:py-16 border-b border-slate-200">
+        {/* 5. WHY CHOOSE KICK — WHITE */}
+        <PageSection variant="white">
           <div className="mb-8 sm:mb-10">
             <div className="flex items-center gap-2">
               <span className="h-0.5 w-8 bg-[#D0161D]" />
               <span className="text-[11px] font-black uppercase tracking-[0.22em] text-[#D0161D]">Our Promise</span>
             </div>
             <h2 className="mt-3 text-2xl sm:text-3xl font-black text-[#111111] tracking-[-0.04em]">Why Choose KICK</h2>
-            <p className="mt-2 text-sm text-slate-500">
+            <p className="mt-2 text-sm text-slate-600 font-normal">
               We care about your home, your family and your peace of mind. That's why millions of households trust KICK.
             </p>
           </div>
@@ -322,56 +335,55 @@ export default function AboutPage() {
               const Icon = item.icon;
               return (
                 <div key={index} className="rounded-[26px] border border-slate-200 bg-white p-5 text-center shadow-sm hover:shadow-md transition-all">
-                  <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#D0161D]/10">
+                  <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-red-50">
                     <Icon className="h-7 w-7 text-[#D0161D]" />
                   </div>
                   <h4 className="text-sm font-black text-[#111111]">{item.title}</h4>
-                  <p className="mt-2 text-[11px] leading-relaxed text-slate-500">{item.desc}</p>
+                  <p className="mt-2 text-[11px] leading-relaxed text-slate-600 font-medium">{item.desc}</p>
                 </div>
               );
             })}
           </div>
-        </section>
+        </PageSection>
 
-        <section className="px-4 sm:px-6 lg:px-8 py-12 md:py-16 border-b border-slate-200">
+        {/* 6. OUR PRODUCT CATEGORIES — RED */}
+        <PageSection variant="red" className="border-t border-b border-red-700/20">
           <div className="mb-8 flex items-center justify-between gap-4">
             <div>
               <div className="flex items-center gap-2">
-                <span className="h-0.5 w-8 bg-[#D0161D]" />
-                <span className="text-[11px] font-black uppercase tracking-[0.22em] text-[#D0161D]">Different Needs, One Trusted Brand</span>
+                <span className="h-0.5 w-8 bg-white" />
+                <span className="text-[11px] font-black uppercase tracking-[0.22em] text-white">Different Needs, One Trusted Brand</span>
               </div>
-              <h2 className="mt-3 text-2xl sm:text-3xl font-black text-[#111111] tracking-[-0.04em]">Our Product Categories</h2>
+              <h2 className="mt-3 text-2xl sm:text-3xl font-black text-white tracking-[-0.04em]">Our Product Categories</h2>
             </div>
 
-            <Link href="/shop" className="hidden sm:flex items-center gap-1 text-xs font-bold text-[#D0161D] hover:underline">
+            <Link href="/shop" className="hidden sm:flex items-center gap-1.5 text-xs font-black text-black bg-white hover:bg-black hover:text-white px-5 py-2.5 rounded-full shadow-md transition-all">
               <span>Explore All Categories</span>
               <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
 
-          {/* 4 Cards Per Row Grid — Bigger Size, No Side Gaps */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {CATEGORIES_DATA.map((cat) => (
               <Link
                 key={cat.slug}
                 href={cat.href}
-                className="group rounded-3xl border border-slate-200/90 bg-white p-5 shadow-xs transition-all duration-300 hover:border-[#D0161D]/40 hover:shadow-xl flex flex-col justify-between"
+                className="group rounded-3xl border border-white/30 bg-white p-5 shadow-lg transition-all duration-300 hover:shadow-2xl flex flex-col justify-between"
               >
-                {/* Image Container — full cover, zero side gap */}
                 <div className="relative aspect-square sm:aspect-[4/3] w-full overflow-hidden rounded-2xl bg-slate-50 mb-4 border border-slate-100">
                   <img
                     src={cat.image}
                     alt={cat.name}
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-106"
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                 </div>
 
                 <div className="flex items-end justify-between pt-1">
                   <div>
-                    <h4 className="text-sm sm:text-base font-black text-[#0F243E] group-hover:text-[#D0161D] transition-colors">
+                    <h4 className="text-sm sm:text-base font-black text-black group-hover:text-[#D0161D] transition-colors">
                       {cat.name}
                     </h4>
-                    <p className="mt-1 text-xs text-slate-400 font-medium">
+                    <p className="mt-1 text-xs text-slate-500 font-medium">
                       {cat.count}
                     </p>
                   </div>
@@ -386,18 +398,16 @@ export default function AboutPage() {
           </div>
 
           <div className="mt-8 flex justify-center sm:hidden">
-            <Link href="/shop" className="flex items-center gap-1 text-xs font-bold text-[#D0161D] hover:underline">
+            <Link href="/shop" className="flex items-center gap-1 text-xs font-black text-black bg-white px-5 py-2.5 rounded-full shadow-md">
               <span>Explore All Categories</span>
               <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
-        </section>
+        </PageSection>
 
-        {/* 7. QUALITY YOU CAN TRUST (SAME TO SAME AS REFERENCE IMAGE 1) */}
-        <section className="bg-white px-4 sm:px-6 lg:px-8 py-10 sm:py-14 border-b border-slate-200">
+        {/* 7. QUALITY YOU CAN TRUST — WHITE */}
+        <PageSection variant="white">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-            
-            {/* Left Column: Heading + Subtitle + Laboratory Image */}
             <div className="lg:col-span-5 space-y-3">
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-5 bg-[#D0161D] rounded-full shrink-0" />
@@ -418,7 +428,6 @@ export default function AboutPage() {
               </div>
             </div>
 
-            {/* Right Column: Heading + Description + 4 Features Single Row with Dividers */}
             <div className="lg:col-span-7 space-y-4 pt-1 lg:pt-0">
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-5 bg-[#D0161D] rounded-full shrink-0" />
@@ -431,10 +440,7 @@ export default function AboutPage() {
                 Every KICK product is made with carefully selected ingredients and goes through strict quality checks to ensure it delivers the best results, every time.
               </p>
 
-              {/* 4 Feature Items Single Row with Vertical Dividers */}
               <div className="mt-8 pt-6 border-t border-slate-100 grid grid-cols-2 sm:grid-cols-4 gap-4 items-center">
-                
-                {/* 1. Safe Ingredients */}
                 <div className="flex items-center gap-2.5">
                   <div className="w-11 h-11 rounded-full border-2 border-[#1E3A5F] flex items-center justify-center text-[#1E3A5F] shrink-0">
                     <Leaf className="w-5 h-5 text-[#1E3A5F]" />
@@ -445,7 +451,6 @@ export default function AboutPage() {
                   </div>
                 </div>
 
-                {/* 2. Quality Testing */}
                 <div className="flex items-center gap-2.5 sm:border-l sm:border-slate-200 sm:pl-4">
                   <div className="w-11 h-11 rounded-full border-2 border-[#1E3A5F] flex items-center justify-center text-[#1E3A5F] shrink-0">
                     <FlaskConical className="w-5 h-5 text-[#1E3A5F]" />
@@ -456,7 +461,6 @@ export default function AboutPage() {
                   </div>
                 </div>
 
-                {/* 3. Long-Lasting Performance */}
                 <div className="flex items-center gap-2.5 sm:border-l sm:border-slate-200 sm:pl-4">
                   <div className="w-11 h-11 rounded-full border-2 border-[#1E3A5F] flex items-center justify-center text-[#1E3A5F] shrink-0">
                     <ShieldCheck className="w-5 h-5 text-[#1E3A5F]" />
@@ -467,7 +471,6 @@ export default function AboutPage() {
                   </div>
                 </div>
 
-                {/* 4. Family Safe */}
                 <div className="flex items-center gap-2.5 sm:border-l sm:border-slate-200 sm:pl-4">
                   <div className="w-11 h-11 rounded-full border-2 border-[#1E3A5F] flex items-center justify-center text-[#1E3A5F] shrink-0">
                     <Users className="w-5 h-5 text-[#1E3A5F]" />
@@ -477,32 +480,15 @@ export default function AboutPage() {
                     <span className="block text-[11px] text-slate-500 font-medium">Safe</span>
                   </div>
                 </div>
-
               </div>
-
             </div>
-
           </div>
-        </section>
+        </PageSection>
 
-        {/* 8. OUR JOURNEY IN NUMBERS (SAME TO SAME AS REFERENCE IMAGE 2) */}
-        <section className="px-4 sm:px-6 lg:px-8 py-8 sm:py-12 border-b border-slate-200">
-          <div className="relative rounded-[24px] sm:rounded-[32px] border border-slate-200/90 bg-white p-6 sm:p-8 lg:p-10 shadow-[0_4px_24px_rgba(15,23,42,0.04)] overflow-hidden">
-            
-            {/* Soft decorative greenery leaves on far right edge (as seen in reference) */}
-            <div className="absolute -right-6 -bottom-6 w-32 sm:w-40 h-32 sm:h-40 pointer-events-none opacity-85 z-0 hidden md:block">
-              <svg viewBox="0 0 160 160" fill="none" className="w-full h-full">
-                <path d="M 120 160 C 130 110 100 70 80 50 C 95 75 105 110 100 160 Z" fill="#2d6a4f" opacity="0.9" />
-                <path d="M 140 160 C 150 120 130 80 115 65 C 125 90 130 120 125 160 Z" fill="#40916c" opacity="0.85" />
-                <path d="M 100 160 C 110 130 85 95 65 80 C 80 105 85 130 85 160 Z" fill="#52b788" opacity="0.8" />
-                <path d="M 160 140 C 145 115 135 90 130 75 C 140 95 150 120 160 135 Z" fill="#74c69d" opacity="0.75" />
-              </svg>
-            </div>
-
-            {/* Inner Content: Single Horizontal Strip on Desktop, responsive on mobile */}
+        {/* 8. OUR JOURNEY IN NUMBERS — RED */}
+        <PageSection variant="red" className="border-t border-b border-red-700/20">
+          <div className="relative rounded-[24px] sm:rounded-[32px] border border-white/30 bg-white p-6 sm:p-8 lg:p-10 shadow-2xl overflow-hidden">
             <div className="relative z-10 grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-4 items-center">
-              
-              {/* Left Title Block */}
               <div className="md:col-span-4 space-y-1">
                 <div className="flex items-center gap-2">
                   <span className="w-1.5 h-6 bg-[#D0161D] rounded-full shrink-0" />
@@ -515,37 +501,21 @@ export default function AboutPage() {
                 </p>
               </div>
 
-              {/* Stat 1: 5+ Product Categories */}
               <div className="md:col-span-2 text-center md:border-l md:border-slate-200/90 md:px-4 py-1">
-                <p className="text-3xl sm:text-4xl font-black text-[#0F243E] tracking-tight">
-                  5+
-                </p>
-                <p className="text-[11px] sm:text-xs text-slate-500 font-medium mt-1">
-                  Product Categories
-                </p>
+                <p className="text-3xl sm:text-4xl font-black text-[#0F243E] tracking-tight">5+</p>
+                <p className="text-[11px] sm:text-xs text-slate-500 font-medium mt-1">Product Categories</p>
               </div>
 
-              {/* Stat 2: 1M+ Happy Households */}
               <div className="md:col-span-2 text-center md:border-l md:border-slate-200/90 md:px-4 py-1">
-                <p className="text-3xl sm:text-4xl font-black text-[#0F243E] tracking-tight">
-                  1M+
-                </p>
-                <p className="text-[11px] sm:text-xs text-slate-500 font-medium mt-1">
-                  Happy Households
-                </p>
+                <p className="text-3xl sm:text-4xl font-black text-[#0F243E] tracking-tight">1M+</p>
+                <p className="text-[11px] sm:text-xs text-slate-500 font-medium mt-1">Happy Households</p>
               </div>
 
-              {/* Stat 3: 10+ Years of Trust */}
               <div className="md:col-span-2 text-center md:border-l md:border-slate-200/90 md:px-4 py-1">
-                <p className="text-3xl sm:text-4xl font-black text-[#0F243E] tracking-tight">
-                  10+
-                </p>
-                <p className="text-[11px] sm:text-xs text-slate-500 font-medium mt-1">
-                  Years of Trust
-                </p>
+                <p className="text-3xl sm:text-4xl font-black text-[#0F243E] tracking-tight">10+</p>
+                <p className="text-[11px] sm:text-xs text-slate-500 font-medium mt-1">Years of Trust</p>
               </div>
 
-              {/* Right: Growing Together in Cursive Script with Red Swoosh */}
               <div className="md:col-span-2 text-center md:border-l md:border-slate-200/90 md:pl-4 py-1 flex flex-col items-center justify-center">
                 <div className="inline-block transform -rotate-2 text-center">
                   <span
@@ -559,17 +529,13 @@ export default function AboutPage() {
                   </svg>
                 </div>
               </div>
-
             </div>
-
           </div>
-        </section>
+        </PageSection>
 
-        {/* 9. BOTTOM CTA BANNER (SAME TO SAME AS REFERENCE IMAGE 1) */}
-        <section className="px-4 sm:px-6 lg:px-8 py-10 sm:py-14 bg-white">
-          <div className="relative rounded-[28px] sm:rounded-[36px] overflow-hidden border border-slate-200/80 bg-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]">
-            
-            {/* Background Image: pinned to the right on desktop */}
+        {/* 9. BOTTOM CTA BANNER — WHITE */}
+        <PageSection variant="white">
+          <div className="relative rounded-[28px] sm:rounded-[36px] overflow-hidden border border-slate-200/80 bg-white shadow-xl">
             <div
               className="absolute inset-0 hidden lg:block bg-no-repeat bg-right bg-cover pointer-events-none"
               style={{
@@ -577,34 +543,17 @@ export default function AboutPage() {
                 backgroundPosition: "right center"
               }}
             />
-
-            {/* Seamless Left Fade so text is 100% readable with a bright clean backdrop */}
             <div className="absolute inset-y-0 left-0 w-full lg:w-[55%] bg-gradient-to-r from-white via-white via-75% to-transparent hidden lg:block pointer-events-none z-10" />
 
-            {/* Bottom-right decorative ribbon swirl (as seen in reference image) */}
-            <div className="absolute bottom-0 right-0 w-24 sm:w-32 lg:w-40 h-28 sm:h-36 lg:h-44 pointer-events-none z-20 overflow-hidden">
-              <svg viewBox="0 0 140 140" fill="none" className="w-full h-full">
-                <path d="M 150 150 C 70 120 50 60 150 0 Z" fill="#D0161D" />
-                <path d="M 150 150 C 90 125 75 75 150 25 Z" fill="#15803d" />
-              </svg>
-            </div>
-
-            {/* Content Container */}
             <div className="relative z-20 max-w-7xl mx-auto px-6 sm:px-10 lg:px-14 py-12 sm:py-16 lg:py-20">
               <div className="max-w-md lg:max-w-lg space-y-4">
-                
-                {/* Heading in deep navy */}
                 <h2 className="text-2xl sm:text-3xl lg:text-[42px] font-black text-[#0F243E] tracking-tight leading-[1.12]">
                   Care for Your Home.<br />
                   Care for Your Life.
                 </h2>
-
-                {/* Subtitle */}
                 <p className="text-xs sm:text-sm lg:text-[15px] text-slate-600 leading-relaxed font-normal max-w-sm">
                   Choose KICK Home Care for a cleaner, healthier and happier home — because you deserve the best.
                 </p>
-
-                {/* Red CTA Button */}
                 <div className="pt-2">
                   <Link
                     href="/shop"
@@ -614,10 +563,8 @@ export default function AboutPage() {
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                   </Link>
                 </div>
-
               </div>
 
-              {/* Mobile / Tablet Image: Shown below text on screens smaller than lg */}
               <div className="mt-8 block lg:hidden rounded-2xl overflow-hidden shadow-sm border border-slate-100 relative">
                 <img
                   src="/about-cta-banner.jpg"
@@ -625,11 +572,9 @@ export default function AboutPage() {
                   className="w-full h-auto object-cover"
                 />
               </div>
-
             </div>
-
           </div>
-        </section>
+        </PageSection>
       </main>
 
       <Footer />

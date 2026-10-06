@@ -7,7 +7,8 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ProductCard from '@/components/ProductCard';
 import QuickViewModal from '@/components/QuickViewModal';
-import { Filter } from 'lucide-react';
+import PageSection from '@/components/PageSection';
+import { Filter, Truck, ShieldCheck, RefreshCw, Headphones } from 'lucide-react';
 
 function ShopContent() {
   const searchParams = useSearchParams();
@@ -68,26 +69,45 @@ function ShopContent() {
         <QuickViewModal product={quickViewProduct} onClose={() => setQuickViewProduct(null)} />
       )}
 
-      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
-        {/* Page Title */}
-        <div className="bg-gradient-to-r from-slate-900 to-red-950 text-white rounded-3xl p-8 mb-8 shadow-lg">
-          <h1 className="text-3xl font-black">All Kick Products Catalog</h1>
-          <p className="text-xs text-slate-300 mt-1 font-medium">Browse Pakistan's premier home care & shoe maintenance formulations.</p>
-        </div>
+      {/* 1. HERO TITLE BANNER — WHITE */}
+      <PageSection variant="white" className="py-8 sm:py-12 border-b border-slate-200">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <div className="flex items-center space-x-2">
+              <span className="w-1.5 h-6 bg-[#D0161D] rounded-full"></span>
+              <h1 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
+                All Kick Products Catalog
+              </h1>
+            </div>
+            <p className="text-xs sm:text-sm text-slate-600 mt-1.5 font-medium max-w-2xl">
+              Browse Pakistan's premier home care & shoe maintenance formulations with guaranteed quality.
+            </p>
+          </div>
 
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Sidebar Filter */}
+          <div className="flex items-center space-x-2">
+            <span className="px-3.5 py-1.5 bg-red-50 text-[#D0161D] rounded-full text-xs font-black uppercase tracking-wider border border-red-100">
+              {products.length} Products Available
+            </span>
+          </div>
+        </div>
+      </PageSection>
+
+      {/* 2. CATALOG PRODUCTS & FILTER SECTION — RED */}
+      <PageSection variant="red" className="border-t border-b border-red-700/20">
+        <div className="flex flex-col lg:flex-row gap-8 items-start">
+          
+          {/* Sidebar Filter — White Card on Red */}
           <aside className="w-full lg:w-64 space-y-6">
-            <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm">
+            <div className="bg-white rounded-3xl p-6 border border-white/30 shadow-xl text-slate-900">
               <h3 className="text-sm font-black text-slate-900 uppercase tracking-wider mb-4 flex items-center gap-2">
-                <Filter className="w-4 h-4 text-red-600" />
+                <Filter className="w-4 h-4 text-[#D0161D]" />
                 <span>Categories</span>
               </h3>
 
               <div className="space-y-2 text-xs font-semibold">
                 <button
                   onClick={() => setSelectedCategory('all')}
-                  className={`w-full text-left px-3.5 py-2.5 rounded-xl transition-all ${selectedCategory === 'all' ? 'bg-red-600 text-white font-bold shadow-sm' : 'text-slate-600 hover:bg-slate-100'}`}
+                  className={`w-full text-left px-3.5 py-2.5 rounded-xl transition-all ${selectedCategory === 'all' ? 'bg-[#D0161D] text-white font-bold shadow-sm' : 'text-slate-600 hover:bg-slate-100'}`}
                 >
                   All Products
                 </button>
@@ -95,7 +115,7 @@ function ShopContent() {
                   <button
                     key={c.slug}
                     onClick={() => setSelectedCategory(c.slug)}
-                    className={`w-full text-left px-3.5 py-2.5 rounded-xl transition-all ${selectedCategory === c.slug ? 'bg-red-600 text-white font-bold shadow-sm' : 'text-slate-600 hover:bg-slate-100'}`}
+                    className={`w-full text-left px-3.5 py-2.5 rounded-xl transition-all ${selectedCategory === c.slug ? 'bg-[#D0161D] text-white font-bold shadow-sm' : 'text-slate-600 hover:bg-slate-100'}`}
                   >
                     {c.name}
                   </button>
@@ -104,12 +124,12 @@ function ShopContent() {
             </div>
           </aside>
 
-          {/* Main Grid */}
-          <section className="flex-1">
-            {/* Top Toolbar */}
-            <div className="bg-white rounded-2xl p-4 border border-slate-200/80 mb-6 flex flex-col sm:flex-row justify-between items-center gap-4">
-              <div className="text-xs font-bold text-slate-600">
-                Showing <span className="text-red-600">{products.length}</span> items
+          {/* Main Grid — White Card Toolbar & White Product Cards */}
+          <div className="flex-1 w-full">
+            {/* Top Toolbar — White Card on Red */}
+            <div className="bg-white rounded-2xl p-4 border border-white/30 shadow-lg mb-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-slate-900">
+              <div className="text-xs font-bold text-slate-700">
+                Showing <span className="text-[#D0161D] font-black">{products.length}</span> items
               </div>
 
               <div className="flex items-center space-x-3 w-full sm:w-auto">
@@ -117,7 +137,7 @@ function ShopContent() {
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold px-3 py-2 outline-none focus:border-red-500"
+                  className="bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold px-3 py-2 outline-none focus:border-red-500 text-slate-800"
                 >
                   <option value="default">Newest Arrivals</option>
                   <option value="price-low">Price: Low to High</option>
@@ -129,11 +149,11 @@ function ShopContent() {
 
             {/* Product Grid */}
             {loading ? (
-              <div className="text-center py-20 text-slate-400 font-bold">Loading catalog...</div>
+              <div className="text-center py-20 text-white font-bold">Loading catalog...</div>
             ) : products.length === 0 ? (
-              <div className="bg-white rounded-3xl p-12 text-center border border-slate-200">
+              <div className="bg-white rounded-3xl p-12 text-center border border-white/20 shadow-xl">
                 <p className="text-base font-bold text-slate-700">No products found for this filter.</p>
-                <button onClick={() => { setSelectedCategory('all'); setSearchQuery(''); }} className="mt-4 px-5 py-2 bg-red-600 text-white text-xs font-bold rounded-xl shadow-sm">Reset Filters</button>
+                <button onClick={() => { setSelectedCategory('all'); setSearchQuery(''); }} className="mt-4 px-5 py-2 bg-[#D0161D] text-white text-xs font-bold rounded-xl shadow-sm hover:bg-red-800 transition">Reset Filters</button>
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -142,9 +162,54 @@ function ShopContent() {
                 ))}
               </div>
             )}
-          </section>
+          </div>
         </div>
-      </main>
+      </PageSection>
+
+      {/* 3. VALUE GUARANTEES — WHITE */}
+      <PageSection variant="white" className="border-t border-slate-200">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="flex items-center space-x-4 p-5 rounded-2xl bg-slate-50 border border-slate-200/80">
+            <div className="w-12 h-12 rounded-2xl bg-red-50 text-[#D0161D] flex items-center justify-center shrink-0">
+              <Truck className="w-6 h-6" />
+            </div>
+            <div>
+              <h4 className="text-sm font-black text-slate-900">Nationwide Shipping</h4>
+              <p className="text-xs text-slate-500 mt-0.5">Fast delivery across Pakistan</p>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-4 p-5 rounded-2xl bg-slate-50 border border-slate-200/80">
+            <div className="w-12 h-12 rounded-2xl bg-red-50 text-[#D0161D] flex items-center justify-center shrink-0">
+              <ShieldCheck className="w-6 h-6" />
+            </div>
+            <div>
+              <h4 className="text-sm font-black text-slate-900">100% Genuine Care</h4>
+              <p className="text-xs text-slate-500 mt-0.5">Direct from manufacturer</p>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-4 p-5 rounded-2xl bg-slate-50 border border-slate-200/80">
+            <div className="w-12 h-12 rounded-2xl bg-red-50 text-[#D0161D] flex items-center justify-center shrink-0">
+              <RefreshCw className="w-6 h-6" />
+            </div>
+            <div>
+              <h4 className="text-sm font-black text-slate-900">Cash on Delivery</h4>
+              <p className="text-xs text-slate-500 mt-0.5">Pay conveniently at doorstep</p>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-4 p-5 rounded-2xl bg-slate-50 border border-slate-200/80">
+            <div className="w-12 h-12 rounded-2xl bg-red-50 text-[#D0161D] flex items-center justify-center shrink-0">
+              <Headphones className="w-6 h-6" />
+            </div>
+            <div>
+              <h4 className="text-sm font-black text-slate-900">Dedicated Support</h4>
+              <p className="text-xs text-slate-500 mt-0.5">We're here 24/7 to assist you</p>
+            </div>
+          </div>
+        </div>
+      </PageSection>
     </>
   );
 }

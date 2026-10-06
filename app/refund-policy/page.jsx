@@ -634,6 +634,39 @@ export default function RefundPolicyPage() {
         </div>
       </main>
 
+      {/* SECTION 3 (RED) -> Hassle-Free Returns Assurance Callout */}
+      <section className="bg-[#D0161D] text-white py-12 sm:py-16">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-white text-slate-900 rounded-3xl p-8 sm:p-10 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="space-y-2 text-center md:text-left">
+              <span className="text-xs font-bold text-[#D0161D] uppercase tracking-wider">
+                Kick Guarantee
+              </span>
+              <h3 className="text-xl sm:text-2xl font-black text-slate-900">
+                Received a damaged or incorrect order?
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-600 max-w-xl font-medium">
+                We guarantee speedy claim resolution. Send us your order ID and unboxing photo or video, and our team will resolve it within 24–48 hours.
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center justify-center gap-3 shrink-0">
+              <Link
+                href="/contact"
+                className="px-6 py-3.5 bg-[#D0161D] hover:bg-red-800 text-white text-xs font-black uppercase tracking-wider rounded-xl shadow-md transition"
+              >
+                File Return Claim
+              </Link>
+              <a
+                href="mailto:info@kickhomecare.com"
+                className="px-6 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold rounded-xl transition"
+              >
+                Email Support Team
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <Footer />
     </div>
   );
