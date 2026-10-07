@@ -167,6 +167,15 @@ export const AuthProvider = ({ children }) => {
     return await resendOtp(email, 'EMAIL_VERIFICATION');
   };
 
+  const setAuthUser = (userData) => {
+    setUser(userData);
+    if (userData) {
+      localStorage.setItem('userInfo', JSON.stringify(userData));
+    } else {
+      localStorage.removeItem('userInfo');
+    }
+  };
+
   const logout = () => {
     setUser(null);
     localStorage.removeItem('userInfo');
@@ -186,6 +195,7 @@ export const AuthProvider = ({ children }) => {
       verifyEmail,
       resendVerification,
       logout,
+      setAuthUser,
       isAdmin: user?.role === 'admin'
     }}>
       {children}

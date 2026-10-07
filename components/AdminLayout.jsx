@@ -19,12 +19,14 @@ import {
   ShieldCheck,
   ArrowLeft,
   BookOpen,
-  FolderTree
+  FolderTree,
+  RefreshCw
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
+import AdminAuthGate from '@/components/AdminAuthGate';
 
 const AdminLayout = ({ children }) => {
-  const { logout } = useAuth();
+  const { user, loading, logout, isAdmin } = useAuth();
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -42,16 +44,43 @@ const AdminLayout = ({ children }) => {
     { label: 'Contact Messages', path: '/admin/messages', icon: MessageSquare },
   ];
 
+  // 1. Loading state while checking auth
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center space-y-4">
+        <div className="bg-white rounded-3xl p-3 shadow-2xl">
+          <img src="/kick%20logo.png" alt="Kick Home Care" className="h-12 w-auto object-contain" />
+        </div>
+        <div className="flex items-center space-x-2 text-slate-300 text-xs font-bold">
+          <RefreshCw className="w-4 h-4 text-red-500 animate-spin" />
+          <span>Verifying Admin Authorization...</span>
+        </div>
+      </div>
+    );
+  }
+
+  // 2. Auth Gate: Show Login / Sign Up if not logged in or not admin
+  if (!user || !isAdmin) {
+    return <AdminAuthGate />;
+  }
+
+  // 3. Authorized Admin UI
   return (
     <div className="min-h-screen bg-slate-100 flex flex-col lg:flex-row text-slate-800">
       
-      {/* Mobile Top Navbar */}
+      {/* Mobile Top Navbar with Kick Logo */}
       <div className="lg:hidden bg-slate-900 text-white p-4 flex justify-between items-center z-40 border-b border-slate-800">
-        <div className="flex items-center space-x-2">
-          <ShieldCheck className="w-6 h-6 text-red-500" />
-          <span className="font-bold text-sm tracking-wide">KICK ADMIN</span>
+        <div className="flex items-center space-x-3">
+          <div className="bg-white rounded-xl p-1 shadow-sm flex items-center justify-center shrink-0">
+            <img src="/kick%20logo.png" alt="Kick Home Care" className="h-7 w-auto object-contain" />
+          </div>
+          <span className="font-black text-sm tracking-wide text-white">KICK ADMIN</span>
         </div>
-        <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-2 text-slate-300">
+        <button
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          aria-label="Toggle Admin Sidebar"
+          className="p-2 text-slate-300 hover:text-white"
+        >
           {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </div>
@@ -60,16 +89,21 @@ const AdminLayout = ({ children }) => {
       <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-slate-900 text-slate-300 flex flex-col justify-between p-6 transform transition-transform duration-300 lg:static lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="space-y-6">
           
-          <div className="flex items-center space-x-3 border-b border-slate-800 pb-4">
-            <div className="w-10 h-10 rounded-xl bg-red-600 text-white font-black text-xl flex items-center justify-center shadow-lg">
-              K
+          {/* Sidebar Top: Kick Logo Branding */}
+          <Link href="/admin" className="flex items-center space-x-3 border-b border-slate-800 pb-5 group">
+            <div className="bg-white rounded-2xl p-2 shadow-md flex items-center justify-center shrink-0 border border-slate-700/50 group-hover:scale-105 transition-transform">
+              <img src="/kick%20logo.png" alt="Kick Home Care" className="h-9 w-auto object-contain" />
             </div>
-            <div>
-              <h3 className="font-bold text-white text-sm">Kick Control</h3>
-              <p className="text-[10px] text-red-400 font-semibold uppercase">Admin Panel</p>
+            <div className="min-w-0 flex-1">
+              <h3 className="font-black text-white text-sm tracking-tight truncate">Kick Control</h3>
+              <p className="text-[10px] text-red-400 font-extrabold uppercase tracking-wider flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
+                Admin Panel
+              </p>
             </div>
-          </div>
+          </Link>
 
+          {/* Navigation Links */}
           <nav className="space-y-1 text-xs font-semibold">
             {links.map((item) => {
               const Icon = item.icon;
@@ -89,14 +123,22 @@ const AdminLayout = ({ children }) => {
           </nav>
         </div>
 
+        {/* Sidebar Footer */}
         <div className="pt-6 border-t border-slate-800 space-y-3 text-xs">
+          {/* Active Admin Badge */}
+          <div className="px-3 py-2 bg-slate-800/70 rounded-xl border border-slate-700/50 text-[11px] text-slate-300">
+            <span className="text-slate-400 block text-[10px] font-semibold">Active Administrator:</span>
+            <span className="font-bold text-white truncate block">{user?.name || user?.email}</span>
+            <span className="text-[10px] text-red-400 font-semibold truncate block">{user?.email}</span>
+          </div>
+
           <Link href="/" className="flex items-center space-x-2 text-slate-400 hover:text-white transition-colors">
             <ArrowLeft className="w-4 h-4" />
             <span>Return to Storefront</span>
           </Link>
           <button
             onClick={logout}
-            className="w-full flex items-center space-x-2 px-3 py-2 text-rose-400 hover:bg-rose-500/10 rounded-xl transition-colors"
+            className="w-full flex items-center space-x-2 px-3 py-2 text-rose-400 hover:bg-rose-500/10 rounded-xl transition-colors font-bold"
           >
             <LogOut className="w-4 h-4" />
             <span>Sign Out Admin</span>
