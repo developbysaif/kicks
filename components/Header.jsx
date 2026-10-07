@@ -142,8 +142,8 @@ const Header = () => {
           
           {/* Left Announcement */}
           <div className="flex items-center space-x-2">
-            <Truck className="w-4 h-4 text-red-600" />
-            <span className="font-semibold text-gray-700">Free Delivery on Orders Above Rs. 2,500</span>
+            <Truck className="w-4 h-4 text-red-600 shrink-0" />
+            <span className="font-semibold text-gray-700 text-[11px] sm:text-xs">Free Delivery on Orders Above Rs. 2,500</span>
           </div>
 
           {/* Right Utility Links */}
@@ -411,7 +411,7 @@ const Header = () => {
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-gray-200 bg-white px-4 pt-3 pb-6 space-y-4">
+        <div className="lg:hidden border-t border-gray-200 bg-white px-4 pt-3 pb-6 space-y-4 max-h-[calc(100vh-70px)] overflow-y-auto">
           <form onSubmit={handleSearchSubmit} className="relative">
             <input
               type="text"
@@ -426,10 +426,10 @@ const Header = () => {
           </form>
 
           <div className="flex flex-col space-y-2 text-xs font-bold uppercase tracking-wider text-gray-700">
-            <Link href="/" className="py-2 hover:text-red-600 border-b border-gray-100">
+            <Link href="/" onClick={() => setMobileMenuOpen(false)} className="py-2 hover:text-red-600 border-b border-gray-100">
               Home
             </Link>
-            <Link href="/shop" className="py-2 hover:text-red-600 border-b border-gray-100">
+            <Link href="/shop" onClick={() => setMobileMenuOpen(false)} className="py-2 hover:text-red-600 border-b border-gray-100">
               Shop
             </Link>
             <div className="py-2 font-bold text-gray-400">Categories:</div>
@@ -440,6 +440,7 @@ const Header = () => {
                 <Link
                   key={c.slug}
                   href={href}
+                  onClick={() => setMobileMenuOpen(false)}
                   className={`pl-4 py-1.5 flex items-center justify-between text-xs ${
                     isCurrent ? 'text-red-600 font-black' : 'text-gray-600 hover:text-red-600'
                   }`}
@@ -453,13 +454,13 @@ const Header = () => {
                 </Link>
               );
             })}
-            <Link href="/about" className="py-2 hover:text-red-600 border-b border-gray-100">
+            <Link href="/about" onClick={() => setMobileMenuOpen(false)} className="py-2 hover:text-red-600 border-b border-gray-100">
               About Us
             </Link>
-            <Link href="/blog" className="py-2 hover:text-red-600 border-b border-gray-100">
+            <Link href="/blog" onClick={() => setMobileMenuOpen(false)} className="py-2 hover:text-red-600 border-b border-gray-100">
               Blog
             </Link>
-            <Link href="/contact" className="py-2 hover:text-red-600">
+            <Link href="/contact" onClick={() => setMobileMenuOpen(false)} className="py-2 hover:text-red-600">
               Contact
             </Link>
           </div>

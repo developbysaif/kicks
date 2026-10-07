@@ -147,15 +147,15 @@ export async function POST(req) {
       global.memoryUsers = memoryUsers;
     }
 
-    // 4. Generate cryptographically secure 6-digit OTP (60 SECONDS expiration)
+    // 4. Generate cryptographically secure 6-digit OTP (10 MINUTES / 600s expiration)
     const { code: otpCode } = await createOtp({
       userId,
       email: cleanEmail,
       purpose: 'EMAIL_VERIFICATION',
-      expirationSeconds: 60
+      expirationSeconds: 600
     });
 
-    // 5. Send real email via Resend
+    // 5. Send real email via Resend / Gmail SMTP
     const emailResult = await sendOtpEmail({
       toEmail: cleanEmail,
       userName: cleanName,
@@ -173,15 +173,18 @@ export async function POST(req) {
       );
     }
 
-    // Return success without exposing OTP to client
+    // Return success
     return NextResponse.json({
       success: true,
       requireVerification: true,
       email: cleanEmail,
-      expiresIn: 60,
-      message: emailResult.routedTo
-        ? `A 6-digit verification code has been dispatched to your inbox (${emailResult.routedTo}).`
-        : `A 6-digit verification code has been sent to ${cleanEmail}.`
+      expiresIn: 600,
+      devOtp: (process.env.NODE_ENV !== 'production' || emailResult.simulated) ? otpCode : undefined,
+      message: emailResult.simulated
+        ? `Verification code: ${otpCode} (also logged in server console).`
+        : emailResult.routedTo
+          ? `A 6-digit verification code has been dispatched to your inbox (${emailResult.routedTo}).`
+          : `A 6-digit verification code has been sent to ${cleanEmail}.`
     });
 
   } catch (error) {

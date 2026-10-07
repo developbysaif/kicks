@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
@@ -29,6 +29,27 @@ const AdminLayout = ({ children }) => {
   const { user, loading, logout, isAdmin } = useAuth();
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // Escape key closes mobile sidebar
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setSidebarOpen(false);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  // Lock body scroll when mobile sidebar is open
+  useEffect(() => {
+    if (sidebarOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [sidebarOpen]);
 
   const links = [
     { label: 'Dashboard Overview', path: '/admin', icon: LayoutDashboard },
@@ -68,6 +89,15 @@ const AdminLayout = ({ children }) => {
   return (
     <div className="min-h-screen bg-slate-100 flex flex-col lg:flex-row text-slate-800">
       
+      {/* Mobile Backdrop Overlay */}
+      {sidebarOpen && (
+        <div
+          onClick={() => setSidebarOpen(false)}
+          className="fixed inset-0 bg-slate-950/60 backdrop-blur-xs z-40 lg:hidden"
+          aria-hidden="true"
+        />
+      )}
+
       {/* Mobile Top Navbar with Kick Logo */}
       <div className="lg:hidden bg-slate-900 text-white p-4 flex justify-between items-center z-40 border-b border-slate-800">
         <div className="flex items-center space-x-3">

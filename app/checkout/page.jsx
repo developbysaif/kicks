@@ -78,8 +78,8 @@ export default function CheckoutPage() {
   // Synchronize user profile into shipping details when logged in
   useEffect(() => {
     if (user) {
-      if (user.name && !fullName) setFullName(user.name);
-      if (user.phone && !phone) setPhone(user.phone);
+      if (user.name) setFullName((prev) => prev || user.name);
+      if (user.phone) setPhone((prev) => prev || user.phone);
     }
   }, [user]);
 

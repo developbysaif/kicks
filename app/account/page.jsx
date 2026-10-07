@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
@@ -15,13 +15,8 @@ export default function AccountPage() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (user) {
-      fetchMyOrders();
-    }
-  }, [user]);
-
-  const fetchMyOrders = async () => {
+  const fetchMyOrders = useCallback(async () => {
+    if (!user?.token) return;
     try {
       setLoading(true);
       const { data } = await axios.get('/api/orders', {
@@ -35,7 +30,13 @@ export default function AccountPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user?.token]);
+
+  useEffect(() => {
+    if (user) {
+      fetchMyOrders();
+    }
+  }, [user, fetchMyOrders]);
 
   if (!user) {
     return (

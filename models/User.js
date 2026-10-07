@@ -35,6 +35,7 @@ const userSchema = new mongoose.Schema({
   verificationCodeHash: { type: String, default: null },
   verificationCodeExpiresAt: { type: Date, default: null },
   verificationAttempts: { type: Number, default: 0 },
+  emailVerificationLastSentAt: { type: Date, default: null },
   verificationResendCount: { type: Number, default: 0 },
   verificationResendWindowStart: { type: Date, default: null },
   resetCodeHash: { type: String, default: null },

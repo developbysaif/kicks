@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import Link from 'next/link';
 import {
@@ -20,6 +18,76 @@ import {
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import PageSection from '@/components/PageSection';
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://kickhomecare.com';
+
+export const metadata = {
+  title: 'About Us | Kick Home Care - A Project of Ibn Khushi',
+  description:
+    'Learn about Kick Home Care, an innovative Pakistani brand under Ibn Khushi delivering trusted shoe care, household cleaning, bleach, and hygiene solutions.',
+  alternates: {
+    canonical: `${SITE_URL}/about`,
+  },
+  openGraph: {
+    title: 'About Us | Kick Home Care - A Project of Ibn Khushi',
+    description:
+      'Learn about Kick Home Care, an innovative Pakistani brand under Ibn Khushi delivering trusted shoe care and household cleaning.',
+    url: `${SITE_URL}/about`,
+    siteName: 'Kick Home Care',
+    type: 'website',
+    images: [
+      {
+        url: '/kick%20logo.png',
+        width: 1200,
+        height: 630,
+        alt: 'About Kick Home Care',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'About Us | Kick Home Care',
+    description:
+      'Learn about Kick Home Care, an innovative Pakistani brand under Ibn Khushi delivering trusted shoe care and household cleaning.',
+    images: ['/kick%20logo.png'],
+  },
+};
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'AboutPage',
+      '@id': `${SITE_URL}/about`,
+      url: `${SITE_URL}/about`,
+      name: 'About Kick Home Care',
+      description:
+        'Kick Home Care is a pioneering manufacturer of premium household cleaning, laundry care, and shoe restoration products in Pakistan.',
+      isPartOf: {
+        '@type': 'WebSite',
+        name: 'Kick Home Care',
+        url: SITE_URL,
+      },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Home',
+          item: SITE_URL,
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'About Us',
+          item: `${SITE_URL}/about`,
+        },
+      ],
+    },
+  ],
+};
 
 const CATEGORIES_DATA = [
   {
@@ -99,6 +167,10 @@ const QUALITY_ICONS = [
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-[#f7f7f2] text-slate-800 font-sans">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Header />
 
       <main className="w-full flex-1">

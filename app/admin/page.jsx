@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import axios from 'axios';
 import {
@@ -48,11 +48,7 @@ export default function AdminDashboardPage() {
   ]);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    fetchStats();
-  }, [user]);
-
-  const fetchStats = async () => {
+  const fetchStats = useCallback(async () => {
     try {
       setLoading(true);
       const headers = user?.token ? { Authorization: `Bearer ${user.token}` } : {};
@@ -68,7 +64,11 @@ export default function AdminDashboardPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user?.token]);
+
+  useEffect(() => {
+    fetchStats();
+  }, [fetchStats]);
 
   return (
     <div className="space-y-8">

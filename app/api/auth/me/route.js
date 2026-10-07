@@ -14,7 +14,7 @@ export async function GET(req) {
     }
 
     await connectDB();
-    const user = await User.findById(auth.id).select('-password');
+    const user = await User.findById(auth.id).select('-password -passwordHash -verificationCodeHash -resetCodeHash');
     if (!user) {
       return NextResponse.json(
         { success: false, message: 'User not found' },

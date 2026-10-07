@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { Plus, Tag, Trash2, CheckCircle, XCircle } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
@@ -20,11 +20,7 @@ export default function AdminCouponsPage() {
   const [minOrderAmount, setMinOrderAmount] = useState('500');
   const [expiryDate, setExpiryDate] = useState('2027-12-31');
 
-  useEffect(() => {
-    fetchCoupons();
-  }, [user]);
-
-  const fetchCoupons = async () => {
+  const fetchCoupons = useCallback(async () => {
     try {
       setLoading(true);
       const headers = user?.token ? { Authorization: `Bearer ${user.token}` } : {};
@@ -37,7 +33,11 @@ export default function AdminCouponsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user?.token]);
+
+  useEffect(() => {
+    fetchCoupons();
+  }, [fetchCoupons]);
 
   const openModal = () => {
     setCode('');

@@ -11,24 +11,19 @@ export const dynamic = 'force-dynamic';
 export async function POST(req) {
   try {
     const body = await req.json().catch(() => ({}));
-    const { email, purpose = 'EMAIL_VERIFICATION' } = body;
+    const { email } = body;
 
     if (!email) {
       return NextResponse.json(
-        { success: false, message: 'Please provide email address.' },
+        { success: false, message: 'Please provide administrator email address.' },
         { status: 400 }
       );
     }
 
     const cleanEmail = email.trim().toLowerCase();
 
-    // 1. Rate Limiting: 60-second cooldown & max 5 requests per 15 minutes
-    const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-      req.headers.get('x-real-ip') ||
-      'unknown-ip';
-
-    // Cooldown check: 60-second cooldown per specification
-    const cooldownKey = `cooldown:${purpose}:${cleanEmail}`;
+    // 1. Rate Limiting: 60-second cooldown
+    const cooldownKey = `cooldown:ADMIN_EMAIL_VERIFICATION:${cleanEmail}`;
     const cooldownCheck = await checkRateLimit(cooldownKey, { limit: 1, windowSeconds: 60 });
     if (!cooldownCheck.allowed) {
       return NextResponse.json(
@@ -42,15 +37,18 @@ export async function POST(req) {
       );
     }
 
-    // 15-minute window limit check (max 5)
-    const windowKey = `resend:${purpose}:${cleanEmail}:${clientIp}`;
+    // Rate limiting: max 5 requests per 15 minutes
+    const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+      req.headers.get('x-real-ip') ||
+      'unknown-ip';
+    const windowKey = `resend:ADMIN_EMAIL_VERIFICATION:${cleanEmail}:${clientIp}`;
     const windowCheck = await checkRateLimit(windowKey, { limit: 5, windowSeconds: 15 * 60 });
     if (!windowCheck.allowed) {
       return NextResponse.json(
         {
           success: false,
           rateLimited: true,
-          message: 'Too many verification code requests. Please try again after 15 minutes.'
+          message: 'Too many verification code requests. Please wait 15 minutes before trying again.'
         },
         { status: 429 }
       );
@@ -58,7 +56,7 @@ export async function POST(req) {
 
     // 2. Database Lookup
     const db = await connectDB();
-    let user;
+    let user = null;
 
     if (db && mongoose.connection.readyState === 1) {
       user = await User.findOne({ email: cleanEmail });
@@ -68,47 +66,47 @@ export async function POST(req) {
     }
 
     if (!user) {
-      if (purpose === 'PASSWORD_RESET') {
-        // Prevent email enumeration
-        return NextResponse.json({
-          success: true,
-          message: 'If an account exists for this email address, a verification code has been sent.'
-        });
-      }
       return NextResponse.json(
-        { success: false, message: 'No account found with this email address.' },
+        { success: false, message: 'No administrator account found with this email.' },
         { status: 404 }
       );
     }
 
-    // If user is already verified and requesting a code, use LOGIN_VERIFICATION so they receive their code
-    const activePurpose = (purpose === 'EMAIL_VERIFICATION' && user.emailVerified)
-      ? 'LOGIN_VERIFICATION'
-      : purpose;
+    if (user.role !== 'admin') {
+      return NextResponse.json(
+        { success: false, message: 'Account is not registered as an administrator.' },
+        { status: 403 }
+      );
+    }
 
-    const userName = user.fullName || user.name || 'Customer';
+    if (user.emailVerified) {
+      return NextResponse.json(
+        { success: false, message: 'This administrator account is already verified. Please log in directly.' },
+        { status: 400 }
+      );
+    }
 
-    // 3. Generate New 10-Minute OTP (invalidates old ones)
+    // 3. Generate New 10-Minute Secure OTP
     const { code: otpCode } = await createOtp({
       userId: user._id,
       email: cleanEmail,
-      purpose: activePurpose,
+      purpose: 'ADMIN_EMAIL_VERIFICATION',
       expirationSeconds: 600
     });
 
-    // 4. Send Real Email via Resend / Gmail SMTP
+    // 4. Send Branded Admin Verification Email
     const emailResult = await sendOtpEmail({
       toEmail: cleanEmail,
-      userName,
+      userName: user.fullName || user.name || 'Admin',
       otpCode,
-      purpose: activePurpose
+      purpose: 'ADMIN_EMAIL_VERIFICATION'
     });
 
     if (!emailResult.success) {
       return NextResponse.json(
         {
           success: false,
-          message: emailResult.error || "We couldn't send the verification email right now. Please try again."
+          message: emailResult.error || "Unable to send verification email. Please verify mail server settings."
         },
         { status: 500 }
       );
@@ -124,9 +122,8 @@ export async function POST(req) {
           ? `A fresh 6-digit verification code has been dispatched to your inbox (${emailResult.routedTo}).`
           : `A new 6-digit verification code has been sent to ${cleanEmail}.`
     });
-
   } catch (error) {
-    console.error('Resend OTP API Exception:', error);
+    console.error('Admin Resend OTP API Exception:', error);
     return NextResponse.json(
       { success: false, message: 'Failed to resend code. Please try again.' },
       { status: 500 }

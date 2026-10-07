@@ -16,7 +16,7 @@ const verificationOtpSchema = new mongoose.Schema({
   },
   purpose: {
     type: String,
-    enum: ['EMAIL_VERIFICATION', 'PASSWORD_RESET', 'LOGIN_VERIFICATION'],
+    enum: ['EMAIL_VERIFICATION', 'PASSWORD_RESET', 'LOGIN_VERIFICATION', 'ADMIN_EMAIL_VERIFICATION'],
     default: 'EMAIL_VERIFICATION',
     required: true,
     index: true

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { Users, Shield, Trash2, Mail, Phone } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
@@ -13,11 +13,7 @@ export default function AdminCustomersPage() {
   ]);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    fetchCustomers();
-  }, [user]);
-
-  const fetchCustomers = async () => {
+  const fetchCustomers = useCallback(async () => {
     try {
       setLoading(true);
       const headers = user?.token ? { Authorization: `Bearer ${user.token}` } : {};
@@ -30,7 +26,11 @@ export default function AdminCustomersPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user?.token]);
+
+  useEffect(() => {
+    fetchCustomers();
+  }, [fetchCustomers]);
 
   const toggleRole = async (id, currentRole) => {
     const newRole = currentRole === 'admin' ? 'customer' : 'admin';

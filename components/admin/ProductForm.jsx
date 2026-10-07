@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import slugify from 'slugify';
@@ -81,9 +81,9 @@ export default function ProductForm({ initialData = null, isEdit = false }) {
   const [formError, setFormError] = useState('');
   const [formSuccess, setFormSuccess] = useState('');
 
-  const getHeaders = () => {
+  const getHeaders = useCallback(() => {
     return user?.token ? { Authorization: `Bearer ${user.token}` } : {};
-  };
+  }, [user?.token]);
 
   // Load Categories on mount
   useEffect(() => {
@@ -94,8 +94,8 @@ export default function ProductForm({ initialData = null, isEdit = false }) {
         if (res.data?.success && Array.isArray(res.data.categories)) {
           setCategories(res.data.categories);
           // If no category selected yet, pick the first one
-          if (!categoryId && res.data.categories.length > 0) {
-            setCategoryId(res.data.categories[0]._id);
+          if (res.data.categories.length > 0) {
+            setCategoryId((prev) => prev || res.data.categories[0]._id);
           }
         }
       } catch (err) {
@@ -105,7 +105,7 @@ export default function ProductForm({ initialData = null, isEdit = false }) {
       }
     };
     fetchCats();
-  }, [user]);
+  }, [getHeaders]);
 
   // Load Subcategories when category changes
   useEffect(() => {
@@ -122,12 +122,13 @@ export default function ProductForm({ initialData = null, isEdit = false }) {
         if (res.data?.success && Array.isArray(res.data.subcategories)) {
           setSubcategories(res.data.subcategories);
           // If current subcategoryId doesn't belong to new list, reset it
-          const stillValid = res.data.subcategories.some(
-            (s) => s._id === subcategoryId || s.slug === subcategoryId
-          );
-          if (!stillValid && !isEdit) {
-            setSubcategoryId('');
-          }
+          setSubcategoryId((prevSub) => {
+            if (isEdit && prevSub) return prevSub;
+            const stillValid = res.data.subcategories.some(
+              (s) => s._id === prevSub || s.slug === prevSub
+            );
+            return stillValid ? prevSub : '';
+          });
         } else {
           setSubcategories([]);
           setSubcategoryId('');
@@ -141,7 +142,7 @@ export default function ProductForm({ initialData = null, isEdit = false }) {
     };
 
     fetchSubcats();
-  }, [categoryId]);
+  }, [categoryId, isEdit]);
 
   const handleNameChange = (e) => {
     const val = e.target.value;

@@ -94,10 +94,10 @@ export async function POST(req) {
         userId: user._id,
         email: cleanEmail,
         purpose: 'EMAIL_VERIFICATION',
-        expirationSeconds: 60
+        expirationSeconds: 600
       });
 
-      // Send real email via Resend
+      // Send real email via Resend / Gmail SMTP
       const emailResult = await sendOtpEmail({
         toEmail: cleanEmail,
         userName,
@@ -111,7 +111,8 @@ export async function POST(req) {
           requireVerification: true,
           email: cleanEmail,
           purpose: 'EMAIL_VERIFICATION',
-          expiresIn: 60,
+          expiresIn: 600,
+          devOtp: (process.env.NODE_ENV !== 'production' || emailResult.simulated) ? otpCode : undefined,
           message: emailResult.routedTo
             ? `Your email address is not verified. We've sent a 6-digit verification code to your inbox (${emailResult.routedTo}).`
             : "Your email address is not verified. We've sent a new 6-digit verification code to your email."
@@ -127,7 +128,7 @@ export async function POST(req) {
       emailVerified: true
     });
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       success: true,
       token,
       user: {
@@ -140,6 +141,17 @@ export async function POST(req) {
         addresses: user.addresses || []
       }
     });
+
+    // Set secure HTTP-only cookie
+    response.cookies.set('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60,
+      path: '/'
+    });
+
+    return response;
 
   } catch (error) {
     console.error('Login API Error:', error);

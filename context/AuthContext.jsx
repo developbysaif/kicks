@@ -176,9 +176,14 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
     setUser(null);
     localStorage.removeItem('userInfo');
+    try {
+      await axios.post('/api/auth/logout');
+    } catch (e) {
+      // Ignore network errors on logout
+    }
   };
 
   return (

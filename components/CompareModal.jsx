@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { X, Trash2, ShoppingBag, Star, Check, AlertCircle } from 'lucide-react';
 import { useCompare } from '@/context/CompareContext';
 import { useCart } from '@/context/CartContext';
@@ -9,11 +9,31 @@ const CompareModal = () => {
   const { compareItems, removeFromCompare, clearCompare, isCompareOpen, setIsCompareOpen } = useCompare();
   const { addToCart } = useCart();
 
+  useEffect(() => {
+    if (isCompareOpen) {
+      document.body.style.overflow = 'hidden';
+      const handleKeyDown = (e) => {
+        if (e.key === 'Escape') setIsCompareOpen(false);
+      };
+      window.addEventListener('keydown', handleKeyDown);
+      return () => {
+        document.body.style.overflow = '';
+        window.removeEventListener('keydown', handleKeyDown);
+      };
+    }
+  }, [isCompareOpen, setIsCompareOpen]);
+
   if (!isCompareOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
-      <div className="relative w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col border border-slate-100 max-h-[90vh] z-50">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm"
+      onClick={() => setIsCompareOpen(false)}
+    >
+      <div
+        className="relative w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col border border-slate-100 max-h-[90vh] z-50"
+        onClick={(e) => e.stopPropagation()}
+      >
         
         {/* Header */}
         <div className="p-6 bg-slate-50 border-b border-slate-100 flex items-center justify-between">

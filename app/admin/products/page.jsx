@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import {
@@ -33,6 +33,7 @@ export default function AdminProductsPage() {
 
   // Filters & Search
   const [search, setSearch] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedSubcategory, setSelectedSubcategory] = useState('all');
   const [selectedStatus, setSelectedStatus] = useState('all');
@@ -44,9 +45,9 @@ export default function AdminProductsPage() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteMessage, setDeleteMessage] = useState('');
 
-  const getHeaders = () => {
+  const getHeaders = useCallback(() => {
     return user?.token ? { Authorization: `Bearer ${user.token}` } : {};
-  };
+  }, [user?.token]);
 
   // Load initial Categories and Subcategories
   useEffect(() => {
@@ -69,15 +70,23 @@ export default function AdminProductsPage() {
       }
     };
     fetchTaxonomies();
-  }, [user]);
+  }, [getHeaders]);
+
+  // Debounce search query
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 350);
+    return () => clearTimeout(timer);
+  }, [search]);
 
   // Fetch Products with filters
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     try {
       setLoading(true);
       const headers = getHeaders();
       const params = new URLSearchParams();
-      if (search.trim()) params.set('search', search.trim());
+      if (debouncedSearch.trim()) params.set('search', debouncedSearch.trim());
       if (selectedCategory !== 'all') params.set('category', selectedCategory);
       if (selectedSubcategory !== 'all') params.set('subcategory', selectedSubcategory);
       if (selectedStatus !== 'all') params.set('status', selectedStatus);
@@ -94,19 +103,11 @@ export default function AdminProductsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [getHeaders, debouncedSearch, selectedCategory, selectedSubcategory, selectedStatus, selectedStock, sortBy]);
 
   useEffect(() => {
     fetchProducts();
-  }, [user, selectedCategory, selectedSubcategory, selectedStatus, selectedStock, sortBy]);
-
-  // Debounced search
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      fetchProducts();
-    }, 350);
-    return () => clearTimeout(timer);
-  }, [search]);
+  }, [fetchProducts]);
 
   // Subcategories filtered for currently selected category
   const availableSubcategories = subcategories.filter((s) => {

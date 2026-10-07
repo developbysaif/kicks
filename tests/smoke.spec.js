@@ -31,6 +31,6 @@ test.describe('Storefront Smoke Tests', () => {
 
   test('Track order page renders', async ({ page }) => {
     await page.goto('/track-order');
-    await expect(page.getByRole('heading', { name: /Track/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Live Order Tracking/i })).toBeVisible();
   });
 });

@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React, { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
@@ -388,7 +388,7 @@ function LoginContent() {
 
                   <p className="mt-1.5 text-xs text-slate-300 font-medium">
                     {view === 'verify-otp' && 'Enter the 6-digit code sent to your email'}
-                    {view === 'forgot-email' && "We'll send a 60-second verification code to your email"}
+                    {view === 'forgot-email' && "We'll send a 6-digit verification code to your email"}
                     {view === 'forgot-otp' && 'Enter the 6-digit code to reset your password'}
                     {view === 'forgot-newpass' && 'Set a strong new password for your account'}
                   </p>
@@ -818,7 +818,7 @@ function LoginContent() {
                       Reset Password
                     </h3>
                     <p className="mt-1 text-xs text-slate-500">
-                      Enter your account email to receive a 60-second verification code.
+                      Enter your account email to receive a 6-digit verification code.
                     </p>
                   </div>
 

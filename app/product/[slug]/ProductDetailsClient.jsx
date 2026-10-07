@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
@@ -43,13 +43,7 @@ export default function ProductDetailsClient({
   const [loading, setLoading] = useState(!initialProduct);
   const [quickViewProduct, setQuickViewProduct] = useState(null);
 
-  useEffect(() => {
-    if (!initialProduct || initialProduct.slug !== slug) {
-      fetchProductDetails();
-    }
-  }, [slug]);
-
-  const fetchProductDetails = async () => {
+  const fetchProductDetails = useCallback(async () => {
     try {
       setLoading(true);
       const { data } = await axios.get(`/api/products/${slug}`);
@@ -69,7 +63,13 @@ export default function ProductDetailsClient({
     } finally {
       setLoading(false);
     }
-  };
+  }, [slug]);
+
+  useEffect(() => {
+    if (!initialProduct || initialProduct.slug !== slug) {
+      fetchProductDetails();
+    }
+  }, [slug, initialProduct, fetchProductDetails]);
 
   if (loading) {
     return (

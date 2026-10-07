@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import Header from '@/components/Header';
@@ -16,15 +16,9 @@ function TrackOrderContent() {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
-  useEffect(() => {
-    if (initialId) {
-      handleTrack(initialId);
-    }
-  }, [initialId]);
-
-  const handleTrack = async (idToSearch) => {
+  const handleTrack = useCallback(async (idToSearch) => {
     const id = idToSearch || orderId;
-    if (!id.trim()) return;
+    if (!id || !id.trim()) return;
 
     setLoading(true);
     setErrorMsg('');
@@ -42,7 +36,13 @@ function TrackOrderContent() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [orderId]);
+
+  useEffect(() => {
+    if (initialId) {
+      handleTrack(initialId);
+    }
+  }, [initialId, handleTrack]);
 
   const steps = ['Pending', 'Confirmed', 'Processing', 'Shipped', 'Delivered'];
 
@@ -63,21 +63,21 @@ function TrackOrderContent() {
       {/* SECTION 1 (WHITE) -> Order Tracking Box & Status */}
       <section className="bg-white py-12 sm:py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-          <div className="bg-gradient-to-br from-slate-900 to-slate-950 text-white rounded-3xl p-8 sm:p-10 shadow-xl text-center">
+          <div className="bg-gradient-to-br from-slate-900 to-slate-950 text-white rounded-3xl p-5 sm:p-8 md:p-10 shadow-xl text-center">
             <Package className="w-12 h-12 text-[#D0161D] mx-auto mb-3" />
-            <h1 className="text-3xl font-black">Live Order Tracking</h1>
+            <h1 className="text-2xl sm:text-3xl font-black">Live Order Tracking</h1>
             <p className="text-xs text-slate-300 mt-1">Enter your Kick Order ID (e.g. KICK-123456) to trace status.</p>
 
-            <form onSubmit={(e) => { e.preventDefault(); handleTrack(); }} className="mt-6 max-w-md mx-auto flex gap-2">
+            <form onSubmit={(e) => { e.preventDefault(); handleTrack(); }} className="mt-6 max-w-md mx-auto flex flex-col sm:flex-row gap-2">
               <input
                 type="text"
                 placeholder="KICK-XXXXXX"
                 aria-label="Enter Kick Order ID"
                 value={orderId}
                 onChange={(e) => setOrderId(e.target.value)}
-                className="flex-1 px-4 py-3 bg-white text-slate-900 rounded-xl text-xs font-bold uppercase outline-none focus:ring-2 focus:ring-[#D0161D]"
+                className="flex-1 min-w-0 px-4 py-3 bg-white text-slate-900 rounded-xl text-xs font-bold uppercase outline-none focus:ring-2 focus:ring-[#D0161D]"
               />
-              <button type="submit" disabled={loading} className="px-6 py-3 bg-[#D0161D] hover:bg-red-800 text-white font-bold rounded-xl text-xs shadow-sm transition">
+              <button type="submit" disabled={loading} className="w-full sm:w-auto px-6 py-3 bg-[#D0161D] hover:bg-red-800 text-white font-bold rounded-xl text-xs shadow-sm transition">
                 {loading ? 'Searching...' : 'Track'}
               </button>
             </form>
@@ -144,7 +144,7 @@ function TrackOrderContent() {
       {/* SECTION 2 (RED) -> Order Support Callout */}
       <section className="bg-[#D0161D] text-white py-12 sm:py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white text-slate-900 rounded-3xl p-8 sm:p-10 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="bg-white text-slate-900 rounded-3xl p-5 sm:p-8 md:p-10 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="space-y-2 text-center md:text-left">
               <span className="text-xs font-bold text-[#D0161D] uppercase tracking-wider">
                 Courier Assistance
@@ -156,18 +156,18 @@ function TrackOrderContent() {
                 Our support desk is connected directly with TCS and PostEx tracking portals to expedite your delivery.
               </p>
             </div>
-            <div className="flex flex-wrap items-center justify-center gap-3 shrink-0">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 shrink-0 w-full md:w-auto">
               <a
                 href="https://wa.me/923001234567"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-6 py-3.5 bg-[#D0161D] hover:bg-red-800 text-white text-xs font-black uppercase tracking-wider rounded-xl shadow-md transition"
+                className="w-full sm:w-auto text-center px-6 py-3.5 bg-[#D0161D] hover:bg-red-800 text-white text-xs font-black uppercase tracking-wider rounded-xl shadow-md transition"
               >
                 WhatsApp Support
               </a>
               <a
                 href="/contact"
-                className="px-6 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold rounded-xl transition"
+                className="w-full sm:w-auto text-center px-6 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold rounded-xl transition"
               >
                 Contact Us
               </a>

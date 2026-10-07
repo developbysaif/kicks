@@ -9,7 +9,8 @@ export default function OtpInput({
   value = '',
   onChange,
   disabled = false,
-  autoFocus = true
+  autoFocus = true,
+  dark = false
 }) {
   const inputsRef = useRef([]);
 
@@ -90,10 +91,14 @@ export default function OtpInput({
           onFocus={(e) => e.target.select()}
           aria-label={`Digit ${i + 1} of 6`}
           className={`w-11 h-14 sm:w-13 sm:h-16 text-center text-2xl font-black rounded-xl sm:rounded-2xl transition-all outline-none ${
-            digit
-              ? 'border-2 border-red-500 bg-red-50/40 text-slate-900 shadow-sm'
-              : 'border border-slate-200 bg-white text-slate-800 hover:border-slate-300 focus:border-red-500 focus:ring-4 focus:ring-red-100'
-          } ${disabled ? 'opacity-50 cursor-not-allowed bg-slate-100' : ''}`}
+            dark
+              ? digit
+                ? 'border-2 border-red-500 bg-red-950/40 text-white shadow-sm'
+                : 'border border-slate-700 bg-slate-950 text-white hover:border-slate-600 focus:border-red-500 focus:ring-4 focus:ring-red-900/40'
+              : digit
+                ? 'border-2 border-red-500 bg-red-50/40 text-slate-900 shadow-sm'
+                : 'border border-slate-200 bg-white text-slate-800 hover:border-slate-300 focus:border-red-500 focus:ring-4 focus:ring-red-100'
+          } ${disabled ? 'opacity-50 cursor-not-allowed bg-slate-800/40' : ''}`}
         />
       ))}
     </div>

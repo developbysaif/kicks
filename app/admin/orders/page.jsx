@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { ShoppingBag, CheckCircle, RefreshCw } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
@@ -58,11 +58,7 @@ export default function AdminOrdersPage() {
   const [loading, setLoading] = useState(false);
   const [updatingId, setUpdatingId] = useState(null);
 
-  useEffect(() => {
-    fetchOrders();
-  }, [user]);
-
-  const fetchOrders = async () => {
+  const fetchOrders = useCallback(async () => {
     try {
       setLoading(true);
       const headers = user?.token ? { Authorization: `Bearer ${user.token}` } : {};
@@ -75,7 +71,11 @@ export default function AdminOrdersPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user?.token]);
+
+  useEffect(() => {
+    fetchOrders();
+  }, [fetchOrders]);
 
   const handleStatusChange = async (orderId, newStatus) => {
     try {

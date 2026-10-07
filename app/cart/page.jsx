@@ -65,31 +65,35 @@ export default function CartPage() {
                       const image = prod.images?.[0] || item.image || 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=800&q=80';
 
                       return (
-                        <div key={item._id} className="py-4 first:pt-0 flex items-center gap-4">
-                          <img src={image} alt={name} className="w-20 h-20 object-contain rounded-2xl bg-white p-2 border border-slate-200 shrink-0" />
+                        <div key={item._id} className="py-4 first:pt-0 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+                          <div className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">
+                            <img src={image} alt={name} className="w-16 h-16 sm:w-20 sm:h-20 object-contain rounded-2xl bg-white p-2 border border-slate-200 shrink-0" />
 
-                          <div className="flex-1 min-w-0">
-                            <h3 className="text-sm font-bold text-slate-900 truncate">{name}</h3>
-                            {item.variation && (
-                              <span className="text-xs text-slate-500 block mt-0.5">Variant: {item.variation}</span>
-                            )}
-                            <span className="text-xs font-extrabold text-[#D0161D] block mt-1">Rs. {item.price} each</span>
+                            <div className="flex-1 min-w-0">
+                              <h3 className="text-sm font-bold text-slate-900 truncate">{name}</h3>
+                              {item.variation && (
+                                <span className="text-xs text-slate-500 block mt-0.5">Variant: {item.variation}</span>
+                              )}
+                              <span className="text-xs font-extrabold text-[#D0161D] block mt-1">Rs. {item.price} each</span>
+                            </div>
                           </div>
 
-                          {/* Quantity Controls */}
-                          <div className="flex items-center border border-slate-200 rounded-xl overflow-hidden text-xs bg-white">
-                            <button onClick={() => updateQuantity(item._id, item.quantity - 1)} className="px-3 py-1 font-bold hover:bg-slate-100">-</button>
-                            <span className="px-3 font-bold text-slate-800">{item.quantity}</span>
-                            <button onClick={() => updateQuantity(item._id, item.quantity + 1)} className="px-3 py-1 font-bold hover:bg-slate-100">+</button>
-                          </div>
+                          <div className="flex items-center justify-between sm:justify-end gap-3 sm:gap-4 w-full sm:w-auto pt-1 sm:pt-0 border-t sm:border-t-0 border-slate-200/60">
+                            {/* Quantity Controls */}
+                            <div className="flex items-center border border-slate-200 rounded-xl overflow-hidden text-xs bg-white shrink-0">
+                              <button onClick={() => updateQuantity(item._id, item.quantity - 1)} aria-label="Decrease quantity" className="px-3 py-1 font-bold hover:bg-slate-100">-</button>
+                              <span className="px-3 font-bold text-slate-800">{item.quantity}</span>
+                              <button onClick={() => updateQuantity(item._id, item.quantity + 1)} aria-label="Increase quantity" className="px-3 py-1 font-bold hover:bg-slate-100">+</button>
+                            </div>
 
-                          <div className="text-right font-extrabold text-slate-900 text-sm w-24">
-                            Rs. {item.price * item.quantity}
-                          </div>
+                            <div className="text-right font-extrabold text-slate-900 text-sm sm:w-24 shrink-0">
+                              Rs. {item.price * item.quantity}
+                            </div>
 
-                          <button onClick={() => removeFromCart(item._id)} className="text-slate-400 hover:text-red-600 p-2 transition-colors">
-                            <Trash2 className="w-4 h-4" />
-                          </button>
+                            <button onClick={() => removeFromCart(item._id)} aria-label={`Remove ${name} from cart`} className="text-slate-400 hover:text-red-600 p-2 transition-colors shrink-0">
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
                         </div>
                       );
                     })}

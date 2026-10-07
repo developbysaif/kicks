@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { Star, CheckCircle, XCircle, Trash2 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
@@ -13,11 +13,7 @@ export default function AdminReviewsPage() {
   ]);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    fetchReviews();
-  }, [user]);
-
-  const fetchReviews = async () => {
+  const fetchReviews = useCallback(async () => {
     try {
       setLoading(true);
       const headers = user?.token ? { Authorization: `Bearer ${user.token}` } : {};
@@ -30,7 +26,11 @@ export default function AdminReviewsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user?.token]);
+
+  useEffect(() => {
+    fetchReviews();
+  }, [fetchReviews]);
 
   const toggleApproval = async (review) => {
     try {

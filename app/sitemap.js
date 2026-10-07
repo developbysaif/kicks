@@ -1,7 +1,7 @@
 import { connectDB } from '@/lib/mongodb';
 import Product from '@/models/Product';
 import Category from '@/models/Category';
-import Subcategory from '@/models/SubCategory';
+import Subcategory from '@/models/Subcategory';
 import BlogPost from '@/models/BlogPost';
 
 export const revalidate = 3600; // Revalidate sitemap every hour
