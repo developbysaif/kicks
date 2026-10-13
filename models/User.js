@@ -44,6 +44,7 @@ const userSchema = new mongoose.Schema({
   addresses: [addressSchema]
 }, {
   timestamps: true,
+  bufferCommands: false,
   toJSON: { virtuals: true },
   toObject: { virtuals: true }
 });

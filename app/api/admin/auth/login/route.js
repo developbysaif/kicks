@@ -23,26 +23,47 @@ export async function POST(req) {
     const envAdminEmail = (process.env.ADMIN_EMAIL || 'admin@kickhomecare.com').toLowerCase();
     const envAdminPassword = process.env.ADMIN_PASSWORD || 'admin123';
 
-    await connectDB();
+    const db = await connectDB();
 
     // Check if user matches environment default admin
     const isEnvAdmin = cleanEmail === envAdminEmail && password === envAdminPassword;
 
-    let user = await User.findOne({ email: cleanEmail });
+    let user = null;
+    if (db && mongoose.connection.readyState === 1) {
+      user = await User.findOne({ email: cleanEmail });
+    } else {
+      const memoryUsers = global.memoryUsers || [];
+      user = memoryUsers.find(u => u.email === cleanEmail);
+    }
 
     // If env admin and not in DB yet, auto-seed the admin user as verified
     if (isEnvAdmin && !user) {
       const salt = await bcrypt.genSalt(10);
       const passwordHash = await bcrypt.hash(password, salt);
-      user = await User.create({
-        fullName: 'Kick Super Admin',
-        name: 'Kick Super Admin',
-        email: cleanEmail,
-        passwordHash,
-        role: 'admin',
-        emailVerified: true,
-        emailVerifiedAt: new Date()
-      });
+      if (db && mongoose.connection.readyState === 1) {
+        user = await User.create({
+          fullName: 'Kick Super Admin',
+          name: 'Kick Super Admin',
+          email: cleanEmail,
+          passwordHash,
+          role: 'admin',
+          emailVerified: true,
+          emailVerifiedAt: new Date()
+        });
+      } else {
+        user = {
+          _id: 'env-admin-' + Date.now(),
+          fullName: 'Kick Super Admin',
+          name: 'Kick Super Admin',
+          email: cleanEmail,
+          passwordHash,
+          role: 'admin',
+          emailVerified: true,
+          emailVerifiedAt: new Date()
+        };
+        global.memoryUsers = global.memoryUsers || [];
+        global.memoryUsers.push(user);
+      }
     }
 
     if (!user) {
@@ -69,7 +90,9 @@ export async function POST(req) {
       user.emailVerified = true;
       const salt = await bcrypt.genSalt(10);
       user.passwordHash = await bcrypt.hash(password, salt);
-      await user.save();
+      if (typeof user.save === 'function') {
+        await user.save();
+      }
     }
 
     if (!isMatch) {
