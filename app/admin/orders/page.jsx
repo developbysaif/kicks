@@ -62,12 +62,25 @@ export default function AdminOrdersPage() {
     try {
       setLoading(true);
       const headers = user?.token ? { Authorization: `Bearer ${user.token}` } : {};
-      const { data } = await axios.get('/api/orders', { headers, timeout: 4000 });
-      if (data && data.success && data.orders?.length > 0) {
-        setOrders(data.orders);
+      let ordersList = [];
+
+      try {
+        const { data } = await axios.get('/api/admin/orders', { headers, timeout: 5000 });
+        if (data?.success && Array.isArray(data.orders)) {
+          ordersList = data.orders;
+        }
+      } catch (adminErr) {
+        const { data } = await axios.get('/api/orders', { headers, timeout: 5000 });
+        if (data?.success && Array.isArray(data.orders)) {
+          ordersList = data.orders;
+        }
+      }
+
+      if (ordersList.length > 0) {
+        setOrders(ordersList);
       }
     } catch (err) {
-      console.error(err);
+      console.error('Error fetching admin orders:', err);
     } finally {
       setLoading(false);
     }

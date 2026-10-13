@@ -316,7 +316,11 @@ export async function POST(req) {
     }
 
     const parsedPrice = parseFloat(price);
-    const parsedCompare = compareAtPrice ? parseFloat(compareAtPrice) : null;
+    const parsedCompare = (compareAtPrice !== undefined && compareAtPrice !== null && compareAtPrice !== '')
+      ? parseFloat(compareAtPrice)
+      : (data.salePrice !== undefined && data.salePrice !== null && data.salePrice !== '')
+      ? parseFloat(data.salePrice)
+      : null;
     const parsedCost = costPrice ? parseFloat(costPrice) : null;
     const parsedStock = stock !== undefined && stock !== '' ? parseInt(stock, 10) : 100;
     const productStatus = status || 'published';
@@ -415,6 +419,8 @@ export async function PUT(req) {
     }
     if (fields.compareAtPrice !== undefined) {
       updatePayload.compareAtPrice = fields.compareAtPrice ? parseFloat(fields.compareAtPrice) : null;
+    } else if (fields.salePrice !== undefined) {
+      updatePayload.compareAtPrice = fields.salePrice ? parseFloat(fields.salePrice) : null;
     }
     if (fields.costPrice !== undefined) {
       updatePayload.costPrice = fields.costPrice ? parseFloat(fields.costPrice) : null;

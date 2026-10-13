@@ -23,15 +23,30 @@ export default function AdminInventoryPage() {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get('/api/products', { timeout: 4000 });
-      if (data && data.success && data.products?.length > 0) {
-        setProducts(data.products);
+      const headers = user?.token ? { Authorization: `Bearer ${user.token}` } : {};
+      let productsList = [];
+
+      try {
+        const { data } = await axios.get('/api/admin/inventory', { headers, timeout: 5000 });
+        if (data?.success && Array.isArray(data.products) && data.products.length > 0) {
+          productsList = data.products;
+        }
+      } catch (adminErr) {
+        // Fallback to public products catalog
+        const { data } = await axios.get('/api/products', { timeout: 5000 });
+        if (data?.success && Array.isArray(data.products)) {
+          productsList = data.products;
+        }
+      }
+
+      if (productsList.length > 0) {
+        setProducts(productsList);
         const map = {};
-        data.products.forEach(p => { map[p._id] = p.stock; });
+        productsList.forEach(p => { map[p._id] = p.stock; });
         setStockInputs(map);
       }
     } catch (err) {
-      console.error(err);
+      console.error('Error fetching inventory products:', err);
     } finally {
       setLoading(false);
     }

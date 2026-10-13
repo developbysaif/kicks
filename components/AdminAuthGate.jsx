@@ -457,7 +457,27 @@ export default function AdminAuthGate() {
             </form>
           )}
 
-          {/* 2. ADMIN SETUP / SIGN UP FORM (Only available if no verified admin exists) */}
+          {/* 2. ADMIN SETUP / SIGN UP FORM */}
+          {mode === 'signup' && hasExistingAdmin && (
+            <div className="text-center py-6 space-y-4">
+              <AlertCircle className="w-10 h-10 text-amber-400 mx-auto" />
+              <h3 className="text-sm font-bold text-white">Administrator Account Already Configured</h3>
+              <p className="text-xs text-slate-400 max-w-xs mx-auto">
+                An active administrator is already configured for this store. Please log in with your credentials.
+              </p>
+              <button
+                type="button"
+                onClick={() => {
+                  setMode('login');
+                  setErrorMsg('');
+                }}
+                className="px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold transition shadow-md"
+              >
+                Go to Admin Sign In
+              </button>
+            </div>
+          )}
+
           {mode === 'signup' && !hasExistingAdmin && (
             <form onSubmit={handleRegister} className="space-y-4 text-left">
               <div>

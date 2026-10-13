@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
-import { MessageSquare, Mail, Phone, Calendar } from 'lucide-react';
+import { MessageSquare, Mail, Phone, Calendar, Trash2 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 
 export default function AdminMessagesPage() {
@@ -24,12 +24,25 @@ export default function AdminMessagesPage() {
     try {
       setLoading(true);
       const headers = user?.token ? { Authorization: `Bearer ${user.token}` } : {};
-      const { data } = await axios.get('/api/contact', { headers, timeout: 4000 });
-      if (data && data.success && data.messages?.length > 0) {
-        setMessages(data.messages);
+      let msgList = [];
+
+      try {
+        const { data } = await axios.get('/api/admin/messages', { headers, timeout: 5000 });
+        if (data?.success && Array.isArray(data.messages)) {
+          msgList = data.messages;
+        }
+      } catch (adminErr) {
+        const { data } = await axios.get('/api/contact', { headers, timeout: 5000 });
+        if (data?.success && Array.isArray(data.messages)) {
+          msgList = data.messages;
+        }
+      }
+
+      if (msgList.length > 0) {
+        setMessages(msgList);
       }
     } catch (err) {
-      console.error(err);
+      console.error('Error fetching admin messages:', err);
     } finally {
       setLoading(false);
     }
@@ -38,6 +51,17 @@ export default function AdminMessagesPage() {
   useEffect(() => {
     fetchMessages();
   }, [fetchMessages]);
+
+  const handleDeleteMessage = async (id) => {
+    if (!confirm('Are you sure you want to delete this inquiry message?')) return;
+    try {
+      const headers = user?.token ? { Authorization: `Bearer ${user.token}` } : {};
+      await axios.delete(`/api/admin/messages?id=${id}`, { headers });
+      setMessages(prev => prev.filter(m => m._id !== id));
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to delete message');
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -66,6 +90,13 @@ export default function AdminMessagesPage() {
                 </div>
                 <div className="flex items-center gap-3 text-xs text-slate-400">
                   <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5" /> {new Date(m.createdAt || Date.now()).toLocaleDateString()}</span>
+                  <button
+                    onClick={() => handleDeleteMessage(m._id)}
+                    title="Delete Message"
+                    className="p-1.5 hover:bg-rose-50 hover:text-rose-600 rounded-lg transition-colors text-slate-400"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
                 </div>
               </div>
 
