@@ -62,7 +62,7 @@ const SHOP_BY_NEEDS = [
     title: 'Odor Control',
     subtitle: 'Microbial neutralization',
     icon: '🌿',
-    action: 'fresheners',
+    action: 'cleaners',
     color: 'from-teal-950/90 to-slate-900',
     description: 'Essential oils and antimicrobial agents keep trainers and gym shoes hygienic and crisp.'
   },
@@ -163,15 +163,186 @@ const FAQS = [
   }
 ];
 
+const FALLBACK_SHOE_CARE_SUBCATEGORIES = [
+  { _id: 'sub-1', name: 'Sneaker Care', slug: 'sneaker-care', description: 'Specialized whiteners & sole scrub formulations', imageUrl: '/Shoe Care.png' },
+  { _id: 'sub-2', name: 'Leather Care', slug: 'leather-care', description: 'Nourishing wax creams, tins, and high-gloss polish', imageUrl: '/liquid shoe polish.png' },
+  { _id: 'sub-3', name: 'Cleaners & Brushes', slug: 'cleaners', description: 'Active foam cleansers and horsehair brushes', imageUrl: '/Shoe Care.png' },
+  { _id: 'sub-4', name: 'Shoe Protectors', slug: 'protectors', description: 'Hydrophobic nano-coatings against rain and stains', imageUrl: '/Shoe Care.png' }
+];
+
+const FALLBACK_SHOE_CARE_PRODUCTS = [
+  {
+    _id: 'prod-1',
+    name: 'Kick Whito - White Sneaker & Joggers Cleaner',
+    slug: 'kick-whito-white-sneaker-cleaner',
+    sku: 'KICK-WHITO-100',
+    brand: 'Kick Home Care',
+    category: { _id: 'cat-1', name: 'Shoe Care', slug: 'shoe-care' },
+    subcategory: { _id: 'sub-1', name: 'Sneaker Care', slug: 'sneaker-care' },
+    subcategoryId: { _id: 'sub-1', name: 'Sneaker Care', slug: 'sneaker-care' },
+    price: 250,
+    salePrice: 220,
+    compareAtPrice: 280,
+    stock: 150,
+    rating: 5.0,
+    numReviews: 68,
+    status: 'published',
+    isActive: true,
+    isFeatured: true,
+    isBestSeller: true,
+    images: ['https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=800&q=80'],
+    description: 'Kick Whito is specially formulated for restoring brilliant white shine to leather, canvas, and rubber soles of sneakers and sports shoes. Removes tough scuffs and yellowing instantly without ruining material.',
+    shortDescription: 'Instant white sneaker restorer and stain remover sponge applicator.'
+  },
+  {
+    _id: 'prod-2',
+    name: 'Kick Joggers & Canvas Cleaner Solution',
+    slug: 'kick-joggers-canvas-cleaner',
+    sku: 'KICK-JOG-150',
+    brand: 'Kick Home Care',
+    category: { _id: 'cat-1', name: 'Shoe Care', slug: 'shoe-care' },
+    subcategory: { _id: 'sub-1', name: 'Sneaker Care', slug: 'sneaker-care' },
+    subcategoryId: { _id: 'sub-1', name: 'Sneaker Care', slug: 'sneaker-care' },
+    price: 260,
+    salePrice: 240,
+    compareAtPrice: 290,
+    stock: 100,
+    rating: 4.8,
+    numReviews: 38,
+    status: 'published',
+    isActive: true,
+    isFeatured: true,
+    isBestSeller: true,
+    images: ['https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80'],
+    description: 'Deep foam action cleaner specifically engineered for sports joggers, mesh sneakers, and canvas footwear.',
+    shortDescription: 'Active foam cleanser for sports joggers & canvas shoes.'
+  },
+  {
+    _id: 'prod-3',
+    name: 'Kick Super Liquid Shoe Polish',
+    slug: 'kick-super-liquid-shoe-polish',
+    sku: 'KICK-SP-BLACK',
+    brand: 'Kick Home Care',
+    category: { _id: 'cat-1', name: 'Shoe Care', slug: 'shoe-care' },
+    subcategory: { _id: 'sub-2', name: 'Leather Care', slug: 'leather-care' },
+    subcategoryId: { _id: 'sub-2', name: 'Leather Care', slug: 'leather-care' },
+    price: 250,
+    salePrice: 220,
+    compareAtPrice: 280,
+    stock: 120,
+    rating: 4.7,
+    numReviews: 45,
+    status: 'published',
+    isActive: true,
+    isFeatured: false,
+    isBestSeller: true,
+    images: ['https://images.unsplash.com/photo-1560769629-975ec94e6a86?auto=format&fit=crop&w=800&q=80'],
+    description: 'Premium quick-drying liquid shoe polish enriched with natural carnauba wax for deep shine and nourishment.',
+    shortDescription: 'Instant high-shine wax liquid polish for leather shoes.'
+  },
+  {
+    _id: 'prod-4',
+    name: 'Kick Super Shoe Polish Wax Tin 50g',
+    slug: 'kick-super-shoe-polish-wax-tin-50g',
+    sku: 'KICK-WAX-50G',
+    brand: 'Kick Home Care',
+    category: { _id: 'cat-1', name: 'Shoe Care', slug: 'shoe-care' },
+    subcategory: { _id: 'sub-2', name: 'Leather Care', slug: 'leather-care' },
+    subcategoryId: { _id: 'sub-2', name: 'Leather Care', slug: 'leather-care' },
+    price: 240,
+    salePrice: 220,
+    compareAtPrice: 260,
+    stock: 180,
+    rating: 4.9,
+    numReviews: 52,
+    status: 'published',
+    isActive: true,
+    isFeatured: false,
+    isBestSeller: true,
+    images: ['https://images.unsplash.com/photo-1560769629-975ec94e6a86?auto=format&fit=crop&w=800&q=80'],
+    description: 'Traditional solid wax shoe polish tin for military-grade spit shine and deep leather nourishing.',
+    shortDescription: 'Classic 50g solid wax shoe polish tin for formal shoes.'
+  },
+  {
+    _id: 'prod-5',
+    name: 'Kick Instant Shoe Shiner Sponge',
+    slug: 'kick-instant-shoe-shiner-sponge',
+    sku: 'KICK-SPONGE-INST',
+    brand: 'Kick Home Care',
+    category: { _id: 'cat-1', name: 'Shoe Care', slug: 'shoe-care' },
+    subcategory: { _id: 'sub-2', name: 'Leather Care', slug: 'leather-care' },
+    subcategoryId: { _id: 'sub-2', name: 'Leather Care', slug: 'leather-care' },
+    price: 220,
+    salePrice: 190,
+    compareAtPrice: 240,
+    stock: 200,
+    rating: 4.9,
+    numReviews: 60,
+    status: 'published',
+    isActive: true,
+    isFeatured: false,
+    isBestSeller: true,
+    images: ['https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=800&q=80'],
+    description: 'Compact travel sponge pre-impregnated with silicone oils. Restores instant glossy finish to leather shoes.',
+    shortDescription: 'Mess-free travel silicone shiner sponge.'
+  },
+  {
+    _id: 'prod-6',
+    name: 'Kick Horsehair Shoe Polish Brush',
+    slug: 'kick-horsehair-shoe-polish-brush',
+    sku: 'KICK-BRUSH-WOOD',
+    brand: 'Kick Home Care',
+    category: { _id: 'cat-1', name: 'Shoe Care', slug: 'shoe-care' },
+    subcategory: { _id: 'sub-3', name: 'Cleaners & Brushes', slug: 'cleaners' },
+    subcategoryId: { _id: 'sub-3', name: 'Cleaners & Brushes', slug: 'cleaners' },
+    price: 350,
+    salePrice: 290,
+    compareAtPrice: 380,
+    stock: 60,
+    rating: 4.7,
+    numReviews: 19,
+    status: 'published',
+    isActive: true,
+    isFeatured: false,
+    isBestSeller: false,
+    images: ['https://images.unsplash.com/photo-1560769629-975ec94e6a86?auto=format&fit=crop&w=800&q=80'],
+    description: 'Ergonomic wooden shoe brush crafted with natural horsehair bristles for optimal wax distribution.',
+    shortDescription: 'Natural horsehair wooden shoe buffing brush.'
+  },
+  {
+    _id: 'prod-7',
+    name: 'Kick Foot & Shoe Deodorizer Spray',
+    slug: 'kick-foot-shoe-deodorizer-spray',
+    sku: 'KICK-DEO-150',
+    brand: 'Kick Home Care',
+    category: { _id: 'cat-1', name: 'Shoe Care', slug: 'shoe-care' },
+    subcategory: { _id: 'sub-3', name: 'Cleaners & Brushes', slug: 'cleaners' },
+    subcategoryId: { _id: 'sub-3', name: 'Cleaners & Brushes', slug: 'cleaners' },
+    price: 290,
+    salePrice: 250,
+    compareAtPrice: 320,
+    stock: 80,
+    rating: 4.6,
+    numReviews: 14,
+    status: 'published',
+    isActive: true,
+    isFeatured: false,
+    isBestSeller: false,
+    images: ['https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=800&q=80'],
+    description: 'Antibacterial footwear spray that neutralizes odor-causing bacteria instantly for 24-hour freshness.',
+    shortDescription: '24-hour odor defense spray for shoes and feet.'
+  }
+];
+
 export default function ShoeCareClient() {
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
   const { addToCompare } = useCompare();
 
-  // Dynamic database state
-  const [products, setProducts] = useState([]);
-  const [subcategories, setSubcategories] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // Dynamic database state initialized with authentic fallback to avoid zero-product flashes
+  const [products, setProducts] = useState(FALLBACK_SHOE_CARE_PRODUCTS);
+  const [subcategories, setSubcategories] = useState(FALLBACK_SHOE_CARE_SUBCATEGORIES);
+  const [loading, setLoading] = useState(false);
 
   // Filter States
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -193,22 +364,17 @@ export default function ShoeCareClient() {
 
   const fetchShoeCareData = async () => {
     try {
-      setLoading(true);
       const [prodRes, subRes] = await Promise.all([
         axios.get('/api/products?category=shoe-care').catch(() => null),
         axios.get('/api/subcategories?category=shoe-care').catch(() => null)
       ]);
 
-      if (prodRes?.data?.success && Array.isArray(prodRes.data.products)) {
+      if (prodRes?.data?.success && Array.isArray(prodRes.data.products) && prodRes.data.products.length > 0) {
         setProducts(prodRes.data.products);
-      } else {
-        setProducts([]);
       }
 
-      if (subRes?.data?.success && Array.isArray(subRes.data.subcategories)) {
+      if (subRes?.data?.success && Array.isArray(subRes.data.subcategories) && subRes.data.subcategories.length > 0) {
         setSubcategories(subRes.data.subcategories);
-      } else {
-        setSubcategories([]);
       }
     } catch (err) {
       console.error('Error fetching shoe care data:', err);
