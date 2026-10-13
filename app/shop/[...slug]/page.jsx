@@ -14,13 +14,34 @@ import {
   Headphones,
   Loader2,
   FolderTree,
-  ArrowRight
+  ArrowRight,
+  CheckCircle2
 } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ProductCard from '@/components/ProductCard';
 import QuickViewModal from '@/components/QuickViewModal';
 import PageSection from '@/components/PageSection';
+
+const CATEGORY_BANNERS = {
+  'shoe-care': '/shoe-care-banner.jpg',
+  'washroom-cleaning': '/washroom-cleaning-banner.jpg',
+  'home-cleaning': '/home-cleaning-banner.jpg',
+  'dish-care': '/dish-care-banner.jpg',
+  'mosquito-protection': '/mosquito-protection-banner.jpg',
+  'laundry-care': '/laundry-care-banner.png'
+};
+
+const SUBCATEGORY_BANNERS = {
+  'drain-opener': '/drain-opener-banner.jpg',
+  'sneaker-care': '/shoe-care-banner.jpg',
+  'leather-care': '/shoe-care-banner.jpg',
+  'cleaners': '/shoe-care-banner.jpg',
+  'phenyle': '/home-cleaning-banner.jpg',
+  'dishwash-liquid': '/dish-care-banner.jpg',
+  'machine-refills': '/mosquito-protection-banner.jpg',
+  'bleach-liquid': '/laundry-care-banner.png'
+};
 
 export default function ShopCatchAllPage({ params }) {
   // Support both Promise params (Next 15) and sync params (Next 14)
@@ -118,9 +139,12 @@ export default function ShopCatchAllPage({ params }) {
     : category?.description || `Explore genuine Kick ${categoryTitle} formulations designed for superior performance.`;
 
   const bannerImage =
+    (activeSubcategory && SUBCATEGORY_BANNERS[activeSubcategory]) ||
+    CATEGORY_BANNERS[categorySlug] ||
     (activeSubcategory && currentSubcategoryObj?.imageUrl) ||
+    category?.bannerUrl ||
     category?.image ||
-    '/Shoe Care.png';
+    '/shop-all-banner.jpg';
 
   const sortedProducts = useMemo(() => {
     let result = [...products];
@@ -174,28 +198,30 @@ export default function ShopCatchAllPage({ params }) {
         {/* 1. HERO BANNER — WHITE */}
         <PageSection variant="white" className="pt-6 pb-8">
           <div
-            className="relative rounded-3xl overflow-hidden shadow-2xl min-h-[260px] sm:min-h-[320px] flex items-end"
+            className="relative rounded-3xl overflow-hidden shadow-2xl min-h-[300px] sm:min-h-[380px] lg:min-h-[420px] flex items-end"
             style={{
               backgroundImage: `url(${bannerImage})`,
               backgroundSize: 'cover',
-              backgroundPosition: 'center'
+              backgroundPosition: 'center right',
+              backgroundRepeat: 'no-repeat'
             }}
           >
-            {/* Dark overlay for text readability */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/55 to-black/20" />
+            {/* Dark gradient overlay for text readability on left while keeping products visible */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/15" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent sm:hidden" />
 
-            {/* Text content pinned to bottom */}
-            <div className="relative z-10 p-8 sm:p-12 space-y-3 max-w-3xl">
-              <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#D0161D] text-white text-xs font-bold uppercase tracking-wider">
+            {/* Text content pinned to left */}
+            <div className="relative z-10 p-8 sm:p-12 space-y-3 max-w-2xl">
+              <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#D0161D] text-white text-xs font-bold uppercase tracking-wider shadow-sm">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>
                   {activeSubcategory ? `${categoryTitle} • Subcategory` : 'Kick® Official Category'}
                 </span>
               </div>
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight drop-shadow-md">
                 {pageTitle}
               </h1>
-              <p className="text-xs sm:text-sm text-slate-200 leading-relaxed max-w-xl">
+              <p className="text-xs sm:text-sm text-slate-200 leading-relaxed max-w-xl drop-shadow">
                 {pageDescription}
               </p>
             </div>

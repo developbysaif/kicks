@@ -70,24 +70,37 @@ function ShopContent() {
       )}
 
       {/* 1. HERO TITLE BANNER — WHITE */}
-      <PageSection variant="white" className="py-8 sm:py-12 border-b border-slate-200">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <div className="flex items-center space-x-2">
-              <span className="w-1.5 h-6 bg-[#D0161D] rounded-full"></span>
-              <h1 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
-                All Kick Products Catalog
-              </h1>
-            </div>
-            <p className="text-xs sm:text-sm text-slate-600 mt-1.5 font-medium max-w-2xl">
-              Browse Pakistan's premier home care & shoe maintenance formulations with guaranteed quality.
-            </p>
-          </div>
+      <PageSection variant="white" className="pt-6 pb-8">
+        <div
+          className="relative rounded-3xl overflow-hidden shadow-2xl min-h-[300px] sm:min-h-[380px] lg:min-h-[420px] flex items-end"
+          style={{
+            backgroundImage: `url('/shop-all-banner.jpg')`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center right',
+            backgroundRepeat: 'no-repeat'
+          }}
+        >
+          {/* Dark gradient overlay for text readability on left */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/15" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent sm:hidden" />
 
-          <div className="flex items-center space-x-2">
-            <span className="px-3.5 py-1.5 bg-red-50 text-[#D0161D] rounded-full text-xs font-black uppercase tracking-wider border border-red-100">
-              {products.length} Products Available
-            </span>
+          {/* Text content pinned to left */}
+          <div className="relative z-10 p-8 sm:p-12 space-y-3 max-w-2xl">
+            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#D0161D] text-white text-xs font-bold uppercase tracking-wider shadow-sm">
+              <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+              <span>Kick® Official Catalog</span>
+            </div>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight drop-shadow-md">
+              All Kick Products Catalog
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-200 leading-relaxed max-w-xl drop-shadow">
+              Browse Pakistan&apos;s premier home care &amp; shoe maintenance formulations with guaranteed quality and nationwide fast delivery.
+            </p>
+            <div className="pt-2">
+              <span className="px-3.5 py-1.5 bg-white/20 backdrop-blur-md text-white rounded-full text-xs font-black uppercase tracking-wider border border-white/30">
+                {products.length} Products Available
+              </span>
+            </div>
           </div>
         </div>
       </PageSection>

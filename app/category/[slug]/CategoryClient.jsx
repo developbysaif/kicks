@@ -71,43 +71,43 @@ export default function CategoryClient({
         {/* 1. CATEGORY HERO BANNER — WHITE */}
         <PageSection variant="white" className="pt-6 pb-8">
           <div
-            className="relative rounded-3xl overflow-hidden shadow-2xl min-h-[280px] sm:min-h-[340px] flex items-end"
+            className="relative rounded-3xl overflow-hidden shadow-2xl min-h-[300px] sm:min-h-[380px] lg:min-h-[420px] flex items-end"
             style={{
               backgroundImage: `url(${currentMeta.bannerImage})`,
               backgroundSize: 'cover',
-              backgroundPosition: 'center'
+              backgroundPosition: 'center right'
             }}
           >
-            {/* Dark overlay for text readability */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 to-black/20" />
+            {/* Elegant overlay: text stays 100% legible on the left, right products remain bright and visible */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/15 sm:from-black/80 sm:via-black/40 sm:to-transparent" />
 
-            {/* Text content pinned to bottom */}
-            <div className="relative z-10 p-8 sm:p-12 space-y-3 max-w-3xl">
-              <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#D0161D] text-white text-xs font-bold uppercase tracking-wider">
+            {/* Text content pinned to left/bottom */}
+            <div className="relative z-10 p-6 sm:p-10 lg:p-12 space-y-3.5 max-w-2xl">
+              <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#D0161D] text-white text-xs font-bold uppercase tracking-wider shadow-sm">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Kick® Official Category</span>
               </div>
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
                 {currentMeta.name}
               </h1>
-              <p className="text-sm font-semibold text-red-400">
+              <p className="text-sm font-semibold text-red-300">
                 {currentMeta.tagline}
               </p>
               <p className="text-xs sm:text-sm text-slate-200 leading-relaxed max-w-xl">
                 {currentMeta.description}
               </p>
-              <div className="flex items-center space-x-3 pt-2">
-                <div className="flex items-center space-x-1.5 text-white/80 text-xs">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-red-400 shrink-0" />
+              <div className="flex flex-wrap items-center gap-4 pt-2">
+                <div className="flex items-center space-x-1.5 text-white/90 text-xs font-medium">
+                  <CheckCircle2 className="w-4 h-4 text-red-400 shrink-0" />
                   <span>Kick Certified</span>
                 </div>
-                <div className="flex items-center space-x-1.5 text-white/80 text-xs">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-red-400 shrink-0" />
+                <div className="flex items-center space-x-1.5 text-white/90 text-xs font-medium">
+                  <CheckCircle2 className="w-4 h-4 text-red-400 shrink-0" />
                   <span>Home-Safe Formula</span>
                 </div>
-                <div className="flex items-center space-x-1.5 text-white/80 text-xs">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-red-400 shrink-0" />
-                  <span>Pakistan-Made</span>
+                <div className="flex items-center space-x-1.5 text-white/90 text-xs font-medium">
+                  <CheckCircle2 className="w-4 h-4 text-red-400 shrink-0" />
+                  <span>100% Genuine Kick Quality</span>
                 </div>
               </div>
             </div>
