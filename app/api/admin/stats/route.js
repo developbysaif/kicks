@@ -20,7 +20,12 @@ export async function GET(req) {
 
   try {
     const auth = getAuthUser(req);
-    // getAuthUser provides dev admin in development if no token passed
+    if (!auth || auth.role !== 'admin') {
+      return NextResponse.json(
+        { success: false, message: 'Admin access required' },
+        { status: 403 }
+      );
+    }
 
     const db = await connectDB();
 
