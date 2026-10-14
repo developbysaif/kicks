@@ -1,7 +1,9 @@
 import { NextResponse } from 'next/server';
-import connectDB from '@/lib/db';
+import connectDB, { isDbConnected } from '@/lib/db';
 import User from '@/models/User';
 import { getAuthUser } from '@/lib/jwt';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET(req) {
   try {
@@ -10,8 +12,16 @@ export async function GET(req) {
       return NextResponse.json({ success: false, message: 'Admin access required' }, { status: 403 });
     }
 
-    await connectDB();
-    const users = await User.find({}, '-password').sort({ createdAt: -1 });
+    const db = await connectDB();
+    if (!db || !isDbConnected()) {
+      const memoryUsers = (global.memoryUsers || []).map(u => {
+        const { password, passwordHash, ...rest } = u;
+        return rest;
+      });
+      return NextResponse.json({ success: true, users: memoryUsers });
+    }
+
+    const users = await User.find({}, '-password -passwordHash').sort({ createdAt: -1 });
     return NextResponse.json({ success: true, users });
   } catch (error) {
     return NextResponse.json({ success: false, message: error.message }, { status: 500 });
@@ -25,9 +35,13 @@ export async function PUT(req) {
       return NextResponse.json({ success: false, message: 'Admin access required' }, { status: 403 });
     }
 
-    await connectDB();
+    const db = await connectDB();
+    if (!db || !isDbConnected()) {
+      return NextResponse.json({ success: false, message: 'Database connection offline.' }, { status: 503 });
+    }
+
     const { _id, role } = await req.json();
-    const user = await User.findByIdAndUpdate(_id, { role }, { new: true }).select('-password');
+    const user = await User.findByIdAndUpdate(_id, { role }, { new: true }).select('-password -passwordHash');
     return NextResponse.json({ success: true, message: 'User updated successfully', user });
   } catch (error) {
     return NextResponse.json({ success: false, message: error.message }, { status: 500 });
@@ -41,7 +55,11 @@ export async function DELETE(req) {
       return NextResponse.json({ success: false, message: 'Admin access required' }, { status: 403 });
     }
 
-    await connectDB();
+    const db = await connectDB();
+    if (!db || !isDbConnected()) {
+      return NextResponse.json({ success: false, message: 'Database connection offline.' }, { status: 503 });
+    }
+
     const { searchParams } = new URL(req.url);
     const id = searchParams.get('id');
     await User.findByIdAndDelete(id);

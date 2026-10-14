@@ -1,4 +1,4 @@
-import { connectDB } from '@/lib/mongodb';
+import { connectDB, isDbConnected } from '@/lib/mongodb';
 import Product from '@/models/Product';
 import Category from '@/models/Category';
 import Subcategory from '@/models/Subcategory';
@@ -23,7 +23,10 @@ export default async function sitemap() {
   ];
 
   try {
-    await connectDB();
+    const db = await connectDB();
+    if (!db || !isDbConnected()) {
+      return staticRoutes;
+    }
 
     // 1. Categories
     const categories = await Category.find({

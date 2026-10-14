@@ -470,7 +470,14 @@ export async function GET(req) {
         dbQuery = dbQuery.limit(parseInt(limitParam, 10));
       }
 
-      const products = await dbQuery.lean();
+      const rawProducts = await dbQuery.lean();
+      const products = rawProducts.map((p) => ({
+        ...p,
+        category: p.category || p.categoryId,
+        subcategory: p.subcategory || p.subcategoryId,
+        categorySlug: p.categorySlug || p.categoryId?.slug,
+        subcategorySlug: p.subcategorySlug || p.subcategoryId?.slug
+      }));
 
       return NextResponse.json({
         success: true,

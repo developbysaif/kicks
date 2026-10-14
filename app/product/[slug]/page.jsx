@@ -1,6 +1,6 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
-import { connectDB } from '@/lib/mongodb';
+import { connectDB, isDbConnected } from '@/lib/mongodb';
 import Product from '@/models/Product';
 import Category from '@/models/Category';
 import Review from '@/models/Review';
@@ -47,10 +47,13 @@ export async function generateMetadata({ params }) {
   const { slug } = params;
 
   try {
-    await connectDB();
-    let product = await Product.findOne({ slug })
-      .populate('categoryId', 'name slug')
-      .lean();
+    const db = await connectDB();
+    let product = null;
+    if (db && isDbConnected()) {
+      product = await Product.findOne({ slug })
+        .populate('categoryId', 'name slug')
+        .lean();
+    }
 
     if (!product) {
       product = FALLBACK_PRODUCTS.find(p => p.slug === slug);
@@ -115,10 +118,13 @@ export default async function ProductPage({ params }) {
   let initialRelatedProducts = [];
 
   try {
-    await connectDB();
-    let rawProduct = await Product.findOne({ slug })
-      .populate('categoryId', 'name slug')
-      .lean();
+    const db = await connectDB();
+    let rawProduct = null;
+    if (db && isDbConnected()) {
+      rawProduct = await Product.findOne({ slug })
+        .populate('categoryId', 'name slug')
+        .lean();
+    }
 
     if (!rawProduct) {
       rawProduct = FALLBACK_PRODUCTS.find(p => p.slug === slug) || null;

@@ -100,7 +100,7 @@ const ProductCard = ({ product, onQuickView }) => {
         <div className="space-y-1.5">
           {/* Category */}
           <span className="block text-[11px] font-medium text-gray-400">
-            {product.category?.name || 'Home Care'}
+            {product.category?.name || product.categoryId?.name || 'Home Care'}
           </span>
 
           {/* Title */}

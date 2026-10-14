@@ -1,10 +1,19 @@
 import { NextResponse } from 'next/server';
-import connectDB from '@/lib/db';
+import connectDB, { isDbConnected } from '@/lib/db';
 import Order from '@/models/Order';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET(req, { params }) {
   try {
-    await connectDB();
+    const db = await connectDB();
+    if (!db || !isDbConnected()) {
+      return NextResponse.json(
+        { success: false, message: 'Database service unavailable' },
+        { status: 503 }
+      );
+    }
+
     const { orderId } = params;
 
     const order = await Order.findOne({ orderId }).populate('user', 'name email phone');

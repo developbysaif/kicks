@@ -11,8 +11,8 @@ export async function GET() {
     });
   } catch (error) {
     return NextResponse.json(
-      { success: false, error: error.message },
-      { status: 500 }
+      { success: false, message: error.message, error: error.message },
+      { status: 503 }
     );
   }
 }

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import connectDB from '@/lib/db';
+import connectDB, { isDbConnected } from '@/lib/db';
 import BlogPost from '@/models/BlogPost';
 import { getAuthUser } from '@/lib/jwt';
 import slugify from 'slugify';
@@ -18,7 +18,10 @@ export async function PUT(req, { params }) {
       return NextResponse.json({ success: false, message: 'Article ID is required' }, { status: 400 });
     }
 
-    await connectDB();
+    const db = await connectDB();
+    if (!db || !isDbConnected()) {
+      return NextResponse.json({ success: false, message: 'Database connection unavailable' }, { status: 503 });
+    }
     const body = await req.json();
 
     const {
@@ -99,7 +102,11 @@ export async function DELETE(req, { params }) {
       return NextResponse.json({ success: false, message: 'Article ID is required' }, { status: 400 });
     }
 
-    await connectDB();
+    const db = await connectDB();
+    if (!db || !isDbConnected()) {
+      return NextResponse.json({ success: false, message: 'Database connection unavailable' }, { status: 503 });
+    }
+
     const deletedPost = await BlogPost.findByIdAndDelete(id);
 
     if (!deletedPost) {

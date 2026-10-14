@@ -1,7 +1,9 @@
 import { NextResponse } from 'next/server';
-import connectDB from '@/lib/db';
+import connectDB, { isDbConnected } from '@/lib/db';
 import Review from '@/models/Review';
 import { getAuthUser } from '@/lib/jwt';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET(req) {
   try {
@@ -10,7 +12,11 @@ export async function GET(req) {
       return NextResponse.json({ success: false, message: 'Admin access required' }, { status: 403 });
     }
 
-    await connectDB();
+    const db = await connectDB();
+    if (!db || !isDbConnected()) {
+      return NextResponse.json({ success: true, reviews: [] });
+    }
+
     const reviews = await Review.find().populate('product', 'name slug images').sort({ createdAt: -1 });
     return NextResponse.json({ success: true, reviews });
   } catch (error) {
@@ -25,7 +31,11 @@ export async function PUT(req) {
       return NextResponse.json({ success: false, message: 'Admin access required' }, { status: 403 });
     }
 
-    await connectDB();
+    const db = await connectDB();
+    if (!db || !isDbConnected()) {
+      return NextResponse.json({ success: false, message: 'Database connection offline.' }, { status: 503 });
+    }
+
     const { _id, isApproved } = await req.json();
     const review = await Review.findByIdAndUpdate(_id, { isApproved }, { new: true });
     return NextResponse.json({ success: true, message: 'Review status updated', review });
@@ -41,7 +51,11 @@ export async function DELETE(req) {
       return NextResponse.json({ success: false, message: 'Admin access required' }, { status: 403 });
     }
 
-    await connectDB();
+    const db = await connectDB();
+    if (!db || !isDbConnected()) {
+      return NextResponse.json({ success: false, message: 'Database connection offline.' }, { status: 503 });
+    }
+
     const { searchParams } = new URL(req.url);
     const id = searchParams.get('id');
     await Review.findByIdAndDelete(id);

@@ -1,8 +1,10 @@
 import { NextResponse } from 'next/server';
-import connectDB from '@/lib/db';
+import connectDB, { isDbConnected } from '@/lib/db';
 import Order from '@/models/Order';
 import Product from '@/models/Product';
 import { getAuthUser } from '@/lib/jwt';
+
+export const dynamic = 'force-dynamic';
 
 export async function POST(req) {
   try {
@@ -21,7 +23,13 @@ export async function POST(req) {
       );
     }
 
-    await connectDB();
+    const db = await connectDB();
+    if (!db || !isDbConnected()) {
+      return NextResponse.json(
+        { success: false, message: 'Database service is temporarily unavailable. Please verify MONGODB_URI or try again shortly.' },
+        { status: 503 }
+      );
+    }
     const { orderItems, shippingAddress, paymentMethod, subtotal, discount, shippingFee, grandTotal, couponCode, notes } = await req.json();
 
     if (!orderItems || orderItems.length === 0) {
@@ -95,7 +103,14 @@ export async function GET(req) {
       );
     }
 
-    await connectDB();
+    const db = await connectDB();
+    if (!db || !isDbConnected()) {
+      return NextResponse.json({
+        success: true,
+        orders: []
+      });
+    }
+
     let orders;
     if (auth.role === 'admin') {
       orders = await Order.find().populate('user', 'name email phone').sort({ createdAt: -1 });

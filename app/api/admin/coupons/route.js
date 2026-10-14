@@ -1,7 +1,9 @@
 import { NextResponse } from 'next/server';
-import connectDB from '@/lib/db';
+import connectDB, { isDbConnected } from '@/lib/db';
 import Coupon from '@/models/Coupon';
 import { getAuthUser } from '@/lib/jwt';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET(req) {
   try {
@@ -10,7 +12,11 @@ export async function GET(req) {
       return NextResponse.json({ success: false, message: 'Admin access required' }, { status: 403 });
     }
 
-    await connectDB();
+    const db = await connectDB();
+    if (!db || !isDbConnected()) {
+      return NextResponse.json({ success: true, coupons: [] });
+    }
+
     const coupons = await Coupon.find().sort({ createdAt: -1 });
     return NextResponse.json({ success: true, coupons });
   } catch (error) {
@@ -25,7 +31,11 @@ export async function POST(req) {
       return NextResponse.json({ success: false, message: 'Admin access required' }, { status: 403 });
     }
 
-    await connectDB();
+    const db = await connectDB();
+    if (!db || !isDbConnected()) {
+      return NextResponse.json({ success: false, message: 'Database connection offline. Please check MONGODB_URI.' }, { status: 503 });
+    }
+
     const data = await req.json();
     const coupon = await Coupon.create(data);
     return NextResponse.json({ success: true, message: 'Coupon created successfully', coupon });
@@ -41,7 +51,11 @@ export async function PUT(req) {
       return NextResponse.json({ success: false, message: 'Admin access required' }, { status: 403 });
     }
 
-    await connectDB();
+    const db = await connectDB();
+    if (!db || !isDbConnected()) {
+      return NextResponse.json({ success: false, message: 'Database connection offline.' }, { status: 503 });
+    }
+
     const { _id, ...data } = await req.json();
     const coupon = await Coupon.findByIdAndUpdate(_id, data, { new: true });
     return NextResponse.json({ success: true, message: 'Coupon updated successfully', coupon });
@@ -57,7 +71,11 @@ export async function DELETE(req) {
       return NextResponse.json({ success: false, message: 'Admin access required' }, { status: 403 });
     }
 
-    await connectDB();
+    const db = await connectDB();
+    if (!db || !isDbConnected()) {
+      return NextResponse.json({ success: false, message: 'Database connection offline.' }, { status: 503 });
+    }
+
     const { searchParams } = new URL(req.url);
     const id = searchParams.get('id');
     await Coupon.findByIdAndDelete(id);

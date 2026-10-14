@@ -1,6 +1,6 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
-import { connectDB } from '@/lib/mongodb';
+import { connectDB, isDbConnected } from '@/lib/mongodb';
 import BlogPost from '@/models/BlogPost';
 import { INITIAL_BLOG_POSTS } from '@/lib/blogData';
 import BlogDetailClient from './BlogDetailClient';
@@ -9,21 +9,23 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://kickhomecare.com';
 
 async function getPostData(slug) {
   try {
-    await connectDB();
-    const dbPost = await BlogPost.findOne({ slug, status: 'published' }).lean();
+    const db = await connectDB();
+    if (db && isDbConnected()) {
+      const dbPost = await BlogPost.findOne({ slug, status: 'published' }).lean();
 
-    if (dbPost) {
-      const related = await BlogPost.find({
-        slug: { $ne: slug },
-        status: 'published',
-      })
-        .limit(3)
-        .lean();
+      if (dbPost) {
+        const related = await BlogPost.find({
+          slug: { $ne: slug },
+          status: 'published',
+        })
+          .limit(3)
+          .lean();
 
-      return {
-        post: JSON.parse(JSON.stringify(dbPost)),
-        relatedPosts: JSON.parse(JSON.stringify(related)),
-      };
+        return {
+          post: JSON.parse(JSON.stringify(dbPost)),
+          relatedPosts: JSON.parse(JSON.stringify(related)),
+        };
+      }
     }
   } catch (err) {
     console.error('Error fetching blog from DB:', err);

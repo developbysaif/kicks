@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import connectDB from '@/lib/db';
+import connectDB, { isDbConnected } from '@/lib/db';
 import BlogPost from '@/models/BlogPost';
 import { getAuthUser } from '@/lib/jwt';
 import slugify from 'slugify';
@@ -14,7 +14,15 @@ export async function GET(req) {
       return NextResponse.json({ success: false, message: 'Admin access required' }, { status: 403 });
     }
 
-    await connectDB();
+    const db = await connectDB();
+    if (!db || !isDbConnected()) {
+      return NextResponse.json({
+        success: true,
+        count: INITIAL_BLOG_POSTS.length,
+        posts: INITIAL_BLOG_POSTS
+      });
+    }
+
     const { searchParams } = new URL(req.url);
     const search = searchParams.get('search');
     const status = searchParams.get('status');
@@ -61,7 +69,13 @@ export async function POST(req) {
       return NextResponse.json({ success: false, message: 'Admin access required' }, { status: 403 });
     }
 
-    await connectDB();
+    const db = await connectDB();
+    if (!db || !isDbConnected()) {
+      return NextResponse.json(
+        { success: false, message: 'Database connection offline. Please verify MONGODB_URI to save articles.' },
+        { status: 503 }
+      );
+    }
     const body = await req.json();
 
     const {
