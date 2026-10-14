@@ -1,12 +1,15 @@
 import mongoose from 'mongoose';
 
 const embeddedOrderItemSchema = new mongoose.Schema({
+  product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
   productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
-  name: { type: String, required: true },
-  price: { type: Number, required: true },
+  name: { type: String, required: true, trim: true },
+  price: { type: Number, required: true, min: 0 },
   image: { type: String, default: '' },
+  quantity: { type: Number, required: true, min: 1 },
+  variation: { type: String, default: '' },
   variant: { type: String, default: '' },
-  quantity: { type: Number, required: true, min: 1 }
+  sku: { type: String, default: '' }
 }, { _id: true });
 
 const trackingHistorySchema = new mongoose.Schema({
@@ -15,13 +18,35 @@ const trackingHistorySchema = new mongoose.Schema({
   updatedAt: { type: Date, default: Date.now }
 }, { _id: false });
 
+const shippingAddressSchema = new mongoose.Schema({
+  fullName: { type: String, default: '', trim: true },
+  phone: { type: String, default: '', trim: true },
+  addressLine: { type: String, default: '', trim: true },
+  city: { type: String, default: '', trim: true },
+  province: { type: String, default: 'Punjab', trim: true },
+  postalCode: { type: String, default: '54000', trim: true },
+  country: { type: String, default: 'Pakistan', trim: true }
+}, { _id: false });
+
 const orderSchema = new mongoose.Schema({
-  orderNumber: {
+  orderId: {
     type: String,
     required: true,
     unique: true,
     uppercase: true,
     trim: true,
+    index: true
+  },
+  orderNumber: {
+    type: String,
+    uppercase: true,
+    trim: true,
+    index: true
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    default: null,
     index: true
   },
   userId: {
@@ -30,32 +55,43 @@ const orderSchema = new mongoose.Schema({
     default: null,
     index: true
   },
-  customerName: { type: String, required: true, trim: true },
-  phone: { type: String, required: true, trim: true },
-  email: { type: String, required: true, lowercase: true, trim: true, index: true },
-  city: { type: String, required: true, trim: true },
-  address: { type: String, required: true, trim: true },
-  notes: { type: String, default: '' },
+  customerName: { type: String, default: '', trim: true },
+  phone: { type: String, default: '', trim: true },
+  email: { type: String, default: '', lowercase: true, trim: true, index: true },
+  city: { type: String, default: '', trim: true },
+  address: { type: String, default: '', trim: true },
+  shippingAddress: {
+    type: shippingAddressSchema,
+    default: () => ({})
+  },
+  notes: { type: String, default: '', trim: true },
   subtotal: { type: Number, required: true, min: 0 },
   discount: { type: Number, default: 0, min: 0 },
-  shippingFee: { type: Number, default: 200, min: 0 },
-  total: { type: Number, required: true, min: 0 },
-  couponCode: { type: String, default: '', trim: true },
+  shippingFee: { type: Number, default: 150, min: 0 },
+  grandTotal: { type: Number, required: true, min: 0 },
+  total: { type: Number, default: 0, min: 0 },
+  couponCode: { type: String, default: '', uppercase: true, trim: true },
   paymentMethod: {
     type: String,
-    enum: ['cod'],
-    default: 'cod'
+    default: 'Cash on Delivery',
+    trim: true
   },
   paymentStatus: {
     type: String,
-    enum: ['pending', 'paid', 'failed', 'refunded'],
-    default: 'pending',
+    default: 'Pending',
+    trim: true,
+    index: true
+  },
+  orderStatus: {
+    type: String,
+    default: 'Pending',
+    trim: true,
     index: true
   },
   status: {
     type: String,
-    enum: ['pending', 'confirmed', 'shipped', 'delivered', 'cancelled'],
-    default: 'pending',
+    default: 'Pending',
+    trim: true,
     index: true
   },
   orderItems: [embeddedOrderItemSchema],
@@ -67,38 +103,70 @@ const orderSchema = new mongoose.Schema({
   toObject: { virtuals: true }
 });
 
-// Compatibility aliases
-orderSchema.virtual('orderId')
-  .get(function () {
-    return this.orderNumber;
-  })
-  .set(function (v) {
-    this.orderNumber = v;
-  });
+// Pre-validate synchronization hook
+orderSchema.pre('validate', function (next) {
+  if (this.orderId && !this.orderNumber) {
+    this.orderNumber = this.orderId;
+  } else if (this.orderNumber && !this.orderId) {
+    this.orderId = this.orderNumber;
+  }
 
-orderSchema.virtual('user')
-  .get(function () {
-    return this.userId;
-  })
-  .set(function (v) {
-    this.userId = v;
-  });
+  if (this.user && !this.userId) {
+    this.userId = this.user;
+  } else if (this.userId && !this.user) {
+    this.user = this.userId;
+  }
 
-orderSchema.virtual('grandTotal')
-  .get(function () {
-    return this.total;
-  })
-  .set(function (v) {
-    this.total = v;
-  });
+  if (this.shippingAddress) {
+    if (!this.customerName && this.shippingAddress.fullName) {
+      this.customerName = this.shippingAddress.fullName;
+    }
+    if (!this.phone && this.shippingAddress.phone) {
+      this.phone = this.shippingAddress.phone;
+    }
+    if (!this.city && this.shippingAddress.city) {
+      this.city = this.shippingAddress.city;
+    }
+    if (!this.address && this.shippingAddress.addressLine) {
+      this.address = this.shippingAddress.addressLine;
+    }
+  }
 
-orderSchema.virtual('orderStatus')
-  .get(function () {
-    return this.status;
-  })
-  .set(function (v) {
-    this.status = v ? v.toLowerCase() : 'pending';
-  });
+  if (!this.shippingAddress || !this.shippingAddress.fullName) {
+    this.shippingAddress = {
+      fullName: this.customerName || '',
+      phone: this.phone || '',
+      addressLine: this.address || '',
+      city: this.city || '',
+      province: 'Punjab',
+      postalCode: '54000',
+      country: 'Pakistan'
+    };
+  }
+
+  if (this.grandTotal !== undefined && (this.total === undefined || this.total === 0)) {
+    this.total = this.grandTotal;
+  } else if (this.total !== undefined && (this.grandTotal === undefined || this.grandTotal === 0)) {
+    this.grandTotal = this.total;
+  }
+
+  if (this.orderStatus && !this.status) {
+    this.status = this.orderStatus;
+  } else if (this.status && !this.orderStatus) {
+    this.orderStatus = this.status;
+  }
+
+  if (Array.isArray(this.orderItems)) {
+    this.orderItems.forEach((item) => {
+      if (item.product && !item.productId) item.productId = item.product;
+      if (item.productId && !item.product) item.product = item.productId;
+      if (item.variation && !item.variant) item.variant = item.variation;
+      if (item.variant && !item.variation) item.variation = item.variant;
+    });
+  }
+
+  if (next) next();
+});
 
 const Order = mongoose.models.Order || mongoose.model('Order', orderSchema);
 export default Order;

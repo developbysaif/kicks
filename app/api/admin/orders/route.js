@@ -84,20 +84,35 @@ export async function GET(req) {
     if (db && mongoose.connection.readyState === 1) {
       let query = {};
       if (status && status !== 'all') {
-        query.orderStatus = status;
+        query.$or = [
+          { orderStatus: status },
+          { orderStatus: status.charAt(0).toUpperCase() + status.slice(1).toLowerCase() },
+          { status: status },
+          { status: status.toLowerCase() }
+        ];
       }
       if (search && search.trim()) {
         const term = search.trim();
-        query.$or = [
+        const searchConditions = [
           { orderId: { $regex: term, $options: 'i' } },
+          { orderNumber: { $regex: term, $options: 'i' } },
           { 'shippingAddress.fullName': { $regex: term, $options: 'i' } },
           { 'shippingAddress.phone': { $regex: term, $options: 'i' } },
-          { 'shippingAddress.city': { $regex: term, $options: 'i' } }
+          { 'shippingAddress.city': { $regex: term, $options: 'i' } },
+          { customerName: { $regex: term, $options: 'i' } },
+          { phone: { $regex: term, $options: 'i' } },
+          { email: { $regex: term, $options: 'i' } }
         ];
+        if (query.$or) {
+          query.$and = [{ $or: query.$or }, { $or: searchConditions }];
+          delete query.$or;
+        } else {
+          query.$or = searchConditions;
+        }
       }
 
       const orders = await Order.find(query)
-        .populate('user', 'name email phone')
+        .populate('user', 'fullName name email phone')
         .sort({ createdAt: -1 })
         .lean();
 
